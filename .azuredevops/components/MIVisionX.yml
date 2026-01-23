@@ -62,14 +62,9 @@ parameters:
 - name: rocmDependencies
   type: object
   default:
-    - AMDMIGraphX
     - clr
     - half
-    - hipBLAS-common
-    - hipBLASLt
     - llvm-project
-    - MIOpen
-    - rocBLAS
     - rocDecode
     - rocm-cmake
     - rocminfo
@@ -82,12 +77,7 @@ parameters:
     - aomp
     - clr
     - half
-    - hipBLAS-common
-    - hipBLASLt
     - llvm-project
-    - MIOpen
-    - rocBLAS
-    - rocprofiler-register
     - ROCR-Runtime
     - roctracer
     - rpp
