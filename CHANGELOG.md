@@ -691,6 +691,13 @@ for a complete overview of this release.
 #### Resolved issues
 * Test Suite - Error Code Capture updates.
 
+### **Tensile** (4.45.0)
+
+#### Removed
+
+- `op_sel` modifiers for `v_dot4` from Tensile codegen.
+- Dependency on `rocm-agent-enumerator` during build.
+
 ## ROCm 7.1.1
 
 See the [ROCm 7.1.1 release notes](https://rocm.docs.amd.com/en/docs-7.1.1/about/release-notes.html#rocm-7-1-1-release-notes)

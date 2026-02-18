@@ -105,7 +105,7 @@ compatibility and system requirements.
       :doc:`rocSOLVER <rocsolver:index>`,3.32.0,3.31.0,3.28.0
       :doc:`rocSPARSE <rocsparse:index>`,4.2.0,4.1.0,3.4.0
       :doc:`rocWMMA <rocwmma:index>`,2.2.0,2.1.0,1.7.0
-      :doc:`Tensile <tensile:src/index>`,4.44.0,4.44.0,4.43.0
+      :doc:`Tensile <tensile:src/index>`,4.45.0,4.44.0,4.43.0
       ,,,
       PRIMITIVES,.. _primitivelibs-support-compatibility-matrix:,,
       :doc:`hipCUB <hipcub:index>`,4.2.0,4.1.0,3.4.0

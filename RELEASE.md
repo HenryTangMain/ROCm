@@ -551,7 +551,7 @@ Click {fab}`github` to go to the component's source code on GitHub.
             </tr>
             <tr>
                 <td><a href="https://rocm.docs.amd.com/projects/Tensile/en/docs-7.2.0/src/index.html">Tensile</a></td>
-                <td>4.44.0</td>
+                <td>4.44.0&nbsp;&Rightarrow;&nbsp;<a href="#tensile-4-45-0">4.45.0</a></td>
                 <td><a href="https://github.com/ROCm/rocm-libraries/tree/develop/shared/tensile"><i class="fab fa-github fa-lg"></i></a></td>
             </tr>
         </tbody>
@@ -1406,6 +1406,13 @@ For a historical overview of ROCm component updates, see the {doc}`ROCm consolid
 #### Resolved issues
 * Test Suite - Error Code Capture updates.
 
+### **Tensile** (4.45.0)
+
+#### Removed
+
+- `op_sel` modifiers for `v_dot4` from Tensile codegen.
+- Dependency on `rocm-agent-enumerator` during build.
+
 ## ROCm known issues
 
 ROCm known issues are noted on {fab}`github` [GitHub](https://github.com/ROCm/ROCm/labels/Verified%20Issue). For known
@@ -1443,6 +1450,10 @@ You might experience intermittent errors or segmentation faults when running JAX
 
 If you’re using hipBLASLt on AMD Instinct MI325X GPUs for large FP8 GEMM operations (such as 9728x8192x65536), you might observe a noticeable performance variation. The issue is currently under investigation and will be fixed in a future ROCm release. See [GitHub issue #5734](https://github.com/ROCm/ROCm/issues/5734).
 
+### Increased runtime latency of the HIP hipStreamCreate API
+
+Doubling of runtime latency of the [HIP](https://rocmdocs.amd.com/projects/HIP/en/latest/doxygen/html/group___stream.html) `hipStreamCreate` API might be observed. While this affects RCCL `all_reduce_perf` tests, it has minimal impact on real production workloads. No slowdowns have been observed in other common benchmarks, including PyTorch, vLLM, and other application‑level tests. The issue is currently under investigation and will be fixed in an upcoming ROCm release. See [GitHub issue #5978](https://github.com/ROCm/ROCm/issues/5978). 
+
 ## ROCm resolved issues
 
 The following are previously known issues resolved in this release. For resolved issues related to
@@ -1475,6 +1486,10 @@ unnecessary concern about GPU health. See [GitHub issue #5720](https://github.co
 ### Incorrect results in gemm_ex operations for rocBLAS and hipBLAS
 
 An issue where some `gemm_ex` operations with 8-bit input data types (`int8`, `float8`, `bfloat8`) for specific matrix dimensions (K = 1 and number of workgroups > 1) yield incorrect results has been resolved. The root cause was incorrect tailloop code that ignored workgroup index when calculating valid element size. See [GitHub issue #5722](https://github.com/ROCm/ROCm/issues/5722).
+
+### Libva-based applications might fail after ROCm installation
+
+The issue in which certain applications that depended on the Libva library (such as `vainfo` and `ffmpeg`) failed after ROCm installation has been resolved. The failure occurred due to a symbol clash between the AMD-packaged `libva-amdgpu` and the system-provided Libva. This conflict was introduced when adapting the RHEL 8 build to support additional operating systems, which required changes to the build options. See [GitHub issue #5732](https://github.com/ROCm/ROCm/issues/5732).
 
 ## ROCm upcoming changes
 
