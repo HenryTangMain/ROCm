@@ -81,7 +81,7 @@ latex_elements = {
 }
 
 html_baseurl = os.environ.get("READTHEDOCS_CANONICAL_URL", "rocm.docs.amd.com")
-html_context = {"docs_header_version": "7.1.1"}
+html_context = {"docs_header_version": "7.2.1"}
 if os.environ.get("READTHEDOCS", "") == "True":
     html_context["READTHEDOCS"] = True
 
@@ -92,16 +92,16 @@ official_branch = run(["git", "rev-parse", "--abbrev-ref", "HEAD"], capture_outp
 project = "ROCm Documentation"
 project_path = os.path.abspath(".").replace("\\", "/")
 author = "Advanced Micro Devices, Inc."
-copyright = "Copyright (c) 2025 Advanced Micro Devices, Inc. All rights reserved."
-version = "7.2.0"
-release = "7.2.0"
+copyright = "Copyright (c) 2026 Advanced Micro Devices, Inc. All rights reserved."
+version = "7.2.1"
+release = "7.2.1"
 setting_all_article_info = True
 all_article_info_os = ["linux", "windows"]
 all_article_info_author = ""
 
 # pages with specific settings
 article_pages = [
-    {"file": "about/release-notes", "os": ["linux"], "date": "2026-01-21"},
+    {"file": "about/release-notes", "os": ["linux"], "date": "2026-03-09"},
     {"file": "release/changelog", "os": ["linux"],},
     {"file": "compatibility/compatibility-matrix", "os": ["linux"]},
     {"file": "compatibility/ml-compatibility/pytorch-compatibility", "os": ["linux"]},
@@ -235,7 +235,7 @@ external_projects_current_project = "rocm"
 # external_projects_remote_repository = ""
 
 html_baseurl = os.environ.get("READTHEDOCS_CANONICAL_URL", "https://rocm-stg.amd.com/")
-html_context = {"docs_header_version": "7.1.0"}
+html_context = {"docs_header_version": "7.2.1"}
 if os.environ.get("READTHEDOCS", "") == "True":
     html_context["READTHEDOCS"] = True
 
@@ -271,3 +271,6 @@ html_context = {
 
 # Disable figure and table numbering
 numfig = False
+
+# Uncomment if facing rate limit exceed issue with local build
+external_projects_remote_repository = ""

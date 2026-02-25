@@ -4,6 +4,77 @@ This page is a historical overview of changes made to ROCm components. This
 consolidated changelog documents key modifications and improvements across
 different versions of the ROCm software stack and its components.
 
+## ROCm 7.2.1
+
+See the [ROCm 7.2.1 release notes](https://rocm-stg.amd.com/en/latest/about/release-notes.html#rocm-7-2-1-release-notes)
+for a complete overview of this release.
+
+### **AMD SMI** (26.2.1) 
+
+#### Added
+
+* GPU board and base board temperature sensors to `amd-smi monitor` command.
+
+#### Resolved issues
+
+* JSON output was not formatted correctly when using watch mode with metrics.
+* Output was not properly redirected to file when using JSON format. 
+* CPER component output was not redirected when using the `--follow` option.
+* Invalid CPER files caused garbage output for AFID lists.
+* JSON output was not formatted correctly for reset commands.
+
+### **HIP** (7.2.1)
+
+#### Resolved issues
+
+* Corrected the validation of stream capture in global‑capture mode. It is no longer affected by any thread‑local capture‑mode sequences occurring in other threads. 
+* Corrected the return value of `hipEventQuery` and `hipEventSynchronize`. The HIP runtime now properly handles and restricts stream capture within these APIs. 
+* Corrected an issue in the batch-dispatch doorbell for AQL packets to avoid a potential CPU hang.
+* To address potential delays in memory‑object destruction that could affect application logic, the HIP runtime disables memory‑object reference counting in direct‑dispatch mode.
+
+### **hipBLASLt** (1.2.2)
+
+#### Changed
+
+* Enumeration value update for the Sigmoid Activation Function feature.
+
+### **rocDecode** (1.7.0)
+
+#### Changed
+
+* The rocDecode GitHub repository has moved to [https://github.com/ROCm/rocm-systems/tree/develop/projects/rocdecode](https://github.com/ROCm/rocm-systems/tree/develop/projects/rocdecode).
+
+### **rocJPEG** (1.4.0)
+ 
+#### Changed
+
+* Bug fixes and performance improvements.
+* GitHub repository moved to [https://github.com/ROCm/rocm-systems/tree/develop/projects/rocjpeg](https://github.com/ROCm/rocm-systems/tree/develop/projects/rocjpeg).
+
+### **rocSHMEM** (3.2.0)
+
+#### Added
+* Warnings to notify if large BAR is not available.
+
+#### Resolved issues
+
+* GDA Backend will disable itself when no GDA compatible NICs are available rather than crashing.
+* Fix memory coherency issues on gfx1201.
+
+#### Known issues
+
+* Only 64-bit rocSHMEM atomic APIs are implemented for the GDA conduit.
+
+### **RPP** (2.2.1)
+
+#### Added
+ 
+* Error-code capture in test scripts for all C++ tests.
+ 
+#### Optimized
+ 
+* Optimized F16 variants by replacing scalar load/store operations with AVX2 intrinsics for spatter, log, blend, color_cast, flip, crop_mirror_normalize, and exposure kernels.
+
 ## ROCm 7.2.0
 
 See the [ROCm 7.2.0 release notes](https://rocm.docs.amd.com/en/docs-7.2.0/about/release-notes.html#rocm-7-2-0-release-notes)
