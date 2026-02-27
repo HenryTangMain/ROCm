@@ -42,7 +42,7 @@ The following are notable new features and improvements in ROCm 7.2.1. For chang
 
 Hardware support remains unchanged in this release.
 
-ROCm 7.2.1 adds support for Ubuntu 24.04.4 (kernel: 6.8 [GA], 6.14 [HWE]) and marks end of support (EoS) for Ubuntu 24.04.3. For more information, see [Ubuntu installation](https://rocm.docs.amd.com/projects/install-on-linux-internal/en/latest/install/install-methods/package-manager/package-manager-ubuntu.html).
+ROCm 7.2.1 adds support for Ubuntu 24.04.4 (kernel: 6.8 [GA], 6.17 [HWE]) and marks end of support (EoS) for Ubuntu 24.04.3. For more information, see [Ubuntu installation](https://rocm.docs.amd.com/projects/install-on-linux-internal/en/latest/install/install-methods/package-manager/package-manager-ubuntu.html).
 
 For more information about: 
 
@@ -204,6 +204,10 @@ matrix](../../docs/compatibility/compatibility-matrix.rst) for the complete list
 #### JAX
 
 ROCm 7.2.1 enables support for JAX 0.8.2. For more information, see [JAX compatibility](../../docs/compatibility/ml-compatibility/jax-compatibility.rst).
+
+#### ROCm Offline Installer Creator discontinuation
+
+The ROCm Offline Installer Creator is discontinued with the ROCm 7.2.1 release. Equivalent installation capabilities are available through the ROCm Runfile Installer, a self-extracting installer that is not based on OS package managers. For more information, see [ROCm Runfile Installer](https://rocm.docs.amd.com/projects/install-on-linux-internal/en/latest/install/rocm-runfile-installer.html).
 
 ### ROCm documentation updates
 
@@ -590,6 +594,10 @@ For a historical overview of ROCm component updates, see the {doc}`ROCm consolid
 * Corrected an issue in the batch-dispatch doorbell for AQL packets to avoid a potential CPU hang.
 * To address potential delays in memory‑object destruction that could affect application logic, the HIP runtime disables memory‑object reference counting in direct‑dispatch mode.
 
+### Changed
+
+* The `AMD_DIRECT_DISPATCH` environment variable has been deprecated in the HIP runtime.
+
 ### **hipBLASLt** (1.2.2)
 
 #### Changed
@@ -642,10 +650,6 @@ issues related to individual components, review the [Detailed component changes]
 
 The following changes to the ROCm software stack are anticipated for future releases.
 
-###  ROCm Offline Installer Creator deprecation
-
-The ROCm Offline Installer Creator is deprecated with the ROCm 7.2.0 release. Equivalent installation capabilities are available through the ROCm Runfile Installer, a self-extracting installer that is not based on OS package managers. This installer will be removed in a future release.
-
 ### ROCm SMI deprecation
 
 [ROCm SMI](https://github.com/ROCm/rocm_smi_lib) will be phased out in an
@@ -658,12 +662,6 @@ SMI](https://github.com/ROCm/amdsmi), the successor to ROCm SMI. AMD SMI
 includes all the features of the ROCm SMI and will continue to receive regular
 updates, new functionality, and ongoing support. For more information on AMD
 SMI, see the [AMD SMI documentation](https://rocm.docs.amd.com/projects/amdsmi/en/latest/).
-
-### ROCTracer, ROCProfiler, rocprof, and rocprofv2 deprecation
-
-ROCTracer, ROCProfiler, `rocprof`, and `rocprofv2` are deprecated and only critical defect fixes will be addressed for older versions of the profiling tools and libraries. It's strongly recommended to upgrade to the latest version of the [ROCprofiler-SDK](https://rocm.docs.amd.com/projects/rocprofiler-sdk/en/latest/) library and the (`rocprofv3`) tool to ensure continued support and access to new features. 
-
-It's anticipated that ROCTracer, ROCProfiler, `rocprof`, and `rocprofv2` will reach end-of-life by future releases, aligning with Q1 of 2026.
 
 ### Changes to ROCm Object Tooling
 
