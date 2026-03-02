@@ -143,7 +143,7 @@ GPU and baseboard firmware versioning might differ across GPU families.
           </td>
       </tr>
       <tr>
-          <td>MI300X</td>
+          <td>MI300X<a href="#footnote2"><sup>[2]</sup></a></td>
           <td>01.25.06.04<br>
               01.25.03.12<br>
               01.25.02.04</td>
@@ -187,6 +187,7 @@ GPU and baseboard firmware versioning might differ across GPU families.
 </div>
 
 <p id="footnote1">[1]: For AMD Instinct MI325X KVM SR-IOV users, don't use AMD GPU driver (amdgpu) 30.20.0.</p>
+<p id="footnote2">[2]: For AMD Instinct MI300X KVM SR-IOV with Multi-VF (8 VF) support requires a compatible firmware BKC bundle which will be released in coming months.</p>
 
 #### GPU resiliency improvement
  
