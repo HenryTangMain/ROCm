@@ -32,7 +32,7 @@ for a complete overview of this release.
 * Corrected an issue in the batch-dispatch doorbell for AQL packets to avoid a potential CPU hang.
 * To address potential delays in memory‑object destruction that could affect application logic, the HIP runtime disables memory‑object reference counting in direct‑dispatch mode.
 
-### Changed
+#### Changed
 
 * The `AMD_DIRECT_DISPATCH` environment variable has been deprecated in the HIP runtime.
 
