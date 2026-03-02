@@ -75,7 +75,6 @@ additional licenses. Please review individual repositories for more information.
 | [ROCm Systems Profiler](https://github.com/ROCm/rocm-systems/tree/develop/projects/rocprofiler-systems/) | [MIT](https://github.com/ROCm/rocm-systems/blob/develop/projects/rocprofiler-systems/LICENSE.md) |
 | [ROCm Validation Suite](https://github.com/ROCm/ROCmValidationSuite/) | [MIT](https://github.com/ROCm/ROCmValidationSuite/blob/master/LICENSE) |
 | [rocPRIM](https://github.com/ROCm/rocm-libraries/tree/develop/projects/rocprim/) | [MIT](https://github.com/ROCm/rocm-libraries/blob/develop/projects/rocprim/LICENSE.md) |
-| [ROCProfiler](https://github.com/ROCm/rocm-systems/tree/develop/projects/rocprofiler/) | [MIT](https://github.com/ROCm/rocm-systems/blob/develop/projects/rocprofiler/LICENSE.md) |
 | [ROCprofiler-SDK](https://github.com/ROCm/rocm-systems/tree/develop/projects/rocprofiler-sdk/) | [MIT](https://github.com/ROCm/rocm-systems/blob/develop/projects/rocprofiler-sdk/LICENSE.md) |
 | [rocPyDecode](https://github.com/ROCm/rocPyDecode) | [MIT](https://github.com/ROCm/rocPyDecode/blob/develop/LICENSE.txt) |
 | [rocRAND](https://github.com/ROCm/rocm-libraries/tree/develop/projects/rocrand/) | [MIT](https://github.com/ROCm/rocm-libraries/blob/develop/projects/rocrand/LICENSE.md) |
@@ -85,7 +84,6 @@ additional licenses. Please review individual repositories for more information.
 | [rocSOLVER](https://github.com/ROCm/rocm-libraries/tree/develop/projects/rocsolver/) | [BSD-2-Clause](https://github.com/ROCm/rocm-libraries/blob/develop/projects/rocsolver/LICENSE.md) |
 | [rocSPARSE](https://github.com/ROCm/rocm-libraries/tree/develop/projects/rocsparse/) | [MIT](https://github.com/ROCm/rocm-libraries/blob/develop/projects/rocsparse/LICENSE.md) |
 | [rocThrust](https://github.com/ROCm/rocm-libraries/tree/develop/projects/rocthrust/) | [Apache 2.0](https://github.com/ROCm/rocm-libraries/blob/develop/projects/rocthrust/LICENSE) |
-| [ROCTracer](https://github.com/ROCm/rocm-systems/tree/develop/projects/roctracer/) | [MIT](https://github.com/ROCm/rocm-systems/blob/develop/projects/roctracer/LICENSE.md) |
 | [rocWMMA](https://github.com/ROCm/rocm-libraries/tree/develop/projects/rocwmma/) | [MIT](https://github.com/ROCm/rocm-libraries/blob/develop/projects/rocwmma/LICENSE.md) |
 | [Tensile](https://github.com/ROCm/rocm-libraries/tree/develop/shared/tensile/) | [MIT](https://github.com/ROCm/rocm-libraries/blob/develop/shared/tensile/LICENSE.md) |
 | [TransferBench](https://github.com/ROCm/TransferBench) | [MIT](https://github.com/ROCm/TransferBench/blob/develop/LICENSE.md) |

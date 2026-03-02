@@ -205,6 +205,12 @@ matrix](../../docs/compatibility/compatibility-matrix.rst) for the complete list
 
 ROCm 7.2.1 enables support for JAX 0.8.2. For more information, see [JAX compatibility](../../docs/compatibility/ml-compatibility/jax-compatibility.rst).
 
+### End of support for ROCTracer, ROCProfiler, rocprof, and rocprofv2
+
+ROCm 7.2.1 marks the end of support (EoS) for ROCTracer, ROCProfiler, `rocprof`, and `rocprofv2`. For continued support and access to new profiling tool features upgrade to the latest version of the [ROCprofiler-SDK](https://rocm.docs.amd.com/projects/rocprofiler-sdk/en/latest/install/installation.html) library and the [rocprofv3](https://rocm.docs.amd.com/projects/rocprofiler-sdk/en/latest/how-to/using-rocprofv3.html) tool.
+
+To learn about key feature improvements and benefits of ROCprofiler-SDK over the discontinued ROCProfiler and ROCTracer, see [Comparing ROCprofiler-SDK to legacy ROCm profiling tools](https://rocm.docs.amd.com/projects/rocprofiler-sdk/en/latest/conceptual/comparing-with-legacy-tools.html).
+
 #### ROCm Offline Installer Creator discontinuation
 
 The ROCm Offline Installer Creator is discontinued with the ROCm 7.2.1 release. Equivalent installation capabilities are available through the ROCm Runfile Installer, a self-extracting installer that is not based on OS package managers. For more information, see [ROCm Runfile Installer](https://rocm.docs.amd.com/projects/install-on-linux-internal/en/latest/install/rocm-runfile-installer.html).
@@ -457,8 +463,8 @@ Click {fab}`github` to go to the component's source code on GitHub.
         </tbody>
         <tbody class="rocm-components-tools rocm-components-perf">
             <tr>
-                <th rowspan="6"></th>
-                <th rowspan="6">Performance</th>
+                <th rowspan="4"></th>
+                <th rowspan="4">Performance</th>
                 <td><a href="https://rocm.docs.amd.com/projects/rocm_bandwidth_test/en/docs-7.2.0/index.html">ROCm Bandwidth
                         Test</a></td>
                 <td>2.6.0</a></td>
@@ -478,21 +484,9 @@ Click {fab}`github` to go to the component's source code on GitHub.
                             class="fab fa-github fa-lg"></i></a></td>
             </tr>
             <tr>
-                <td><a href="https://rocm.docs.amd.com/projects/rocprofiler/en/docs-7.2.0/index.html">ROCProfiler</a></td>
-                <td>2.0.0</a></td>
-                <td><a href="https://github.com/ROCm/rocm-systems/tree/develop/projects/rocprofiler/"><i
-                            class="fab fa-github fa-lg"></i></a></td>
-            </tr>
-            <tr>
                 <td><a href="https://rocm.docs.amd.com/projects/rocprofiler-sdk/en/docs-7.2.0/index.html">ROCprofiler-SDK</a></td>
                 <td>1.1.0</a></td>
                 <td><a href="https://github.com/ROCm/rocm-systems/tree/develop/projects/rocprofiler-sdk/"><i
-                            class="fab fa-github fa-lg"></i></a></td>
-            </tr>
-            <tr >
-                <td><a href="https://rocm.docs.amd.com/projects/roctracer/en/docs-7.2.0/index.html">ROCTracer</a></td>
-                <td>4.1.0</td>
-                <td><a href="https://github.com/ROCm/rocm-systems/tree/develop/projects/roctracer/"><i
                             class="fab fa-github fa-lg"></i></a></td>
             </tr>
         </tbody>
