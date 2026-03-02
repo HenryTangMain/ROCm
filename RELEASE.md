@@ -212,7 +212,7 @@ ROCm 7.2.1 marks the end of support (EoS) for ROCTracer, ROCProfiler, `rocprof`,
 
 To learn about key feature improvements and benefits of ROCprofiler-SDK over the discontinued ROCProfiler and ROCTracer, see [Comparing ROCprofiler-SDK to legacy ROCm profiling tools](https://rocm.docs.amd.com/projects/rocprofiler-sdk/en/latest/conceptual/comparing-with-legacy-tools.html).
 
-#### ROCm Offline Installer Creator discontinuation
+### ROCm Offline Installer Creator discontinuation
 
 The ROCm Offline Installer Creator is discontinued with the ROCm 7.2.1 release. Equivalent installation capabilities are available through the ROCm Runfile Installer, a self-extracting installer that is not based on OS package managers. For more information, see [ROCm Runfile Installer](https://rocm.docs.amd.com/projects/install-on-linux-internal/en/latest/install/rocm-runfile-installer.html).
 
@@ -566,7 +566,7 @@ The following sections describe key changes to ROCm components.
 For a historical overview of ROCm component updates, see the {doc}`ROCm consolidated changelog </release/changelog>`.
 ```
 
-### **AMD SMI** (26.2.1) 
+### **AMD SMI** (26.2.2) 
 
 #### Added
 
