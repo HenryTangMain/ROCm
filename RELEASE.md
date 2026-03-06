@@ -653,9 +653,11 @@ The following changes to the ROCm software stack are anticipated for future rele
 
 ### ROCTracer, ROCProfiler, rocprof, and rocprofv2 deprecation
 
-ROCTracer, ROCProfiler, `rocprof`, and `rocprofv2` are deprecated and only critical defect fixes will be addressed for older versions of the profiling tools and libraries. It's strongly recommended to upgrade to the latest version of the [ROCprofiler-SDK](https://rocm.docs.amd.com/projects/rocprofiler-sdk/en/latest/) library and the (`rocprofv3`) tool to ensure continued support and access to new features. 
+ROCTracer, ROCProfiler, `rocprof`, and `rocprofv2` are deprecated. It's strongly recommended to upgrade to the latest version of the [ROCprofiler-SDK](https://rocm.docs.amd.com/projects/rocprofiler-sdk/en/latest/) library and the (`rocprofv3`) tool to ensure continued support and access to new features. 
 
-It's anticipated that ROCTracer, ROCProfiler, `rocprof`, and `rocprofv2` will reach end-of-life by future releases, aligning with Q2 of 2026.
+To learn about key feature improvements and benefits of ROCprofiler-SDK over the deprecated ROCProfiler and ROCTracer, see [Comparing ROCprofiler-SDK to legacy ROCm profiling tools](https://rocm.docs.amd.com/projects/rocprofiler-sdk/en/latest/conceptual/comparing-with-legacy-tools.html).
+
+It's anticipated that ROCTracer, ROCProfiler, `rocprof`, and `rocprofv2` will reach end of support (EoS) by the end of 2026 Q2.
 
 ### ROCm SMI deprecation
 
