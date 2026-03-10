@@ -218,6 +218,8 @@ article_pages = [
     {"file": "how-to/tuning-guides/mi300x/workload", "os": ["linux"]},
     {"file": "how-to/system-debugging", "os": ["linux"]},
     {"file": "how-to/gpu-enabled-mpi", "os": ["linux"]},
+
+    {"file": "reference/rocm-tools", "os": ["linux"],},
 ]
 
 external_toc_path = "./sphinx/_toc.yml"

@@ -74,7 +74,8 @@ Other useful variables
 ROCR-Runtime environment variables
 ==================================
 
-The following table lists the ROCR-Runtime environment variables:
+The following table lists the :doc:`ROCR-Runtime <rocr-runtime:index>`
+environment variables:
 
 .. remote-content::
    :repo: ROCm/rocm-systems
