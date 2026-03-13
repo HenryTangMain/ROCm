@@ -26,6 +26,8 @@ The release notes provide a summary of notable changes since the previous ROCm r
 
 - [ROCm known issues](#rocm-known-issues)
 
+- [ROCm resolved issues](#rocm-resolved-issues)
+
 - [ROCm upcoming changes](#rocm-upcoming-changes)
 
 ```{note}
@@ -646,6 +648,19 @@ For a historical overview of ROCm component updates, see the {doc}`ROCm consolid
 
 ROCm known issues are noted on {fab}`github` [GitHub](https://github.com/ROCm/ROCm/labels/Verified%20Issue). For known
 issues related to individual components, review the [Detailed component changes](#detailed-component-changes).
+
+## ROCm resolved issues
+
+The following are previously known issues resolved in this release. For resolved issues related to
+individual components, review the [Detailed component changes](#detailed-component-changes).
+
+### Applications using OpenCV might fail due to package incompatibility between the OS
+
+An issue where applications, tests, and samples that used OpenCV failed due to package incompatibility between the operating systems has been resolved. See [GitHub issue #5501](https://github.com/ROCm/ROCm/issues/5501).
+
+### Increased runtime latency of the HIP hipStreamCreate API
+
+As issue that resulted in doubling of the runtime latency of the [HIP](https://rocmdocs.amd.com/projects/HIP/en/latest/doxygen/html/group___stream.html) `hipStreamCreate` API has been resolved. See [GitHub issue #5978](https://github.com/ROCm/ROCm/issues/5978). 
 
 ## ROCm upcoming changes
 

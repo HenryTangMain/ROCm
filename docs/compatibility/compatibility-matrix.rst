@@ -144,7 +144,7 @@ compatibility and system requirements.
       `clang-ocl <https://github.com/ROCm/clang-ocl>`_,N/A,N/A,N/A
       :doc:`hipCC <hipcc:index>`,1.1.1,1.1.1,1.1.1
       `Flang <https://github.com/ROCm/flang>`_,22.0.0.26054,22.0.0.26014,19.0.0.25133
-      :doc:`llvm-project <llvm-project:index>`,22.0.0.26054,22.0.0.26014,19.0.0.25133
+      :doc:`llvm-project <llvm-project:index>`,22.0.0.26084,22.0.0.26014,19.0.0.25133
       `OpenMP <https://github.com/ROCm/llvm-project/tree/amd-staging/openmp>`_,22.0.0.26054,22.0.0.26014,19.0.0.25133
       ,,,
       RUNTIMES,.. _runtime-support-compatibility-matrix:,,
