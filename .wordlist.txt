@@ -81,6 +81,7 @@ Cavium
 CentOS
 ChatGPT
 Cholesky
+cholesky
 CoRR
 Codespaces
 Commitizen
@@ -292,6 +293,7 @@ LPDDR
 LRU
 LSAN
 LSan
+lstsq
 LTS
 LSTMs
 LteAll
@@ -429,6 +431,7 @@ PyTorch
 QPS
 Qcycles
 Qwen
+Radix
 RAII
 RAS
 RCCL
