@@ -649,6 +649,34 @@ For a historical overview of ROCm component updates, see the {doc}`ROCm consolid
 ROCm known issues are noted on {fab}`github` [GitHub](https://github.com/ROCm/ROCm/labels/Verified%20Issue). For known
 issues related to individual components, review the [Detailed component changes](#detailed-component-changes).
 
+### hipBLASLt performance regression for specific GEMM configurations
+
+You might observe a noticeable performance regression if you’re using hipBLASLt with the following GPUs for LLMs with specific GEMM configurations:
+
+#### AMD Instinct MI300X and MI325X GPUs
+
+Affected GEMM configurations:
+
+* 16384 × 16384 × 6656 (BBS, TN)
+
+* 32768 × 8192 × 3072 (BBS, TN)
+
+* 9728 × 8192 × 65536 (F8F8S, TN)
+
+#### AMD Instinct MI350 Series GPUs
+
+Affected GEMM configurations:
+
+* 4096 × 4096 × 1 × 8192
+
+* 4096 × 4096 × 1 × 16384
+
+* 8192 × 8192 × 1 × 8192
+
+* 8192 × 8192 × 1 × 16384
+
+Due to this issue, you might also observe a slight increase in the test or inference time. This issue is resolved in the {fab}`github`[hipBLASLt `develop` branch](https://github.com/ROCm/rocm-libraries/tree/develop/projects/hipblaslt) and will be part of a future ROCm release.
+
 ## ROCm resolved issues
 
 The following are previously known issues resolved in this release. For resolved issues related to
