@@ -39,6 +39,7 @@ autograd
 Backported
 BARs
 BatchNorm
+BKC
 BLAS
 BMC
 BabelStream
@@ -53,6 +54,7 @@ CDNA
 CGUI
 CHTML
 CIFAR
+CNP
 CLI
 CLion
 CMake
@@ -97,6 +99,7 @@ Dashboarding
 Dataloading
 dataflows
 DBRX
+DCQCN
 DDR
 DF
 DGEMM
@@ -111,8 +114,10 @@ DMA
 DOMContentLoaded
 DNN
 DNNL
+DOCA
 DPM
 DRI
+DSCP
 DW
 DWORD
 Dask
@@ -128,7 +133,9 @@ Deprecations
 DevCap
 DirectX
 Disaggregated
+disagg
 disaggregated
+disaggregation
 Dockerfile
 Dockerized
 Doxygen
@@ -159,6 +166,7 @@ Flang
 FlashAttention
 FlashInfer’s
 FlashInfer
+flashinfer
 FluxBenchmark
 Fortran
 Fuyu
@@ -181,6 +189,8 @@ GFLOPS
 GFortran
 GFXIP
 GGUF
+GID
+Gbps
 Gemma
 GiB
 GIM
@@ -252,6 +262,7 @@ IOP
 IOPS
 IOPM
 IOV
+IPs
 IRQ
 ISA
 ISV
@@ -318,6 +329,7 @@ MNIST
 MPI
 MPT
 MSVC
+MTU
 mul
 MVAPICH
 MVFFR
@@ -340,6 +352,7 @@ MLA
 MosaicML
 MoEs
 Mooncake
+MoRI
 Mpops
 Multicore
 multihost
@@ -409,16 +422,21 @@ PEQT
 PIL
 PILImage
 PJRT
+PLDM
 POR
 PRNG
 PRs
+PSID
+PTPC
 PaLM
 Pageable
 PeerDirect
+Pensando
 PerfDb
 Perfetto
 PipelineParallel
 PnP
+Pollara
 PowerEdge
 PowerShell
 Pretrained
@@ -430,6 +448,7 @@ Pytest
 PyTorch
 QPS
 Qcycles
+QoS
 Qwen
 Radix
 RAII
@@ -464,6 +483,7 @@ RPP
 RST
 RW
 Radeon
+Redfish
 RelWithDebInfo
 Req
 Rickle
@@ -737,6 +757,7 @@ enqueue
 env
 epilog
 etcetera
+eth
 ethernet
 exascale
 executables
@@ -832,6 +853,7 @@ llvm
 lm
 localscratch
 logits
+loopback
 lossy
 macOS
 matchers
@@ -857,9 +879,11 @@ nanoGPT
 NCS
 NOP
 NVLink
+netplan
 num
 numref
 ocl
+openai
 opencl
 opencv
 openmp
@@ -924,6 +948,7 @@ rc
 rccl
 rdc
 rdma
+reachability
 reStructuredText
 redirections
 refactorization
@@ -993,6 +1018,7 @@ shader
 sharding
 sigmoid
 sles
+slurm
 sm
 smi
 softmax
