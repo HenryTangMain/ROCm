@@ -683,10 +683,6 @@ Affected GEMM configurations:
 
 Due to this issue, you might also observe a slight increase in the test or inference time. This issue is resolved in the {fab}`github`[hipBLASLt `develop` branch](https://github.com/ROCm/rocm-libraries/tree/develop/projects/hipblaslt) and will be part of a future ROCm release.
 
-### Increased runtime latency of the HIP hipStreamCreate API
-
-Doubling of runtime latency of the [HIP](https://rocmdocs.amd.com/projects/HIP/en/latest/doxygen/html/group___stream.html) `hipStreamCreate` API might be observed. While this affects RCCL `all_reduce_perf` tests, it has minimal impact on real production workloads. No slowdowns have been observed in other common benchmarks, including PyTorch, vLLM, and other application‑level tests. The issue is currently under investigation and will be fixed in an upcoming ROCm release. See [GitHub issue #5978](https://github.com/ROCm/ROCm/issues/5978). 
-
 ## ROCm resolved issues
 
 The following are previously known issues resolved in this release. For resolved issues related to
