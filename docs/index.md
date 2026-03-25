@@ -63,7 +63,7 @@ ROCm documentation is organized into the following categories:
 :class-body: rocm-card-banner rocm-hue-6
 <!-- markdownlint-disable MD051 -->
 * [ROCm libraries](./reference/api-libraries.md)
-* [ROCm tools, compilers, and runtimes](./reference/rocm-tools.md)
+* [ROCm tools, compilers, and runtime API](./reference/rocm-tools.md)
 * [GPU hardware specifications](./reference/gpu-arch-specs.rst)
 * [Hardware atomics operation support](./reference/gpu-atomics-operation.rst)
 * [Environment variables](./reference/env-variables.rst)

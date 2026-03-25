@@ -223,7 +223,7 @@ subtrees:
   - file: reference/api-libraries.md
     title: ROCm libraries
   - file: reference/rocm-tools.md
-    title: ROCm tools, compilers, and runtimes
+    title: ROCm tools, compilers, and runtime API
   - file: reference/gpu-arch-specs.rst
   - file: reference/gpu-atomics-operation.rst
   - file: reference/env-variables.rst

@@ -399,6 +399,20 @@ with ROCm.
 
         **Note:** Only official release exists.
 
+Key features and enhancements for PyTorch 2.9 with ROCm 7.2.1
+================================================================================
+- Added Triton 3.6.x performance optimization for reduction, POI, and GEMM kernels.
+
+- Updated native reduction kernel config for better performance on AMD GPUs.
+
+- Optimized single-block TopK kernels with warp-level compaction.
+
+- Optimized Radix Select by caching data on shared memory.
+
+- Optimized Flex-Attention occupancy for head_dim=128.
+
+- Enabled hipSOLVER path for linalg operations - cholesky, lstsq, and gels.
+
 Key features and enhancements for PyTorch 2.9 with ROCm 7.1.1
 ================================================================================
 - Scaled Dot Product Attention (SDPA) upgraded to use AOTriton version 0.11b.

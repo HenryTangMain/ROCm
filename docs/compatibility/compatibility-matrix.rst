@@ -22,10 +22,10 @@ compatibility and system requirements.
 .. container:: format-big-table
 
   .. csv-table::
-      :header: "ROCm Version", "7.2.0", "7.1.1", "6.4.0"
+      :header: "ROCm Version", "7.2.1", "7.2.0", "6.4.0"
       :stub-columns: 1
 
-      :ref:`Operating systems & kernels <OS-kernel-versions>` [#os-compatibility]_,Ubuntu 24.04.3,Ubuntu 24.04.3,Ubuntu 24.04.2
+      :ref:`Operating systems & kernels <OS-kernel-versions>` [#os-compatibility]_,Ubuntu 24.04.4,Ubuntu 24.04.3,Ubuntu 24.04.2
       ,Ubuntu 22.04.5,Ubuntu 22.04.5,Ubuntu 22.04.5
       ,"RHEL 10.1, 10.0, 9.7, 9.6, 9.4","RHEL 10.1, 10.0, 9.7, 9.6, 9.4","RHEL 9.5, 9.4"
       ,RHEL 8.10,RHEL 8.10,RHEL 8.10
@@ -54,16 +54,15 @@ compatibility and system requirements.
       ,gfx908,gfx908,gfx908
       ,,,
       FRAMEWORK SUPPORT,.. _framework-support-compatibility-matrix:,,
-      :doc:`PyTorch <../compatibility/ml-compatibility/pytorch-compatibility>`,"2.9.1, 2.8.0, 2.7.1","2.9, 2.8, 2.7","2.6, 2.5, 2.4, 2.3"
+      :doc:`PyTorch <../compatibility/ml-compatibility/pytorch-compatibility>`,"2.9.1, 2.8.0, 2.7.1","2.9.1, 2.8.0, 2.7.1","2.6, 2.5, 2.4, 2.3"
       :doc:`TensorFlow <../compatibility/ml-compatibility/tensorflow-compatibility>`,"2.20.0, 2.19.1, 2.18.1","2.20.0, 2.19.1, 2.18.1","2.18.1, 2.17.1, 2.16.2"
-      :doc:`JAX <../compatibility/ml-compatibility/jax-compatibility>`,0.8.0,0.7.1,0.4.35
+      :doc:`JAX <../compatibility/ml-compatibility/jax-compatibility>`,0.8.2,0.8.0,0.4.35
       :doc:`DGL <../compatibility/ml-compatibility/dgl-compatibility>` [#dgl_compat]_,N/A,N/A,2.4.0
       :doc:`llama.cpp <../compatibility/ml-compatibility/llama-cpp-compatibility>` [#llama-cpp_compat]_,N/A,N/A,b5997
-      :doc:`FlashInfer <../compatibility/ml-compatibility/flashinfer-compatibility>` [#flashinfer_compat]_,N/A,v0.2.5,N/A
-      `ONNX Runtime <https://onnxruntime.ai/docs/build/eps.html#amd-migraphx>`_,1.23.2,1.23.1,1.20.0
+      `ONNX Runtime <https://onnxruntime.ai/docs/build/eps.html#amd-migraphx>`_,1.23.2,1.23.2,1.20.0
       ,,,
       THIRD PARTY COMMS,.. _thirdpartycomms-support-compatibility-matrix:,,
-      `UCC <https://github.com/ROCm/ucc>`_,>=1.4.0,>=1.4.0,>=1.3.0
+      `UCC <https://github.com/ROCm/ucc>`_,>=1.6.0,>=1.4.0,>=1.3.0
       `UCX <https://github.com/ROCm/ucx>`_,>=1.17.0,>=1.17.0,>=1.15.0
       ,,,
       THIRD PARTY ALGORITHM,.. _thirdpartyalgorithm-support-compatibility-matrix:,,
@@ -71,55 +70,55 @@ compatibility and system requirements.
       CUB,2.8.5,2.8.5,2.5.0
       ,,,
       DRIVER & USER SPACE [#kfd_support]_,.. _kfd-userspace-support-compatibility-matrix:,,
-      :doc:`AMD GPU Driver <rocm-install-on-linux:reference/user-kernel-space-compat-matrix>`,"30.30.0, 30.20.1, 30.20.0 [#mi325x_KVM]_, |br| 30.10.2, 30.10.1 [#driver_patch]_, |br| 30.10, 6.4.x","30.20.1, 30.20.0 [#mi325x_KVM]_, |br| 30.10.2, 30.10.1 [#driver_patch]_, |br| 30.10, 6.4.x","6.4.x, 6.3.x, 6.2.x, 6.1.x"
+      :doc:`AMD GPU Driver <rocm-install-on-linux:reference/user-kernel-space-compat-matrix>`,"30.30.1, 30.30.0, 30.20.1, |br| 30.20.0 [#mi325x_KVM]_, 30.10.2, |br| 30.10.1 [#driver_patch]_, 30.10, 6.4.x","30.30.0, 30.20.1, 30.20.0 [#mi325x_KVM]_, |br| 30.10.2, 30.10.1 [#driver_patch]_, |br| 30.10, 6.4.x","6.4.x, 6.3.x, 6.2.x, 6.1.x"
       ,,,
       ML & COMPUTER VISION,.. _mllibs-support-compatibility-matrix:,,
-      :doc:`Composable Kernel <composable_kernel:index>`,1.2.0,1.1.0,1.1.0
-      :doc:`MIGraphX <amdmigraphx:index>`,2.15.0,2.14.0,2.12.0
+      :doc:`Composable Kernel <composable_kernel:index>`,1.2.0,1.2.0,1.1.0
+      :doc:`MIGraphX <amdmigraphx:index>`,2.15.0,2.15.0,2.12.0
       :doc:`MIOpen <miopen:index>`,3.5.1,3.5.1,3.4.0
-      :doc:`MIVisionX <mivisionx:index>`,3.5.0,3.4.0,3.2.0
-      :doc:`rocAL <rocal:index>`,2.5.0,2.4.0,2.2.0
-      :doc:`rocDecode <rocdecode:index>`,1.5.0,1.4.0,0.10.0
-      :doc:`rocJPEG <rocjpeg:index>`,1.3.0,1.2.0,0.8.0
-      :doc:`rocPyDecode <rocpydecode:index>`,0.8.0,0.7.0,0.3.1
-      :doc:`RPP <rpp:index>`,2.2.0,2.1.0,1.9.10
+      :doc:`MIVisionX <mivisionx:index>`,3.5.0,3.5.0,3.2.0
+      :doc:`rocAL <rocal:index>`,2.5.0,2.5.0,2.2.0
+      :doc:`rocDecode <rocdecode:index>`,1.7.0,1.5.0,0.10.0
+      :doc:`rocJPEG <rocjpeg:index>`,1.4.0,1.3.0,0.8.0
+      :doc:`rocPyDecode <rocpydecode:index>`,0.8.0,0.8.0,0.3.1
+      :doc:`RPP <rpp:index>`,2.2.1,2.2.0,1.9.10
       ,,,
       COMMUNICATION,.. _commlibs-support-compatibility-matrix:,,
       :doc:`RCCL <rccl:index>`,2.27.7,2.27.7,2.22.3
-      :doc:`rocSHMEM <rocshmem:index>`,3.2.0,3.1.0,2.0.0
+      :doc:`rocSHMEM <rocshmem:index>`,3.2.0,3.2.0,2.0.0
       ,,,
       MATH LIBS,.. _mathlibs-support-compatibility-matrix:,,
       `half <https://github.com/ROCm/half>`_ ,1.12.0,1.12.0,1.12.0
-      :doc:`hipBLAS <hipblas:index>`,3.2.0,3.1.0,2.4.0
-      :doc:`hipBLASLt <hipblaslt:index>`,1.2.1,1.1.0,0.12.0
-      :doc:`hipFFT <hipfft:index>`,1.0.22,1.0.21,1.0.18
+      :doc:`hipBLAS <hipblas:index>`,3.2.0,3.2.0,2.4.0
+      :doc:`hipBLASLt <hipblaslt:index>`,1.2.2,1.2.1,0.12.0
+      :doc:`hipFFT <hipfft:index>`,1.0.22,1.0.22,1.0.18
       :doc:`hipfort <hipfort:index>`,0.7.1,0.7.1,0.6.0
       :doc:`hipRAND <hiprand:index>`,3.1.0,3.1.0,2.12.0
-      :doc:`hipSOLVER <hipsolver:index>`,3.2.0,3.1.0,2.4.0
-      :doc:`hipSPARSE <hipsparse:index>`,4.2.0,4.1.0,3.2.0
-      :doc:`hipSPARSELt <hipsparselt:index>`,0.2.6,0.2.5,0.2.3
-      :doc:`rocALUTION <rocalution:index>`,4.1.0,4.0.1,3.2.2
-      :doc:`rocBLAS <rocblas:index>`,5.2.0,5.1.1,4.4.0
-      :doc:`rocFFT <rocfft:index>`,1.0.36,1.0.35,1.0.32
-      :doc:`rocRAND <rocrand:index>`,4.2.0,4.1.0,3.3.0
-      :doc:`rocSOLVER <rocsolver:index>`,3.32.0,3.31.0,3.28.0
-      :doc:`rocSPARSE <rocsparse:index>`,4.2.0,4.1.0,3.4.0
-      :doc:`rocWMMA <rocwmma:index>`,2.2.0,2.1.0,1.7.0
-      :doc:`Tensile <tensile:src/index>`,4.45.0,4.44.0,4.43.0
+      :doc:`hipSOLVER <hipsolver:index>`,3.2.0,3.2.0,2.4.0
+      :doc:`hipSPARSE <hipsparse:index>`,4.2.0,4.2.0,3.2.0
+      :doc:`hipSPARSELt <hipsparselt:index>`,0.2.6,0.2.6,0.2.3
+      :doc:`rocALUTION <rocalution:index>`,4.1.0,4.1.0,3.2.2
+      :doc:`rocBLAS <rocblas:index>`,5.2.0,5.2.0,4.4.0
+      :doc:`rocFFT <rocfft:index>`,1.0.36,1.0.36,1.0.32
+      :doc:`rocRAND <rocrand:index>`,4.2.0,4.2.0,3.3.0
+      :doc:`rocSOLVER <rocsolver:index>`,3.32.0,3.32.0,3.28.0
+      :doc:`rocSPARSE <rocsparse:index>`,4.2.0,4.2.0,3.4.0
+      :doc:`rocWMMA <rocwmma:index>`,2.2.0,2.2.0,1.7.0
+      :doc:`Tensile <tensile:src/index>`,4.45.0,4.45.0,4.43.0
       ,,,
       PRIMITIVES,.. _primitivelibs-support-compatibility-matrix:,,
-      :doc:`hipCUB <hipcub:index>`,4.2.0,4.1.0,3.4.0
-      :doc:`hipTensor <hiptensor:index>`,2.2.0,2.0.0,1.5.0
-      :doc:`rocPRIM <rocprim:index>`,4.2.0,4.1.0,3.4.0
-      :doc:`rocThrust <rocthrust:index>`,4.2.0,4.1.0,3.3.0
+      :doc:`hipCUB <hipcub:index>`,4.2.0,4.2.0,3.4.0
+      :doc:`hipTensor <hiptensor:index>`,2.2.0,2.2.0,1.5.0
+      :doc:`rocPRIM <rocprim:index>`,4.2.0,4.2.0,3.4.0
+      :doc:`rocThrust <rocthrust:index>`,4.2.0,4.2.0,3.3.0
       ,,,
       SUPPORT LIBS,,,
-      `hipother <https://github.com/ROCm/hipother>`_,7.2.26015,7.1.52802,6.4.43482
-      `rocm-core <https://github.com/ROCm/rocm-core>`_,7.2.0,7.1.1,6.4.0
+      `hipother <https://github.com/ROCm/hipother>`_,7.2.53211,7.2.26015,6.4.43482
+      `rocm-core <https://github.com/ROCm/rocm-core>`_,7.2.1,7.2.0,6.4.0
       `ROCT-Thunk-Interface <https://github.com/ROCm/ROCT-Thunk-Interface>`_,N/A [#ROCT-rocr]_,N/A [#ROCT-rocr]_,N/A [#ROCT-rocr]_
       ,,,
       SYSTEM MGMT TOOLS,.. _tools-support-compatibility-matrix:,,
-      :doc:`AMD SMI <amdsmi:index>`,26.2.1,26.2.0,25.3.0
+      :doc:`AMD SMI <amdsmi:index>`,26.2.2,26.2.1,25.3.0
       :doc:`ROCm Data Center Tool <rdc:index>`,1.2.0,1.2.0,0.3.0
       :doc:`rocminfo <rocminfo:index>`,1.0.0,1.0.0,1.0.0
       :doc:`ROCm SMI <rocm_smi_lib:index>`,7.8.0,7.8.0,7.5.0
@@ -127,14 +126,14 @@ compatibility and system requirements.
       ,,,
       PERFORMANCE TOOLS,,,
       :doc:`ROCm Bandwidth Test <rocm_bandwidth_test:index>`,2.6.0,2.6.0,1.4.0
-      :doc:`ROCm Compute Profiler <rocprofiler-compute:index>`,3.4.0,3.3.1,3.1.0
-      :doc:`ROCm Systems Profiler <rocprofiler-systems:index>`,1.3.0,1.2.1,1.0.0
-      :doc:`ROCProfiler <rocprofiler:index>`,2.0.70200,2.0.70101,2.0.60400
-      :doc:`ROCprofiler-SDK <rocprofiler-sdk:index>`,1.1.0,1.0.0,0.6.0
-      :doc:`ROCTracer <roctracer:index>`,4.1.70200,4.1.70101,4.1.60400
+      :doc:`ROCm Compute Profiler <rocprofiler-compute:index>`,3.4.0,3.4.0,3.1.0
+      :doc:`ROCm Systems Profiler <rocprofiler-systems:index>`,1.3.0,1.3.0,1.0.0
+      :doc:`ROCProfiler <rocprofiler:index>`,2.0.70201,2.0.70200,2.0.60400
+      :doc:`ROCprofiler-SDK <rocprofiler-sdk:index>`,1.1.0,1.1.0,0.6.0
+      :doc:`ROCTracer <roctracer:index>`,4.1.70201,4.1.70200,4.1.60400
       ,,,
       DEVELOPMENT TOOLS,,,
-      :doc:`HIPIFY <hipify:index>`,22.0.0,20.0.0,19.0.0
+      :doc:`HIPIFY <hipify:index>`,22.0.0,22.0.0,19.0.0
       :doc:`ROCm CMake <rocmcmakebuildtools:index>`,0.14.0,0.14.0,0.14.0
       :doc:`ROCdbgapi <rocdbgapi:index>`,0.77.4,0.77.4,0.77.2
       :doc:`ROCm Debugger (ROCgdb) <rocgdb:index>`,16.3.0,16.3.0,15.2.0
@@ -144,24 +143,23 @@ compatibility and system requirements.
       COMPILERS,.. _compilers-support-compatibility-matrix:,,
       `clang-ocl <https://github.com/ROCm/clang-ocl>`_,N/A,N/A,N/A
       :doc:`hipCC <hipcc:index>`,1.1.1,1.1.1,1.1.1
-      `Flang <https://github.com/ROCm/flang>`_,22.0.0.26014,20.0.025444,19.0.0.25133
-      :doc:`llvm-project <llvm-project:index>`,22.0.0.26014,20.0.025444,19.0.0.25133
-      `OpenMP <https://github.com/ROCm/llvm-project/tree/amd-staging/openmp>`_,22.0.0.26014,20.0.025444,19.0.0.25133
+      `Flang <https://github.com/ROCm/flang>`_,22.0.0.26084,22.0.0.26014,19.0.0.25133
+      :doc:`llvm-project <llvm-project:index>`,22.0.0.26084,22.0.0.26014,19.0.0.25133
+      `OpenMP <https://github.com/ROCm/llvm-project/tree/amd-staging/openmp>`_,22.0.0.26084,22.0.0.26014,19.0.0.25133
       ,,,
       RUNTIMES,.. _runtime-support-compatibility-matrix:,,
-      :doc:`AMD CLR <hip:understand/amd_clr>`,7.2.26015,7.1.52802,6.4.43482
-      :doc:`HIP <hip:index>`,7.2.26015,7.1.52802,6.4.43482
+      :doc:`AMD CLR <hip:understand/amd_clr>`,7.2.53211,7.2.26015,6.4.43482
+      :doc:`HIP <hip:index>`,7.2.53211,7.2.26015,6.4.43482
       `OpenCL Runtime <https://github.com/ROCm/clr/tree/develop/opencl>`_,2.0.0,2.0.0,2.0.0
       :doc:`ROCr Runtime <rocr-runtime:index>`,1.18.0,1.18.0,1.15.0
 
 
 .. rubric:: Footnotes
 
-.. [#os-compatibility] Some operating systems are supported on specific GPUs. For detailed information about operating systems supported on ROCm 7.2.0, see the latest :ref:`supported_distributions`. For version specific information, see `ROCm 7.1.1 <https://rocm.docs.amd.com/projects/install-on-linux/en/docs-7.1.1/reference/system-requirements.html#supported-operating-systems>`__, and `ROCm 6.4.0 <https://rocm.docs.amd.com/projects/install-on-linux/en/docs-6.4.0/reference/system-requirements.html#supported-operating-systems>`__.
-.. [#gpu-compatibility] Some GPUs have limited operating system support. For detailed information about GPUs supporting ROCm 7.2.0, see the latest :ref:`supported_GPUs`. For version specific information, see `ROCm 7.1.1 <https://rocm.docs.amd.com/projects/install-on-linux/en/docs-7.1.1/reference/system-requirements.html#supported-gpus>`__, `ROCm 7.1.0 <https://rocm.docs.amd.com/projects/install-on-linux/en/docs-7.1.0/reference/system-requirements.html#supported-gpus>`__, and `ROCm 6.4.0 <https://rocm.docs.amd.com/projects/install-on-linux/en/docs-6.4.0/reference/system-requirements.html#supported-gpus>`__.
-.. [#dgl_compat] DGL is only supported on ROCm 7.0.0, 6.4.3 and 6.4.0.
-.. [#llama-cpp_compat] llama.cpp is only supported on ROCm 7.0.0 and 6.4.x.
-.. [#flashinfer_compat] FlashInfer is only supported on ROCm 7.1.1 and 6.4.1.
+.. [#os-compatibility] Some operating systems are supported on specific GPUs. For detailed information about operating systems supported on ROCm 7.2.1, see the latest :ref:`supported_distributions`. For version specific information, see `ROCm 7.2.0 <https://rocm.docs.amd.com/projects/install-on-linux/en/docs-7.2.0/reference/system-requirements.html#supported-operating-systems>`__, and `ROCm 6.4.0 <https://rocm.docs.amd.com/projects/install-on-linux/en/docs-6.4.0/reference/system-requirements.html#supported-operating-systems>`__.
+.. [#gpu-compatibility] Some GPUs have limited operating system support. For detailed information about GPUs supporting ROCm 7.2.1, see the latest :ref:`supported_GPUs`. For version specific information, see `ROCm 7.2.0 <https://rocm.docs.amd.com/projects/install-on-linux/en/docs-7.2.0/reference/system-requirements.html#supported-gpus>`__, and `ROCm 6.4.0 <https://rocm.docs.amd.com/projects/install-on-linux/en/docs-6.4.0/reference/system-requirements.html#supported-gpus>`__.
+.. [#dgl_compat] DGL is supported only on ROCm 7.0.0, ROCm 6.4.3, and ROCm 6.4.0.
+.. [#llama-cpp_compat] llama.cpp is supported only on ROCm 7.0.0 and ROCm 6.4.x.
 .. [#mi325x_KVM] For AMD Instinct MI325X KVM SR-IOV users, do not use AMD GPU Driver (amdgpu) 30.20.0.
 .. [#driver_patch] AMD GPU Driver (amdgpu) 30.10.1 is a quality release that resolves an issue identified in the 30.10 release. There are no other significant changes or feature additions in ROCm 7.0.1 from ROCm 7.0.0. AMD GPU Driver (amdgpu) 30.10.1 is compatible with ROCm 7.0.1 and ROCm 7.0.0.
 .. [#kfd_support] As of ROCm 6.4.0, forward and backward compatibility between the AMD GPU Driver (amdgpu) and its user space software is provided up to a year apart. For earlier ROCm releases, the compatibility is provided for +/- 2 releases. The supported user space versions on this page were accurate as of the time of initial ROCm release. For the most up-to-date information, see the latest version of this information at `User and AMD GPU Driver support matrix <https://rocm.docs.amd.com/projects/install-on-linux/en/latest/reference/user-kernel-space-compat-matrix.html>`_.
@@ -172,19 +170,19 @@ compatibility and system requirements.
 Operating systems, kernel and Glibc versions
 *********************************************
 
-For detailed information on operating system supported on ROCm 7.2.0 and associated Kernel and Glibc version, see the latest :ref:`supported_distributions`. For version specific information, see `ROCm 7.1.1 <https://rocm.docs.amd.com/projects/install-on-linux/en/docs-7.1.1/reference/system-requirements.html#supported-operating-systems>`__, and `ROCm 6.4.0 <https://rocm.docs.amd.com/projects/install-on-linux/en/docs-6.4.0/reference/system-requirements.html#supported-operating-systems>`__.
+For detailed information on operating system supported on ROCm 7.2.1 and associated Kernel and Glibc version, see the latest :ref:`supported_distributions`. For version specific information, see `ROCm 7.2.0 <https://rocm.docs.amd.com/projects/install-on-linux/en/docs-7.2.0/reference/system-requirements.html#supported-operating-systems>`__, and `ROCm 6.4.0 <https://rocm.docs.amd.com/projects/install-on-linux/en/docs-6.4.0/reference/system-requirements.html#supported-operating-systems>`__.
 
 .. note::
 
   * See `Red Hat Enterprise Linux Release Dates <https://access.redhat.com/articles/3078>`_ to learn about the specific kernel versions supported on Red Hat Enterprise Linux (RHEL).
   * See `List of SUSE Linux Enterprise Server kernel <https://www.suse.com/support/kb/doc/?id=000019587>`_ to learn about the specific kernel version supported on SUSE Linux Enterprise Server (SLES).
+
 ..
    Footnotes and ref anchors in below historical tables should be appended with "-past-60", to differentiate from the
    footnote references in the above, latest, compatibility matrix.  It also allows to easily find & replace.
    An easy way to work is to download the historical.CSV file, and update open it in excel. Then when content is ready,
    delete the columns you don't need, to build the current compatibility matrix to use in above table.  Find & replace all
    instances of "-past-60" to make it ready for above table.
-
 
 .. _past-rocm-compatibility-matrix:
 
@@ -207,13 +205,13 @@ Expand for full historical view of:
    .. [#os-compatibility-past-60] Some operating systems are supported on specific GPUs. For detailed information, see :ref:`supported_distributions` and select the required ROCm version for version specific support.
    .. [#gpu-compatibility-past-60] Some GPUs have limited operating system support. For detailed information, see :ref:`supported_GPUs` and select the required ROCm version for version specific support.
    .. [#tf-mi350-past-60] TensorFlow 2.17.1 is not supported on AMD Instinct MI350 Series GPUs. Use TensorFlow 2.19.1 or 2.18.1 with MI350 Series GPUs instead.
-   .. [#verl_compat-past-60] verl is only supported on ROCm 7.0.0 and 6.2.0.
-   .. [#stanford-megatron-lm_compat-past-60] Stanford Megatron-LM is only supported on ROCm 6.3.0.
-   .. [#dgl_compat-past-60] DGL is only supported on ROCm 7.0.0, 6.4.3 and 6.4.0.
-   .. [#megablocks_compat-past-60] Megablocks is only supported on ROCm 6.3.0.
-   .. [#ray_compat-past-60] Ray is only supported on ROCm 7.0.0 and 6.4.1.
-   .. [#llama-cpp_compat-past-60] llama.cpp is only supported on ROCm 7.0.0 and 6.4.x.
-   .. [#flashinfer_compat-past-60] FlashInfer is only supported on ROCm 7.1.1 and 6.4.1.
+   .. [#verl_compat-past-60] verl is supported only on ROCm 6.2.0.
+   .. [#stanford-megatron-lm_compat-past-60] Stanford Megatron-LM is supported only on ROCm 6.3.0.
+   .. [#dgl_compat-past-60] DGL is supported only on ROCm 7.0.0, ROCm 6.4.3, and ROCm 6.4.0.
+   .. [#megablocks_compat-past-60] Megablocks is supported only on ROCm 6.3.0.
+   .. [#ray_compat-past-60] Ray is supported only on ROCm 6.4.1.
+   .. [#llama-cpp_compat-past-60] llama.cpp is supported only on ROCm 7.0.0 and 6.4.x.
+   .. [#flashinfer_compat-past-60] FlashInfer is supported only on ROCm 6.4.1.
    .. [#mi325x_KVM-past-60] For AMD Instinct MI325X KVM SR-IOV users, do not use AMD GPU Driver (amdgpu) 30.20.0.
    .. [#driver_patch-past-60] AMD GPU Driver (amdgpu) 30.10.1 is a quality release that resolves an issue identified in the 30.10 release. There are no other significant changes or feature additions in ROCm 7.0.1 from ROCm 7.0.0. AMD GPU Driver (amdgpu) 30.10.1 is compatible with ROCm 7.0.1 and ROCm 7.0.0.
    .. [#kfd_support-past-60] As of ROCm 6.4.0, forward and backward compatibility between the AMD GPU Driver (amdgpu) and its user space software is provided up to a year apart. For earlier ROCm releases, the compatibility is provided for +/- 2 releases. The supported user space versions on this page were accurate as of the time of initial ROCm release. For the most up-to-date information, see the latest version of this information at `User and AMD GPU Driver support matrix <https://rocm.docs.amd.com/projects/install-on-linux/en/latest/reference/user-kernel-space-compat-matrix.html>`_.
