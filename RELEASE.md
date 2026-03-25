@@ -692,10 +692,6 @@ individual components, review the [Detailed component changes](#detailed-compone
 
 As issue that resulted in doubling of the runtime latency of the [HIP](https://rocmdocs.amd.com/projects/HIP/en/latest/doxygen/html/group___stream.html) `hipStreamCreate` API has been resolved. See [GitHub issue #5978](https://github.com/ROCm/ROCm/issues/5978). 
 
-### Libva-based applications might fail after ROCm installation
-
-The issue in which certain applications that depended on the Libva library (such as `vainfo` and `ffmpeg`) failed after ROCm installation has been resolved. The failure occurred due to a symbol clash between the AMD-packaged `libva-amdgpu` and the system-provided Libva. This conflict was introduced when adapting the RHEL 8 build to support additional operating systems, which required changes to the build options. See [GitHub issue #5732](https://github.com/ROCm/ROCm/issues/5732).
-
 ## ROCm upcoming changes
 
 The following changes to the ROCm software stack are anticipated for future releases.
