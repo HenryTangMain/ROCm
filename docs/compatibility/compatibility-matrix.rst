@@ -113,7 +113,7 @@ compatibility and system requirements.
       :doc:`rocThrust <rocthrust:index>`,4.2.0,4.2.0,3.3.0
       ,,,
       SUPPORT LIBS,,,
-      `hipother <https://github.com/ROCm/hipother>`_,7.2.26061,7.2.26015,6.4.43482
+      `hipother <https://github.com/ROCm/hipother>`_,7.2.53211,7.2.26015,6.4.43482
       `rocm-core <https://github.com/ROCm/rocm-core>`_,7.2.1,7.2.0,6.4.0
       `ROCT-Thunk-Interface <https://github.com/ROCm/ROCT-Thunk-Interface>`_,N/A [#ROCT-rocr]_,N/A [#ROCT-rocr]_,N/A [#ROCT-rocr]_
       ,,,
@@ -143,13 +143,13 @@ compatibility and system requirements.
       COMPILERS,.. _compilers-support-compatibility-matrix:,,
       `clang-ocl <https://github.com/ROCm/clang-ocl>`_,N/A,N/A,N/A
       :doc:`hipCC <hipcc:index>`,1.1.1,1.1.1,1.1.1
-      `Flang <https://github.com/ROCm/flang>`_,22.0.0.26054,22.0.0.26014,19.0.0.25133
+      `Flang <https://github.com/ROCm/flang>`_,22.0.0.26084,22.0.0.26014,19.0.0.25133
       :doc:`llvm-project <llvm-project:index>`,22.0.0.26084,22.0.0.26014,19.0.0.25133
-      `OpenMP <https://github.com/ROCm/llvm-project/tree/amd-staging/openmp>`_,22.0.0.26054,22.0.0.26014,19.0.0.25133
+      `OpenMP <https://github.com/ROCm/llvm-project/tree/amd-staging/openmp>`_,22.0.0.26084,22.0.0.26014,19.0.0.25133
       ,,,
       RUNTIMES,.. _runtime-support-compatibility-matrix:,,
-      :doc:`AMD CLR <hip:understand/amd_clr>`,7.2.26061,7.2.26015,6.4.43482
-      :doc:`HIP <hip:index>`,7.2.26061,7.2.26015,6.4.43482
+      :doc:`AMD CLR <hip:understand/amd_clr>`,7.2.53211,7.2.26015,6.4.43482
+      :doc:`HIP <hip:index>`,7.2.53211,7.2.26015,6.4.43482
       `OpenCL Runtime <https://github.com/ROCm/clr/tree/develop/opencl>`_,2.0.0,2.0.0,2.0.0
       :doc:`ROCr Runtime <rocr-runtime:index>`,1.18.0,1.18.0,1.15.0
 

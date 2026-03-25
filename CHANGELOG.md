@@ -6,7 +6,7 @@ different versions of the ROCm software stack and its components.
 
 ## ROCm 7.2.1
 
-See the [ROCm 7.2.1 release notes](https://rocm-stg.amd.com/en/latest/about/release-notes.html#rocm-7-2-1-release-notes)
+See the [ROCm 7.2.1 release notes](https://rocm.docs.amd.com/en/docs-7.2.1/about/release-notes.html#rocm-7-2-1-release-notes)
 for a complete overview of this release.
 
 ### **AMD SMI** (26.2.2) 
@@ -44,16 +44,19 @@ for a complete overview of this release.
 
 ### **rocDecode** (1.7.0)
 
-#### Changed
+#### Upcoming changes
 
-* The rocDecode GitHub repository has moved to [https://github.com/ROCm/rocm-systems/tree/develop/projects/rocdecode](https://github.com/ROCm/rocm-systems/tree/develop/projects/rocdecode).
+* The rocDecode GitHub repository will be officially moved to [https://github.com/ROCm/rocm-systems/tree/develop/projects/rocdecode](https://github.com/ROCm/rocm-systems/tree/develop/projects/rocdecode) in an upcoming release.
 
 ### **rocJPEG** (1.4.0)
  
 #### Changed
 
 * Bug fixes and performance improvements.
-* GitHub repository moved to [https://github.com/ROCm/rocm-systems/tree/develop/projects/rocjpeg](https://github.com/ROCm/rocm-systems/tree/develop/projects/rocjpeg).
+
+#### Upcoming changes
+
+* The rocJPEG GitHub repository will be officially moved to [https://github.com/ROCm/rocm-systems/tree/develop/projects/rocjpeg](https://github.com/ROCm/rocm-systems/tree/develop/projects/rocjpeg) in an upcoming release.
 
 ### **rocSHMEM** (3.2.0)
 
