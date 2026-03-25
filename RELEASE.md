@@ -643,13 +643,6 @@ For a historical overview of ROCm component updates, see the {doc}`ROCm consolid
  
 * Optimized F16 variants by replacing scalar load/store operations with AVX2 intrinsics for spatter, log, blend, color_cast, flip, crop_mirror_normalize, and exposure kernels.
 
-### **Tensile** (4.45.0)
-
-#### Removed
-
-- `op_sel` modifiers for `v_dot4` from Tensile codegen.
-- Dependency on `rocm-agent-enumerator` during build.
-
 ## ROCm known issues
 
 ROCm known issues are noted on {fab}`github` [GitHub](https://github.com/ROCm/ROCm/labels/Verified%20Issue). For known
