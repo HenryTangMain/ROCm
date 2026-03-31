@@ -259,7 +259,7 @@ Click {fab}`github` to go to the component's source code on GitHub.
                 <th rowspan="9">Machine learning and computer vision</th>
                 <td><a href="https://rocm.docs.amd.com/projects/composable_kernel/en/docs-7.2.1/index.html">Composable Kernel</a></td>
                 <td>1.2.0</a></td>
-                <td><a href="https://github.com/ROCm/composable_kernel"><i class="fab fa-github fa-lg"></i></a></td>
+                <td><a href="https://github.com/ROCm/rocm-libraries/tree/develop/projects/composablekernel"><i class="fab fa-github fa-lg"></i></a></td>
             </tr>
             <tr>
                 <td><a href="https://rocm.docs.amd.com/projects/AMDMIGraphX/en/docs-7.2.1/index.html">MIGraphX</a></td>
@@ -678,6 +678,10 @@ Due to this issue, you might also observe a slight increase in the test or infer
 ### Longer runtime for hipBLASLt GEMM operations on Instinct MI300X GPUs in partitioned mode
 
 GEMM operations using hipBLASLt might result in longer runtime on AMD Instinct MI300X GPUs configured in CPX or NPS4 partition mode (38 control units or CUs). This issue occurs when hipBLASLt fails to find applicable pre-tuned kernels. As a result, it performs an extensive kernel search, which increases both search time and the overall operation runtime. This issue is resolved in the {fab}`github`[hipBLASLt develop branch](https://github.com/ROCm/rocm-libraries/tree/develop/projects/hipblaslt) and will be part of a future ROCm release. See [GitHub issue #6066](https://github.com/ROCm/ROCm/issues/6066).
+
+### ROCTracer might fail to report kernel operations
+
+Applications that use [ROCTracer](https://rocm.docs.amd.com/projects/roctracer/en/latest/index.html) might fail to receive some or all kernel operation events due to a ROCTracer reporting failure. ROCTracer is already deprecated and is scheduled to reach end of support (EoS) by the end of 2026 Q2. For more details on ROCTracer deprecation, see  [ROCm upcoming changes](#roctracer-rocprofiler-rocprof-and-rocprofv2-deprecation). This issue will be resolved in a future PyTorch on ROCm release that replaces ROCTracer with [ROCprofiler-SDK](https://rocm.docs.amd.com/projects/rocprofiler-sdk/en/latest/). See [GitHub issue #6102](https://github.com/ROCm/ROCm/issues/6102).
 
 ## ROCm resolved issues
 
