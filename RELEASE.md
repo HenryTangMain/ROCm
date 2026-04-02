@@ -13,9 +13,13 @@
 
 # ROCm 7.2.2 release notes
 
-ROCm 7.2.2 is a quality release that resolves the following issue:
+ROCm 7.2.2 is a quality release that resolves the issue listed in the Release highlights.
 
-## ROCTracer might fail to report kernel operations
+## Release highlights
+
+The following are the notable changes in ROCm 7.2.2.
+
+### ROCTracer failure to report kernel operations is fixed
 
 An issue in the previous ROCm release, where applications using [ROCTracer](https://rocm.docs.amd.com/projects/roctracer/en/latest/index.html) failed to receive some or all kernel operation events due to a ROCTracer reporting failure, has been resolved. The fix has been applied to ROCTracer, which is already deprecated and scheduled to reach end of support (EoS) by the end of 2026 Q2. For more information about the ROCTracer deprecation, see [ROCm upcoming changes](#roctracer-rocprofiler-rocprof-and-rocprofv2-deprecation). 
 
@@ -23,15 +27,149 @@ An issue in the previous ROCm release, where applications using [ROCTracer](http
 ROCm 7.2.2 doesn't include any other significant changes or feature additions. For comprehensive changes, new features, and enhancements in ROCm 7.2.1, refer to the [ROCm 7.2.1 release notes](#rocm-7-2-1-release-notes) below.
 ```
 
+### User space, driver, and firmware dependent changes
+
+The software for AMD Data Center GPU products requires maintaining a hardware
+and software stack with interdependencies among the GPU and baseboard
+firmware, AMD GPU drivers, and the ROCm user space software. While AMD publishes drivers and ROCm user space components, your server or infrastructure provider publishes the GPU and baseboard firmware by bundling AMD firmware releases via an AMD Platform Level Data Model (PLDM) bundle, which includes the Integrated Firmware Image (IFWI).
+
+GPU and baseboard firmware versioning might differ across GPU families.
+
+<div class="pst-scrollable-table-container">
+  <table class="table table--middle-left">
+    <thead>
+      <tr>
+          <th class="head">
+            <p>ROCm Version</p>
+          </th>
+          <th class="head">
+            <p>GPU</p>
+          </th>
+          <th class="head">
+            <p>PLDM Bundle (Firmware)</p>
+          </th>
+          <th class="head">
+            <p>AMD GPU Driver (amdgpu)</p>
+          </th>
+          <th class="head">
+            <p>AMD GPU <br>
+              Virtualization Driver (GIM)</p>
+          </th>
+      </tr>
+    </thead>
+    <style>
+        tbody#virtualization-support-instinct tr:last-child {
+          border-bottom: 2px solid var(--pst-color-primary);
+        }
+    </style>
+      <tr>
+          <td rowspan="9" style="vertical-align: middle;">ROCm 7.2.2</td>
+          <td>MI355X</td>
+          <td>
+              01.26.00.02<br>
+              01.25.17.07<br>
+              01.25.16.03
+          </td>
+          <td>
+              30.30.1<br>
+              30.30.0<br>
+              30.20.1<br>
+              30.20.0<br>
+              30.10.2<br>
+              30.10.1<br>
+              30.10
+            </td>
+          <td rowspan="3" style="vertical-align: middle;">8.7.1.K</td>
+      </tr>
+      <tr>
+          <td>MI350X</td>
+          <td>
+              01.26.00.02<br>
+              01.25.17.07<br>
+              01.25.16.03
+          </td>
+          <td>
+              30.30.1<br>
+              30.30.0<br>
+              30.20.1<br>
+              30.20.0<br>
+              30.10.2<br>
+              30.10.1<br>
+              30.10
+            </td>
+      </tr>
+      <tr>
+          <td>MI325X<a href="#footnote1"><sup>[1]</sup></a></td>
+          <td>
+              01.25.04.02
+          </td>
+          <td>30.30.1<br>
+              30.30.0<br>
+              30.20.1<br>
+              30.20.0<a href="#footnote1"><sup>[1]</sup></a><br>
+              30.10.2<br>
+              30.10.1<br>
+              30.10<br>
+              6.4.z where z (0-3)<br>
+              6.3.3
+          </td>
+      </tr>
+      <tr>
+          <td>MI300X<a href="#footnote2"><sup>[2]</sup></a></td>
+          <td>01.25.06.04<br>
+              01.25.03.12<br>
+              01.25.02.04</td>
+          <td rowspan="6" style="vertical-align: middle;">
+              30.30.1<br>
+              30.30.0<br>
+              30.20.1<br>
+              30.20.0<br>
+              30.10.2<br>
+              30.10.1<br>
+              30.10<br>
+              6.4.z where z (0–3)<br>
+              6.3.3
+          </td>
+          <td>8.7.1.K</td>
+      </tr>
+      <tr>
+          <td>MI300A</td>
+          <td>BKC 26.1</td>
+          <td rowspan="3" style="vertical-align: middle;">Not Applicable</td>
+      </tr>
+      <tr>
+          <td>MI250X</td>
+          <td>IFWI 47 (or later)</td>
+      </tr>
+      <tr>
+          <td>MI250</td>
+          <td>MU5 w/ IFWI 75 (or later)</td>
+      </tr>
+      <tr>
+          <td>MI210</td>
+          <td>MU5 w/ IFWI 75 (or later)</td>
+          <td>8.7.1.K</td>
+      </tr>
+      <tr>
+          <td>MI100</td>
+          <td>VBIOS D3430401-037</td>
+          <td>Not Applicable</td>
+      </tr>
+  </table>
+</div>
+
+<p id="footnote1">[1]: For AMD Instinct MI325X KVM SR-IOV users, don't use AMD GPU driver (amdgpu) 30.20.0.</p>
+<p id="footnote2">[2]: AMD Instinct MI300X KVM SR-IOV with Multi-VF (8 VF) support requires a compatible firmware BKC bundle, which will be released in the coming months.</p>
+
 ## ROCm 7.2.1 release notes
 
 The release notes provide a summary of notable changes since the previous ROCm release.
 
-- [Release highlights](#release-highlights)
+- [Release highlights](#id1)
 
 - [Supported hardware, operating system, and virtualization changes](#supported-hardware-operating-system-and-virtualization-changes)
 
-- [User space, driver, and firmware dependent changes](#user-space-driver-and-firmware-dependent-changes)
+- [User space, driver, and firmware dependent changes](#id2)
 
 - [ROCm components versioning](#rocm-components)
 
@@ -105,7 +243,7 @@ GPU and baseboard firmware versioning might differ across GPU families.
         }
     </style>
       <tr>
-          <td rowspan="9" style="vertical-align: middle;">ROCm 7.2.2/7.2.1</td>
+          <td rowspan="9" style="vertical-align: middle;">ROCm 7.2.1</td>
           <td>MI355X</td>
           <td>
               01.26.00.02<br>
