@@ -203,7 +203,7 @@ matrix](../../docs/compatibility/compatibility-matrix.rst) for the complete list
 
 ROCm 7.2.1 enables support for JAX 0.8.2. For more information, see [JAX compatibility](../../docs/compatibility/ml-compatibility/jax-compatibility.rst).
 
-#### ROCm Offline Installer Creator discontinuation
+### ROCm Offline Installer Creator discontinuation
 
 The ROCm Offline Installer Creator is discontinued in ROCm 7.2.1. Equivalent installation capabilities are available through the ROCm Runfile Installer, a self-extracting installer that is not based on OS package managers. For more information, see [ROCm Runfile Installer](https://rocm.docs.amd.com/projects/install-on-linux/en/docs-7.2.1/install/rocm-runfile-installer.html).
 
