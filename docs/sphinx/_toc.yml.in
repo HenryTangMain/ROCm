@@ -35,20 +35,8 @@ subtrees:
         title: TensorFlow compatibility
       - file: compatibility/ml-compatibility/jax-compatibility.rst
         title: JAX compatibility
-      - file: compatibility/ml-compatibility/verl-compatibility.rst
-        title: verl compatibility
-      - file: compatibility/ml-compatibility/stanford-megatron-lm-compatibility.rst
-        title: Stanford Megatron-LM compatibility
       - file: compatibility/ml-compatibility/dgl-compatibility.rst
         title: DGL compatibility
-      - file: compatibility/ml-compatibility/megablocks-compatibility.rst
-        title: Megablocks compatibility
-      - file: compatibility/ml-compatibility/ray-compatibility.rst
-        title: Ray compatibility
-      - file: compatibility/ml-compatibility/llama-cpp-compatibility.rst
-        title: llama.cpp compatibility
-      - file: compatibility/ml-compatibility/flashinfer-compatibility.rst
-        title: FlashInfer compatibility
   - file: how-to/build-rocm.rst
     title: Build ROCm from source
 
@@ -77,12 +65,12 @@ subtrees:
             title: Train a model with Primus and Megatron-LM
             entries:
             - file: how-to/rocm-for-ai/training/benchmark-docker/megatron-lm.rst
-              title: Train a model with Megatron-LM
+              title: Train a model with Megatron-LM (legacy)
           - file: how-to/rocm-for-ai/training/benchmark-docker/primus-pytorch.rst
             title: Train a model with Primus and PyTorch
             entries:
             - file: how-to/rocm-for-ai/training/benchmark-docker/pytorch-training.rst
-              title: Train a model with PyTorch
+              title: Train a model with PyTorch (legacy)
           - file: how-to/rocm-for-ai/training/benchmark-docker/jax-maxtext.rst
             title: Train a model with Primus and JAX MaxText
           - file: how-to/rocm-for-ai/training/benchmark-docker/mpt-llm-foundry
