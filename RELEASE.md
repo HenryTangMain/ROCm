@@ -21,11 +21,7 @@ The following are the notable changes in ROCm 7.2.2.
 
 ### ROCTracer failure to report kernel operations is fixed
 
-An issue in the previous ROCm release, where applications using [ROCTracer](https://rocm.docs.amd.com/projects/roctracer/en/latest/index.html) failed to receive some or all kernel operation events due to a ROCTracer reporting failure, has been resolved. The fix has been applied to ROCTracer, which is already deprecated and scheduled to reach end of support (EoS) by the end of 2026 Q2. For more information about the ROCTracer deprecation, see [ROCm upcoming changes](#roctracer-rocprofiler-rocprof-and-rocprofv2-deprecation). 
-
-```{note}
-ROCm 7.2.2 doesn't include any other significant changes or feature additions. For comprehensive changes, new features, and enhancements in ROCm 7.2.1, refer to the [ROCm 7.2.1 release notes](#rocm-7-2-1-release-notes) below.
-```
+In ROCm 7.2.1, applications using [ROCTracer](https://rocm.docs.amd.com/projects/roctracer/en/latest/index.html) failed to receive some or all kernel operation events due to a ROCTracer reporting failure. This issue has been resolved, and the fix has been applied to ROCTracer.
 
 ### User space, driver, and firmware dependent changes
 
@@ -160,6 +156,16 @@ GPU and baseboard firmware versioning might differ across GPU families.
 
 <p id="footnote1">[1]: For AMD Instinct MI325X KVM SR-IOV users, don't use AMD GPU driver (amdgpu) 30.20.0.</p>
 <p id="footnote2">[2]: AMD Instinct MI300X KVM SR-IOV with Multi-VF (8 VF) support requires a compatible firmware BKC bundle, which will be released in the coming months.</p>
+
+### ROCm documentation updates
+
+ROCm documentation continues to be updated to provide clearer and more comprehensive guidance for a wider range of user needs and use cases.
+
+* The new [AMD RDNA3.5 system optimization](https://rocm.docs.amd.com/en/latest/how-to/system-optimization/rdna3-5.html) topic describes how to optimize systems powered by AMD Ryzen APUs with RDNA3.5 architecture. These APUs combine high-performance CPU cores with integrated RDNA3.5 graphics, and support LPDDR5X-8000 or DDR5 memory.     
+
+```{note}
+ROCm 7.2.2 doesn't include any other significant changes or feature additions. For comprehensive changes, new features, and enhancements in ROCm 7.2.1, refer to the [ROCm 7.2.1 release notes](#rocm-7-2-1-release-notes) below.
+```
 
 ## ROCm 7.2.1 release notes
 
