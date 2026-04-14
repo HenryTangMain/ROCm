@@ -22,12 +22,12 @@ compatibility and system requirements.
 .. container:: format-big-table
 
   .. csv-table::
-      :header: "ROCm Version", "7.2.1", "7.2.0", "6.4.0"
+      :header: "ROCm Version", "7.2.2/7.2.1", "7.2.0", "6.4.0"
       :stub-columns: 1
 
       :ref:`Operating systems & kernels <OS-kernel-versions>` [#os-compatibility]_,Ubuntu 24.04.4,Ubuntu 24.04.3,Ubuntu 24.04.2
       ,Ubuntu 22.04.5,Ubuntu 22.04.5,Ubuntu 22.04.5
-      ,"RHEL 10.1, 10.0, 9.7, 9.6, 9.4","RHEL 10.1, 10.0, 9.7, 9.6, 9.4","RHEL 9.5, 9.4"
+      ,"RHEL 10.1, 10.0, |br| 9.7, 9.6, 9.4","RHEL 10.1, 10.0, |br| 9.7, 9.6, 9.4","RHEL 9.5, 9.4"
       ,RHEL 8.10,RHEL 8.10,RHEL 8.10
       ,SLES 15 SP7,SLES 15 SP7,SLES 15 SP6
       ,"Oracle Linux 10, 9, 8","Oracle Linux 10, 9, 8","Oracle Linux 9, 8"
@@ -113,7 +113,7 @@ compatibility and system requirements.
       ,,,
       SUPPORT LIBS,,,
       `hipother <https://github.com/ROCm/hipother>`_,7.2.53211,7.2.26015,6.4.43482
-      `rocm-core <https://github.com/ROCm/rocm-core>`_,7.2.1,7.2.0,6.4.0
+      `rocm-core <https://github.com/ROCm/rocm-core>`_,7.2.2/7.2.1,7.2.0,6.4.0
       `ROCT-Thunk-Interface <https://github.com/ROCm/ROCT-Thunk-Interface>`_,N/A [#ROCT-rocr]_,N/A [#ROCT-rocr]_,N/A [#ROCT-rocr]_
       ,,,
       SYSTEM MGMT TOOLS,.. _tools-support-compatibility-matrix:,,
@@ -127,9 +127,9 @@ compatibility and system requirements.
       :doc:`ROCm Bandwidth Test <rocm_bandwidth_test:index>`,2.6.0,2.6.0,1.4.0
       :doc:`ROCm Compute Profiler <rocprofiler-compute:index>`,3.4.0,3.4.0,3.1.0
       :doc:`ROCm Systems Profiler <rocprofiler-systems:index>`,1.3.0,1.3.0,1.0.0
-      :doc:`ROCProfiler <rocprofiler:index>`,2.0.70201,2.0.70200,2.0.60400
+      :doc:`ROCProfiler <rocprofiler:index>`,2.0.70202/2.0.70201,2.0.70200,2.0.60400
       :doc:`ROCprofiler-SDK <rocprofiler-sdk:index>`,1.1.0,1.1.0,0.6.0
-      :doc:`ROCTracer <roctracer:index>`,4.1.70201,4.1.70200,4.1.60400
+      :doc:`ROCTracer <roctracer:index>`,4.1.70202/4.1.70201,4.1.70200,4.1.60400
       ,,,
       DEVELOPMENT TOOLS,,,
       :doc:`HIPIFY <hipify:index>`,22.0.0,22.0.0,19.0.0
@@ -155,8 +155,8 @@ compatibility and system requirements.
 
 .. rubric:: Footnotes
 
-.. [#os-compatibility] Some operating systems are supported on specific GPUs. For detailed information about operating systems supported on ROCm 7.2.1, see the latest :ref:`supported_distributions`. For version specific information, see `ROCm 7.2.0 <https://rocm.docs.amd.com/projects/install-on-linux/en/docs-7.2.0/reference/system-requirements.html#supported-operating-systems>`__, and `ROCm 6.4.0 <https://rocm.docs.amd.com/projects/install-on-linux/en/docs-6.4.0/reference/system-requirements.html#supported-operating-systems>`__.
-.. [#gpu-compatibility] Some GPUs have limited operating system support. For detailed information about GPUs supporting ROCm 7.2.1, see the latest :ref:`supported_GPUs`. For version specific information, see `ROCm 7.2.0 <https://rocm.docs.amd.com/projects/install-on-linux/en/docs-7.2.0/reference/system-requirements.html#supported-gpus>`__, and `ROCm 6.4.0 <https://rocm.docs.amd.com/projects/install-on-linux/en/docs-6.4.0/reference/system-requirements.html#supported-gpus>`__.
+.. [#os-compatibility] Some operating systems are supported on specific GPUs. For detailed information about operating systems supported on ROCm 7.2.2/7.2.1, see the latest :ref:`supported_distributions`. For version specific information, see `ROCm 7.2.0 <https://rocm.docs.amd.com/projects/install-on-linux/en/docs-7.2.0/reference/system-requirements.html#supported-operating-systems>`__, and `ROCm 6.4.0 <https://rocm.docs.amd.com/projects/install-on-linux/en/docs-6.4.0/reference/system-requirements.html#supported-operating-systems>`__.
+.. [#gpu-compatibility] Some GPUs have limited operating system support. For detailed information about GPUs supporting ROCm 7.2.2/7.2.1, see the latest :ref:`supported_GPUs`. For version specific information, see `ROCm 7.2.0 <https://rocm.docs.amd.com/projects/install-on-linux/en/docs-7.2.0/reference/system-requirements.html#supported-gpus>`__, and `ROCm 6.4.0 <https://rocm.docs.amd.com/projects/install-on-linux/en/docs-6.4.0/reference/system-requirements.html#supported-gpus>`__.
 .. [#dgl_compat] DGL is supported only on ROCm 7.0.0, ROCm 6.4.3, and ROCm 6.4.0.
 .. [#mi325x_KVM] For AMD Instinct MI325X KVM SR-IOV users, do not use AMD GPU Driver (amdgpu) 30.20.0.
 .. [#driver_patch] AMD GPU Driver (amdgpu) 30.10.1 is a quality release that resolves an issue identified in the 30.10 release. There are no other significant changes or feature additions in ROCm 7.0.1 from ROCm 7.0.0. AMD GPU Driver (amdgpu) 30.10.1 is compatible with ROCm 7.0.1 and ROCm 7.0.0.
@@ -168,7 +168,7 @@ compatibility and system requirements.
 Operating systems, kernel and Glibc versions
 *********************************************
 
-For detailed information on operating system supported on ROCm 7.2.1 and associated Kernel and Glibc version, see the latest :ref:`supported_distributions`. For version specific information, see `ROCm 7.2.0 <https://rocm.docs.amd.com/projects/install-on-linux/en/docs-7.2.0/reference/system-requirements.html#supported-operating-systems>`__, and `ROCm 6.4.0 <https://rocm.docs.amd.com/projects/install-on-linux/en/docs-6.4.0/reference/system-requirements.html#supported-operating-systems>`__.
+For detailed information on operating system supported on ROCm 7.2.2/7.2.1 and associated Kernel and Glibc version, see the latest :ref:`supported_distributions`. For version specific information, see `ROCm 7.2.0 <https://rocm.docs.amd.com/projects/install-on-linux/en/docs-7.2.0/reference/system-requirements.html#supported-operating-systems>`__, and `ROCm 6.4.0 <https://rocm.docs.amd.com/projects/install-on-linux/en/docs-6.4.0/reference/system-requirements.html#supported-operating-systems>`__.
 
 .. note::
 

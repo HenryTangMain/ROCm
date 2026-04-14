@@ -10,15 +10,172 @@
 <!-- markdownlint-disable reference-links-images            -->
 <!-- markdownlint-disable no-missing-space-atx              -->
 <!-- spellcheck-disable                                     -->
-# ROCm 7.2.1 release notes
+
+# ROCm 7.2.2 release notes
+
+ROCm 7.2.2 is a quality release that resolves the issue listed in the Release highlights.
+
+## Release highlights
+
+The following are the notable changes in ROCm 7.2.2.
+
+### ROCTracer failure to report kernel operations is fixed
+
+In ROCm 7.2.1, applications using [ROCTracer](https://rocm.docs.amd.com/projects/roctracer/en/latest/index.html) failed to receive some or all kernel operation events due to a ROCTracer reporting failure. This issue has been resolved, and the fix has been applied to ROCTracer.
+
+### User space, driver, and firmware dependent changes
+
+The software for AMD Data Center GPU products requires maintaining a hardware
+and software stack with interdependencies among the GPU and baseboard
+firmware, AMD GPU drivers, and the ROCm user space software. While AMD publishes drivers and ROCm user space components, your server or infrastructure provider publishes the GPU and baseboard firmware by bundling AMD firmware releases via an AMD Platform Level Data Model (PLDM) bundle, which includes the Integrated Firmware Image (IFWI).
+
+GPU and baseboard firmware versioning might differ across GPU families.
+
+<div class="pst-scrollable-table-container">
+  <table class="table table--middle-left">
+    <thead>
+      <tr>
+          <th class="head">
+            <p>ROCm Version</p>
+          </th>
+          <th class="head">
+            <p>GPU</p>
+          </th>
+          <th class="head">
+            <p>PLDM Bundle (Firmware)</p>
+          </th>
+          <th class="head">
+            <p>AMD GPU Driver (amdgpu)</p>
+          </th>
+          <th class="head">
+            <p>AMD GPU <br>
+              Virtualization Driver (GIM)</p>
+          </th>
+      </tr>
+    </thead>
+    <style>
+        tbody#virtualization-support-instinct tr:last-child {
+          border-bottom: 2px solid var(--pst-color-primary);
+        }
+    </style>
+      <tr>
+          <td rowspan="9" style="vertical-align: middle;">ROCm 7.2.2</td>
+          <td>MI355X</td>
+          <td>
+              01.26.00.02<br>
+              01.25.17.07<br>
+              01.25.16.03
+          </td>
+          <td>
+              30.30.1<br>
+              30.30.0<br>
+              30.20.1<br>
+              30.20.0<br>
+              30.10.2<br>
+              30.10.1<br>
+              30.10
+            </td>
+          <td rowspan="3" style="vertical-align: middle;">8.7.1.K</td>
+      </tr>
+      <tr>
+          <td>MI350X</td>
+          <td>
+              01.26.00.02<br>
+              01.25.17.07<br>
+              01.25.16.03
+          </td>
+          <td>
+              30.30.1<br>
+              30.30.0<br>
+              30.20.1<br>
+              30.20.0<br>
+              30.10.2<br>
+              30.10.1<br>
+              30.10
+            </td>
+      </tr>
+      <tr>
+          <td>MI325X<a href="#footnote1"><sup>[1]</sup></a></td>
+          <td>
+              01.25.04.02
+          </td>
+          <td>30.30.1<br>
+              30.30.0<br>
+              30.20.1<br>
+              30.20.0<a href="#footnote1"><sup>[1]</sup></a><br>
+              30.10.2<br>
+              30.10.1<br>
+              30.10<br>
+              6.4.z where z (0-3)<br>
+              6.3.3
+          </td>
+      </tr>
+      <tr>
+          <td>MI300X<a href="#footnote2"><sup>[2]</sup></a></td>
+          <td>01.25.06.04<br>
+              01.25.03.12<br>
+              01.25.02.04</td>
+          <td rowspan="6" style="vertical-align: middle;">
+              30.30.1<br>
+              30.30.0<br>
+              30.20.1<br>
+              30.20.0<br>
+              30.10.2<br>
+              30.10.1<br>
+              30.10<br>
+              6.4.z where z (0–3)<br>
+              6.3.3
+          </td>
+          <td>8.7.1.K</td>
+      </tr>
+      <tr>
+          <td>MI300A</td>
+          <td>BKC 26.1</td>
+          <td rowspan="3" style="vertical-align: middle;">Not Applicable</td>
+      </tr>
+      <tr>
+          <td>MI250X</td>
+          <td>IFWI 47 (or later)</td>
+      </tr>
+      <tr>
+          <td>MI250</td>
+          <td>MU5 w/ IFWI 75 (or later)</td>
+      </tr>
+      <tr>
+          <td>MI210</td>
+          <td>MU5 w/ IFWI 75 (or later)</td>
+          <td>8.7.1.K</td>
+      </tr>
+      <tr>
+          <td>MI100</td>
+          <td>VBIOS D3430401-037</td>
+          <td>Not Applicable</td>
+      </tr>
+  </table>
+</div>
+
+<p id="footnote1">[1]: For AMD Instinct MI325X KVM SR-IOV users, don't use AMD GPU driver (amdgpu) 30.20.0.</p>
+<p id="footnote2">[2]: AMD Instinct MI300X KVM SR-IOV with Multi-VF (8 VF) support requires a compatible firmware BKC bundle, which will be released in the coming months.</p>
+
+### ROCm documentation updates
+
+ROCm documentation continues to be updated to provide clearer and more comprehensive guidance for a wider range of user needs and use cases.
+
+* The new [AMD RDNA3.5 system optimization](https://rocm.docs.amd.com/en/latest/how-to/system-optimization/rdna3-5.html) topic describes how to optimize systems powered by AMD Ryzen APUs with RDNA3.5 architecture. These APUs combine high-performance CPU cores with integrated RDNA3.5 graphics, and support LPDDR5X-8000 or DDR5 memory.     
+
+```{note}
+ROCm 7.2.2 doesn't include any other significant changes or feature additions. For comprehensive changes, new features, and enhancements in ROCm 7.2.1, refer to the [ROCm 7.2.1 release notes](#rocm-7-2-1-release-notes) below.
+```
+
+## ROCm 7.2.1 release notes
 
 The release notes provide a summary of notable changes since the previous ROCm release.
 
-- [Release highlights](#release-highlights)
+- [Release highlights](#id1)
 
 - [Supported hardware, operating system, and virtualization changes](#supported-hardware-operating-system-and-virtualization-changes)
 
-- [User space, driver, and firmware dependent changes](#user-space-driver-and-firmware-dependent-changes)
+- [User space, driver, and firmware dependent changes](#id2)
 
 - [ROCm components versioning](#rocm-components)
 
@@ -35,12 +192,12 @@ If you’re using AMD Radeon GPUs or Ryzen APUs in a workstation setting with a 
 documentation to verify compatibility and system requirements.
 ```
 
-## Release highlights
+### Release highlights
 
 The following are notable new features and improvements in ROCm 7.2.1. For changes to individual components, see
 [Detailed component changes](#detailed-component-changes).
 
-### Supported hardware, operating system, and virtualization changes
+#### Supported hardware, operating system, and virtualization changes
 
 Hardware support remains unchanged in this release.
 
@@ -52,11 +209,11 @@ For more information about:
 
 * Operating systems, see [Supported operating systems](https://rocm.docs.amd.com/projects/install-on-linux/en/docs-7.2.1/reference/system-requirements.html#supported-operating-systems) and [ROCm installation for Linux](https://rocm.docs.amd.com/projects/install-on-linux/en/docs-7.2.1/).
 
-#### Virtualization support
+##### Virtualization support
 
 Virtualization support remains unchanged in this release. For more information, see  [Virtualization support](https://rocm.docs.amd.com/projects/install-on-linux/en/docs-7.2.1/reference/system-requirements.html#virtualization-support).
 
-### User space, driver, and firmware dependent changes
+#### User space, driver, and firmware dependent changes
 
 The software for AMD Data Center GPU products requires maintaining a hardware
 and software stack with interdependencies among the GPU and baseboard
@@ -190,16 +347,16 @@ GPU and baseboard firmware versioning might differ across GPU families.
 <p id="footnote1">[1]: For AMD Instinct MI325X KVM SR-IOV users, don't use AMD GPU driver (amdgpu) 30.20.0.</p>
 <p id="footnote2">[2]: For AMD Instinct MI300X KVM SR-IOV with Multi-VF (8 VF) support requires a compatible firmware BKC bundle which will be released in coming months.</p>
 
-### hipBLASLt updates
+#### hipBLASLt updates
 
 hipBLASLt has improved performance for MXFP8 and MXFP4 GEMMs.
 
-### Deep learning and AI framework updates
+#### Deep learning and AI framework updates
 
 ROCm provides a comprehensive ecosystem for deep learning development. For more information, see [Deep learning frameworks for ROCm](../../docs/how-to/deep-learning-rocm.rst) and the [Compatibility
 matrix](../../docs/compatibility/compatibility-matrix.rst) for the complete list of Deep learning and AI framework versions tested for compatibility with ROCm. AMD ROCm has officially updated support for the following Deep learning and AI frameworks:
 
-#### JAX
+##### JAX
 
 ROCm 7.2.1 enables support for JAX 0.8.2. For more information, see [JAX compatibility](../../docs/compatibility/ml-compatibility/jax-compatibility.rst).
 
@@ -207,7 +364,7 @@ ROCm 7.2.1 enables support for JAX 0.8.2. For more information, see [JAX compati
 
 The ROCm Offline Installer Creator is discontinued in ROCm 7.2.1. Equivalent installation capabilities are available through the ROCm Runfile Installer, a self-extracting installer that is not based on OS package managers. For more information, see [ROCm Runfile Installer](https://rocm.docs.amd.com/projects/install-on-linux/en/docs-7.2.1/install/rocm-runfile-installer.html).
 
-### ROCm documentation updates
+#### ROCm documentation updates
 
 ROCm documentation continues to be updated to provide clearer and more comprehensive guidance for a wider range of user needs and use cases.
 
@@ -231,7 +388,7 @@ ROCm documentation continues to be updated to provide clearer and more comprehen
     * [Host software glossary](https://rocm.docs.amd.com/en/docs-7.2.1/reference/glossary/host-software.html): Provides brief definitions of development tools, compilers, libraries, and runtime environments for programming AMD GPUs.
     * [Performance glossary](https://rocm.docs.amd.com/en/docs-7.2.1/reference/glossary/performance.html): Provides brief definitions of performance analysis concepts and optimization techniques.
 
-## ROCm components
+### ROCm components
 
 The following table lists the versions of ROCm components for ROCm 7.2.1, including any version
 changes from 7.2.0 to 7.2.1. Click the component's updated version to go to a list of its changes.
@@ -561,7 +718,7 @@ Click {fab}`github` to go to the component's source code on GitHub.
     </table>
 </div>
 
-## Detailed component changes
+### Detailed component changes
 
 The following sections describe key changes to ROCm components.
 
@@ -569,13 +726,13 @@ The following sections describe key changes to ROCm components.
 For a historical overview of ROCm component updates, see the {doc}`ROCm consolidated changelog </release/changelog>`.
 ```
 
-### **AMD SMI** (26.2.2) 
+#### **AMD SMI** (26.2.2) 
 
-#### Added
+##### Added
 
 * GPU board and base board temperature sensors to `amd-smi monitor` command.
 
-#### Resolved issues
+##### Resolved issues
 
 * JSON output was not formatted correctly when using watch mode with metrics.
 * Output was not properly redirected to file when using JSON format. 
@@ -583,75 +740,75 @@ For a historical overview of ROCm component updates, see the {doc}`ROCm consolid
 * Invalid CPER files caused garbage output for AFID lists.
 * JSON output was not formatted correctly for reset commands.
 
-### **HIP** (7.2.1)
+#### **HIP** (7.2.1)
 
-#### Resolved issues
+##### Resolved issues
 
 * Corrected the validation of stream capture in global‑capture mode. It is no longer affected by any thread‑local capture‑mode sequences occurring in other threads. 
 * Corrected the return value of `hipEventQuery` and `hipEventSynchronize`. The HIP runtime now properly handles and restricts stream capture within these APIs. 
 * Corrected an issue in the batch-dispatch doorbell for AQL packets to avoid a potential CPU hang.
 * To address potential delays in memory‑object destruction that could affect application logic, the HIP runtime disables memory‑object reference counting in direct‑dispatch mode.
 
-#### Changed
+##### Changed
 
 * The `AMD_DIRECT_DISPATCH` environment variable has been deprecated in the HIP runtime.
 
-### **hipBLASLt** (1.2.2)
+#### **hipBLASLt** (1.2.2)
 
-#### Changed
+##### Changed
 
 * Enumeration value update for the Sigmoid Activation Function feature.
 
-### **rocDecode** (1.7.0)
+#### **rocDecode** (1.7.0)
 
-#### Upcoming changes
+##### Upcoming changes
 
 * The rocDecode GitHub repository will be officially moved to [https://github.com/ROCm/rocm-systems/tree/develop/projects/rocdecode](https://github.com/ROCm/rocm-systems/tree/develop/projects/rocdecode) in an upcoming release.
 
-### **rocJPEG** (1.4.0)
+#### **rocJPEG** (1.4.0)
  
-#### Changed
+##### Changed
 
 * Bug fixes and performance improvements.
 
-#### Upcoming changes
+##### Upcoming changes
 
 * The rocJPEG GitHub repository will be officially moved to [https://github.com/ROCm/rocm-systems/tree/develop/projects/rocjpeg](https://github.com/ROCm/rocm-systems/tree/develop/projects/rocjpeg) in an upcoming release.
 
-### **rocSHMEM** (3.2.0)
+#### **rocSHMEM** (3.2.0)
 
-#### Added
+##### Added
 * Warnings to notify if large BAR is not available.
 
-#### Resolved issues
+##### Resolved issues
 
 * GDA Backend will disable itself when no GDA compatible NICs are available rather than crashing.
 * Fix memory coherency issues on gfx1201.
 
-#### Known issues
+##### Known issues
 
 * Only 64-bit rocSHMEM atomic APIs are implemented for the GDA conduit.
 
-### **RPP** (2.2.1)
+#### **RPP** (2.2.1)
 
-#### Added
+##### Added
  
 * Error-code capture in test scripts for all C++ tests.
  
-#### Optimized
+##### Optimized
  
 * Optimized F16 variants by replacing scalar load/store operations with AVX2 intrinsics for spatter, log, blend, color_cast, flip, crop_mirror_normalize, and exposure kernels.
 
-## ROCm known issues
+### ROCm known issues
 
 ROCm known issues are noted on {fab}`github` [GitHub](https://github.com/ROCm/ROCm/labels/Verified%20Issue). For known
 issues related to individual components, review the [Detailed component changes](#detailed-component-changes).
 
-### hipBLASLt performance regression for specific GEMM configurations
+#### hipBLASLt performance regression for specific GEMM configurations
 
 You might observe a noticeable performance regression if you’re using hipBLASLt with the following GPUs for LLMs with specific GEMM configurations:
 
-#### AMD Instinct MI300X and MI325X GPUs
+##### AMD Instinct MI300X and MI325X GPUs
 
 Affected GEMM configurations:
 
@@ -661,7 +818,7 @@ Affected GEMM configurations:
 
 * 9728 × 8192 × 65536 (F8F8S, TN)
 
-#### AMD Instinct MI350 Series GPUs
+##### AMD Instinct MI350 Series GPUs
 
 Affected GEMM configurations:
 
@@ -683,20 +840,28 @@ GEMM operations using hipBLASLt might result in longer runtime on AMD Instinct M
 
 Applications that use [ROCTracer](https://rocm.docs.amd.com/projects/roctracer/en/latest/index.html) might fail to receive some or all kernel operation events due to a ROCTracer reporting failure. ROCTracer is already deprecated and is scheduled to reach end of support (EoS) by the end of 2026 Q2. For more details on ROCTracer deprecation, see  [ROCm upcoming changes](#roctracer-rocprofiler-rocprof-and-rocprofv2-deprecation). This issue will be resolved in a future PyTorch on ROCm release that replaces ROCTracer with [ROCprofiler-SDK](https://rocm.docs.amd.com/projects/rocprofiler-sdk/en/latest/). See [GitHub issue #6102](https://github.com/ROCm/ROCm/issues/6102).
 
-## ROCm resolved issues
+#### Longer runtime for hipBLASLt GEMM operations on Instinct MI300X GPUs in partitioned mode
+
+GEMM operations using hipBLASLt might result in longer runtime on AMD Instinct MI300X GPUs configured in CPX or NPS4 partition mode (38 control units or CUs). This issue occurs when hipBLASLt fails to find applicable pre-tuned kernels. As a result, it performs an extensive kernel search, which increases both search time and the overall operation runtime. This issue is resolved in the {fab}`github`[hipBLASLt develop branch](https://github.com/ROCm/rocm-libraries/tree/develop/projects/hipblaslt) and will be part of a future ROCm release. See [GitHub issue #6066](https://github.com/ROCm/ROCm/issues/6066).
+
+#### ROCTracer might fail to report kernel operations
+
+Applications that use [ROCTracer](https://rocm.docs.amd.com/projects/roctracer/en/latest/index.html) might fail to receive some or all kernel operation events due to a ROCTracer reporting failure. ROCTracer is already deprecated and is scheduled to reach end of support (EoS) by the end of 2026 Q2. For more details on ROCTracer deprecation, see  [ROCm upcoming changes](#roctracer-rocprofiler-rocprof-and-rocprofv2-deprecation). This issue will be resolved in a future PyTorch on ROCm release that replaces ROCTracer with [ROCprofiler-SDK](https://rocm.docs.amd.com/projects/rocprofiler-sdk/en/latest/). See [GitHub issue #6102](https://github.com/ROCm/ROCm/issues/6102).
+
+### ROCm resolved issues
 
 The following are previously known issues resolved in this release. For resolved issues related to
 individual components, review the [Detailed component changes](#detailed-component-changes).
 
-### Increased runtime latency of the HIP hipStreamCreate API
+#### Increased runtime latency of the HIP hipStreamCreate API
 
 As issue that resulted in doubling of the runtime latency of the [HIP](https://rocmdocs.amd.com/projects/HIP/en/latest/doxygen/html/group___stream.html) `hipStreamCreate` API has been resolved. See [GitHub issue #5978](https://github.com/ROCm/ROCm/issues/5978). 
 
-## ROCm upcoming changes
+### ROCm upcoming changes
 
 The following changes to the ROCm software stack are anticipated for future releases.
 
-### ROCTracer, ROCProfiler, rocprof, and rocprofv2 deprecation
+#### ROCTracer, ROCProfiler, rocprof, and rocprofv2 deprecation
 
 ROCTracer, ROCProfiler, `rocprof`, and `rocprofv2` are deprecated. It's strongly recommended to upgrade to the latest version of the [ROCprofiler-SDK](https://rocm.docs.amd.com/projects/rocprofiler-sdk/en/latest/) library and the (`rocprofv3`) tool to ensure continued support and access to new features. 
 
@@ -704,7 +869,7 @@ To learn about key feature improvements and benefits of ROCprofiler-SDK over the
 
 It's anticipated that ROCTracer, ROCProfiler, `rocprof`, and `rocprofv2` will reach end of support (EoS) by the end of 2026 Q2.
 
-### ROCm SMI deprecation
+#### ROCm SMI deprecation
 
 [ROCm SMI](https://github.com/ROCm/rocm_smi_lib) will be phased out in an
 upcoming ROCm release and will enter maintenance mode. After this transition,
@@ -717,7 +882,7 @@ includes all the features of the ROCm SMI and will continue to receive regular
 updates, new functionality, and ongoing support. For more information on AMD
 SMI, see the [AMD SMI documentation](https://rocm.docs.amd.com/projects/amdsmi/en/latest/).
 
-### Changes to ROCm Object Tooling
+#### Changes to ROCm Object Tooling
 
 ROCm Object Tooling tools ``roc-obj-ls``, ``roc-obj-extract``, and ``roc-obj`` were
 deprecated in ROCm 6.4, and will be removed in a future release. Functionality
