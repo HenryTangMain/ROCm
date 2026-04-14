@@ -28,7 +28,7 @@ Memory settings
 ===============
 
 AMD Ryzen APUs with RDNA3.5 architecture (gfx1150, gfx1151, and gfx1152 LLVM
-target) memory access is handled through GPU Virtual Memory (GPUVM), which
+targets) memory access is handled through GPU Virtual Memory (GPUVM), which
 provides per-process GPU virtual address spaces (VMIDs) rather than a separate,
 discrete VRAM pool.
 
@@ -45,7 +45,7 @@ physical memory.
   On systems with physically shared CPU and GPU memory, such as RDNA3.5-based
   systems, this mapped system memory effectively serves as VRAM for the GPU.
   GART is typically kept relatively small to limit GPU page-table size and is
-  mainly used for driver-internal operations.
+  primarily used for driver-internal operations.
 
 * **GTT**
 
@@ -81,10 +81,6 @@ allocations using GTT (GTT-backed allocations), as described in the
 `torvalds/linux@759e764 <https://github.com/torvalds/linux/commit/759e764f7d587283b4e0b01ff930faca64370e59>`_
 GitHub commit.
 
-Because memory is physically shared, there is no performance distinction
-similar to discrete GPUs where dedicated VRAM is significantly faster than
-system memory. Firmware may optionally reserve some memory exclusively for GPU
-use, but this provides little benefit for most workloads while permanently
 Because memory is physically shared, there's no performance distinction
 like that of discrete GPUs where dedicated VRAM is significantly faster than
 system memory. Firmware may optionally reserve some memory exclusively for GPU
@@ -183,7 +179,7 @@ Operating system support
 The ROCm compatibility tables can be found at the following links:
 
 - `System requirements (Linux) <https://rocm.docs.amd.com/projects/install-on-linux/en/latest/reference/system-requirements.html>`_
-- `System requirements (Windows) <https://rocm.docs.amd.com/projects/install-on-windows/en/latest/reference/system-requirements.html>`_
+- `System requirements (Microsoft Windows) <https://rocm.docs.amd.com/projects/install-on-windows/en/latest/reference/system-requirements.html>`_
 
 AMD Ryzen AI Max series APUs (gfx1151) have additional kernel version
 requirements, as described in the  following section.
