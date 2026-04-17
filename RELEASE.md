@@ -97,9 +97,11 @@ GPU and baseboard firmware versioning might differ across GPU families.
       <tr>
           <td>MI325X<a href="#footnote1"><sup>[1]</sup></a></td>
           <td>
+              01.25.06.08<br>
               01.25.04.02
           </td>
-          <td>30.30.1<br>
+          <td>30.30.2<br>
+              30.30.1<br>
               30.30.0<br>
               30.20.1<br>
               30.20.0<a href="#footnote1"><sup>[1]</sup></a><br>
@@ -286,9 +288,11 @@ GPU and baseboard firmware versioning might differ across GPU families.
       <tr>
           <td>MI325X<a href="#footnote1"><sup>[1]</sup></a></td>
           <td>
+              01.25.06.08<br>
               01.25.04.02
           </td>
-          <td>30.30.1<br>
+          <td>30.30.2<br>
+              30.30.1<br>
               30.30.0<br>
               30.20.1<br>
               30.20.0<a href="#footnote1"><sup>[1]</sup></a><br>
