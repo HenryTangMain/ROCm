@@ -15,7 +15,7 @@ compatibility with industry software frameworks. For more information, see
 ROCm supports multiple programming languages and programming interfaces such as
 {doc}`HIP <hip:index>`, OpenCL, and OpenMP, as explained in the [Programming guide](./how-to/programming_guide.rst).
 
-If you're using AMD Radeon GPUs or Ryzen APUs in a workstation setting with a display connected, review {doc}`ROCm on Radeon and Ryzen documentation<radeon:index>`.
+If you're using AMD Radeon™ GPUs or Ryzen™ APUs for graphics workloads, see the {doc}`ROCm on Radeon and Ryzen <radeon:index>` documentation.
 
 ```{note}
 The [AMD ROCm Programming Guide](https://rocm-handbook.amd.com/projects/amd-rocm-programming-guide/en/latest/)

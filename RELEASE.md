@@ -188,8 +188,7 @@ The release notes provide a summary of notable changes since the previous ROCm r
 - [ROCm upcoming changes](#rocm-upcoming-changes)
 
 ```{note}
-If you’re using AMD Radeon GPUs or Ryzen APUs in a workstation setting with a display connected, see the [Use ROCm on Radeon and Ryzen](https://rocm.docs.amd.com/projects/radeon-ryzen/en/latest/index.html)
-documentation to verify compatibility and system requirements.
+If you’re using AMD Radeon™ GPUs or Ryzen™ for graphics workloads, see the [Use ROCm on Radeon and Ryzen](https://rocm.docs.amd.com/projects/radeon-ryzen/en/latest/index.html) documentation to verify compatibility and system requirements.
 ```
 
 ### Release highlights
