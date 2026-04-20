@@ -97,9 +97,11 @@ GPU and baseboard firmware versioning might differ across GPU families.
       <tr>
           <td>MI325X<a href="#footnote1"><sup>[1]</sup></a></td>
           <td>
+              01.25.06.08<br>
               01.25.04.02
           </td>
-          <td>30.30.1<br>
+          <td>30.30.2<br>
+              30.30.1<br>
               30.30.0<br>
               30.20.1<br>
               30.20.0<a href="#footnote1"><sup>[1]</sup></a><br>
@@ -188,8 +190,7 @@ The release notes provide a summary of notable changes since the previous ROCm r
 - [ROCm upcoming changes](#rocm-upcoming-changes)
 
 ```{note}
-If you’re using AMD Radeon GPUs or Ryzen APUs in a workstation setting with a display connected, see the [Use ROCm on Radeon and Ryzen](https://rocm.docs.amd.com/projects/radeon-ryzen/en/latest/index.html)
-documentation to verify compatibility and system requirements.
+If you’re using AMD Radeon™ GPUs or Ryzen™ for graphics workloads, see the [Use ROCm on Radeon and Ryzen](https://rocm.docs.amd.com/projects/radeon-ryzen/en/latest/index.html) documentation to verify compatibility and system requirements.
 ```
 
 ### Release highlights
@@ -287,9 +288,11 @@ GPU and baseboard firmware versioning might differ across GPU families.
       <tr>
           <td>MI325X<a href="#footnote1"><sup>[1]</sup></a></td>
           <td>
+              01.25.06.08<br>
               01.25.04.02
           </td>
-          <td>30.30.1<br>
+          <td>30.30.2<br>
+              30.30.1<br>
               30.30.0<br>
               30.20.1<br>
               30.20.0<a href="#footnote1"><sup>[1]</sup></a><br>
