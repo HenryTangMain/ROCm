@@ -67,13 +67,9 @@ GPU and baseboard firmware versioning might differ across GPU families.
               01.25.16.03
           </td>
           <td>
-              30.30.1<br>
-              30.30.0<br>
-              30.20.1<br>
-              30.20.0<br>
-              30.10.2<br>
-              30.10.1<br>
-              30.10
+              30.30.x where x (0-2)<br>
+              30.20.x where x (0-1)<br>
+              30.10.x where x (0-2)
             </td>
           <td rowspan="3" style="vertical-align: middle;">8.7.1.K</td>
       </tr>
@@ -85,13 +81,9 @@ GPU and baseboard firmware versioning might differ across GPU families.
               01.25.16.03
           </td>
           <td>
-              30.30.1<br>
-              30.30.0<br>
-              30.20.1<br>
-              30.20.0<br>
-              30.10.2<br>
-              30.10.1<br>
-              30.10
+              30.30.x where x (0-2)<br>
+              30.20.x where x (0-1)<br>
+              30.10.x where x (0-2)
             </td>
       </tr>
       <tr>
@@ -100,14 +92,9 @@ GPU and baseboard firmware versioning might differ across GPU families.
               01.25.06.08<br>
               01.25.04.02
           </td>
-          <td>30.30.2<br>
-              30.30.1<br>
-              30.30.0<br>
-              30.20.1<br>
-              30.20.0<a href="#footnote1"><sup>[1]</sup></a><br>
-              30.10.2<br>
-              30.10.1<br>
-              30.10<br>
+          <td>30.30.x where x (0-2)<br>
+              30.20.x where x (0-1)<a href="#footnote1"><sup>[1]</sup></a><br>
+              30.10.x where x (0-2)<br>
               6.4.z where z (0-3)<br>
               6.3.3
           </td>
@@ -118,13 +105,9 @@ GPU and baseboard firmware versioning might differ across GPU families.
               01.25.03.12<br>
               01.25.02.04</td>
           <td rowspan="6" style="vertical-align: middle;">
-              30.30.1<br>
-              30.30.0<br>
-              30.20.1<br>
-              30.20.0<br>
-              30.10.2<br>
-              30.10.1<br>
-              30.10<br>
+              30.30.x where x (0-2)<br>
+              30.20.x where x (0-1)<br>
+              30.10.x where x (0-2)<br>
               6.4.z where z (0–3)<br>
               6.3.3
           </td>
@@ -258,13 +241,9 @@ GPU and baseboard firmware versioning might differ across GPU families.
               01.25.16.03
           </td>
           <td>
-              30.30.1<br>
-              30.30.0<br>
-              30.20.1<br>
-              30.20.0<br>
-              30.10.2<br>
-              30.10.1<br>
-              30.10
+              30.30.x where x (0-2)<br>
+              30.20.x where x (0-1)<br>
+              30.10.X where x (0-2)
             </td>
           <td rowspan="3" style="vertical-align: middle;">8.7.1.K</td>
       </tr>
@@ -276,13 +255,9 @@ GPU and baseboard firmware versioning might differ across GPU families.
               01.25.16.03
           </td>
           <td>
-              30.30.1<br>
-              30.30.0<br>
-              30.20.1<br>
-              30.20.0<br>
-              30.10.2<br>
-              30.10.1<br>
-              30.10
+              30.30.x where x (0-2)<br>
+              30.20.x where x (0-1)<br>
+              30.10.X where x (0-2)
             </td>
       </tr>
       <tr>
@@ -291,14 +266,10 @@ GPU and baseboard firmware versioning might differ across GPU families.
               01.25.06.08<br>
               01.25.04.02
           </td>
-          <td>30.30.2<br>
-              30.30.1<br>
-              30.30.0<br>
-              30.20.1<br>
-              30.20.0<a href="#footnote1"><sup>[1]</sup></a><br>
-              30.10.2<br>
-              30.10.1<br>
-              30.10<br>
+          <td>
+              30.30.x where x (0-2)<br>
+              30.20.x where x (0-1)<a href="#footnote1"><sup>[1]</sup></a><br>
+              30.10.X where x (0-2)<br>
               6.4.z where z (0-3)<br>
               6.3.3
           </td>
@@ -309,13 +280,9 @@ GPU and baseboard firmware versioning might differ across GPU families.
               01.25.03.12<br>
               01.25.02.04</td>
           <td rowspan="6" style="vertical-align: middle;">
-              30.30.1<br>
-              30.30.0<br>
-              30.20.1<br>
-              30.20.0<br>
-              30.10.2<br>
-              30.10.1<br>
-              30.10<br>
+              30.30.x where x (0-2)<br>
+              30.20.x where x (0-1)<br>
+              30.10.X where x (0-2)<br>
               6.4.z where z (0–3)<br>
               6.3.3
           </td>
