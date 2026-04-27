@@ -40,7 +40,7 @@ The following are notable new features and improvements in ROCm 7.2.3. For chang
 
 ### Supported hardware, operating system, and virtualization changes
 
-Hardware, software, and virtualization support remains unchanged in this release.
+Hardware, operating system, and virtualization support remains unchanged in this release.
 
 For more information about: 
 
@@ -94,7 +94,7 @@ GPU and baseboard firmware versioning might differ across GPU families.
               01.25.16.03
           </td>
           <td>
-              30.30.x where x (0-2)<br>
+              30.30.x where x (0-3)<br>
               30.20.x where x (0-1)<br>
               30.10.x where x (0-2)
             </td>
@@ -169,29 +169,29 @@ GPU and baseboard firmware versioning might differ across GPU families.
 <p id="footnote1">[1]: For AMD Instinct MI325X KVM SR-IOV users, don't use AMD GPU driver (amdgpu) 30.20.0.</p>
 <p id="footnote2">[2]: AMD Instinct MI300X KVM SR-IOV with Multi-VF (8 VF) support requires a compatible firmware BKC bundle, which will be released in the coming months.</p>
 
+### Improved profiling accuracy for vLLM workloads
+
+ROCm 7.2.3 resolves an issue of large random idle gaps between GPU kernels being displayed in the trace when profiling vLLM using PyTorch `torch.profiler`, even when the real performance/throughput was unchanged. The traces are now more accurate and easier to interpret, better matching observed runtime behavior.
+
 ### MIGraphX update
 
 [MIGraphX](https://rocm.docs.amd.com/projects/AMDMIGraphX/en/docs-7.2.1/index.html) has the following enhancements:
 
 #### Cross-embedding gather fusion
 
-Multiple independent gather operations on similar embedding tables are now combined into a single batched operation, improving performance for embedding-heavy inference workloads.
+Performance for embedding‑heavy inference workloads is improved by merging multiple independent gather operations from similar embedding tables into a single batched operation.
 
 #### Improvement of gather performance
 
-The horizontal fusion for cross-embedding gather operators feature has been added to MIGraphx to reduce kernel launches and memory traffic in multi-gather workloads. Gather operators have been updated to use `transpose`/`reshape`/`broadcast`/`slice`, which allows more performance optimizations across backends and layouts.
+Multi‑gather workloads now run more efficiently with fewer kernel launches and reduced memory traffic by adding horizontal fusion for cross-embedding gather operators. These gather operators have been updated to use `transpose`/`reshape`/`broadcast`/`slice`, enabling better optimization across different backends and data layouts.
 
 #### ONNX Runtime reliability improvement
 
-Enhanced validation in the MIGraphX Execution Provider has been added to reduce redundant conversions and improve the compile‑time robustness, resulting in more reliable ONNX model execution on AMD GPUs. This improvement helps to ensure a smoother experience when accelerating ONNX Runtime workloads with MIGraphX across inference pipelines.
+ONNX Runtime workloads accelerated with MIGraphX now provide a more reliable experience through external stream support in the MIGraphX Execution Provider, with improved memory allocation and deallocation for multi-stream inference.
 
-### Improved profiling accuracy for vLLM workloads
- 
-ROCm 7.2.3 resolves an issue where profiling vLLM using PyTorch `torch.profiler` could display large, random idle gaps between GPU kernels in the trace, even when the real performance/throughput was unchanged. The traces are now more accurate and easier to interpret, better matching observed runtime behavior.
+### ROCm documentation updates
 
-### ROCm XIO for direct IO operations to hardware devices
-
-ROCm XIO provides an API for Accelerator-Initiated IO (XIO) for an AMD GPU `__device__` code. It enables AMD GPUs to perform direct IO operations to hardware devices without CPU intervention. ROCm XIO was initially released in April 2026 as an early-access software technology preview. Running production workloads is not recommended.
+ROCm documentation has been updated with ROCm XIO documentation. ROCm XIO provides an API for Accelerator-Initiated IO (XIO) for an AMD GPU `__device__` code. It enables AMD GPUs to perform direct IO operations to hardware devices without CPU intervention. ROCm XIO was initially released in April 2026 as an early-access software technology preview. Running production workloads is not recommended.
 For more information, see the [ROCm XIO documentation](https://rocm.docs.amd.com/projects/rocm-xio/en/beta-0.1.0/index.html) and {fab}`github` [ROCm/rocm-xio](https://github.com/ROCm/rocm-xio) GitHub repository.
 
 ## ROCm components
