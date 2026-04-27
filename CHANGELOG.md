@@ -6,6 +6,44 @@ different versions of the ROCm software stack and its components.
 
 ## ROCm 7.2.1
 
+See the [ROCm 7.2.3 release notes](https://rocm.docs.amd.com/en/docs-7.2.1/about/release-notes.html#rocm-7-2-1-release-notes)
+for a complete overview of this release.
+
+### **MIGraphX** (2.15.0)
+
+#### Added
+
+* External stream support to the MIGraphX context, allowing external HIP streams to be used during execution.
+* Ability to return a vector for output alias, supporting operators like `make_tuple`.
+
+#### Changed
+
+* Refactored `move_output_instructions_after` into the module class.
+* Updated rocMLIR to fix `bert_squad` and `bert_tf` regressions.
+
+#### Optimized
+
+* Rewrote the `gather` operator to use `transpose`/`reshape`/`broadcast`/`slice` for improved performance.
+* Horizontally fuse cross-embedding gather operators.
+* Improved tuning for Split-K.
+* Removed extra assignments and inserts in `find_nop_reshapes` to reduce overhead.
+
+#### Resolved issues
+
+The following issues have been fixed:
+
+* `int` to `bf16`/`fp16` conversion errors.
+* Comparison logic in `find_concat_op` to match the correct I/O.
+* `shape_transform_descriptor::rebase` when flattening a broadcasted dimension.
+* An error with `rewrite_reshapes`.
+* A gather rewrite crash by validating strided view element count.
+* A bug in gather rewrite with NHWC shapes.
+* A crash in rocMLIR with Inception v3 on RDNA3 architecture-based Radeon GPUs.
+* Filter zero-argument operators during ONNX parsing to prevent errors.
+* Conflict for missing `no_broadcast` parameter on ROCm 7.2.x.
+
+## ROCm 7.2.1
+
 See the [ROCm 7.2.1 release notes](https://rocm.docs.amd.com/en/docs-7.2.1/about/release-notes.html#rocm-7-2-1-release-notes)
 for a complete overview of this release.
 
