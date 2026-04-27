@@ -565,16 +565,16 @@ The following issues have been fixed:
 * Filter zero-argument operators during ONNX parsing to prevent errors.
 * Conflict for missing `no_broadcast` parameter on ROCm 7.2.x.
 
-### ROCm known issues
+## ROCm known issues
 
 ROCm known issues are noted on {fab}`github` [GitHub](https://github.com/ROCm/ROCm/labels/Verified%20Issue). For known
 issues related to individual components, review the [Detailed component changes](#detailed-component-changes).
 
-### ROCm upcoming changes
+## ROCm upcoming changes
 
 The following changes to the ROCm software stack are anticipated for future releases.
 
-#### ROCTracer, ROCProfiler, rocprof, and rocprofv2 deprecation
+### ROCTracer, ROCProfiler, rocprof, and rocprofv2 deprecation
 
 ROCTracer, ROCProfiler, `rocprof`, and `rocprofv2` are deprecated. It's strongly recommended to upgrade to the latest version of the [ROCprofiler-SDK](https://rocm.docs.amd.com/projects/rocprofiler-sdk/en/latest/) library and the (`rocprofv3`) tool to ensure continued support and access to new features. 
 
@@ -582,7 +582,7 @@ To learn about key feature improvements and benefits of ROCprofiler-SDK over the
 
 It's anticipated that ROCTracer, ROCProfiler, `rocprof`, and `rocprofv2` will reach end of support (EoS) by the end of 2026 Q2.
 
-#### ROCm SMI deprecation
+### ROCm SMI deprecation
 
 [ROCm SMI](https://github.com/ROCm/rocm_smi_lib) will be phased out in an
 upcoming ROCm release and will enter maintenance mode. After this transition,
@@ -595,7 +595,7 @@ includes all the features of the ROCm SMI and will continue to receive regular
 updates, new functionality, and ongoing support. For more information on AMD
 SMI, see the [AMD SMI documentation](https://rocm.docs.amd.com/projects/amdsmi/en/latest/).
 
-#### Changes to ROCm Object Tooling
+### Changes to ROCm Object Tooling
 
 ROCm Object Tooling tools ``roc-obj-ls``, ``roc-obj-extract``, and ``roc-obj`` were
 deprecated in ROCm 6.4, and will be removed in a future release. Functionality
