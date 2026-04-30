@@ -171,19 +171,15 @@ GPU and baseboard firmware versioning might differ across GPU families.
 
 ### Improved profiling accuracy for vLLM workloads
 
-ROCm 7.2.3 resolves an issue of large random idle gaps between GPU kernels being displayed in the trace when profiling vLLM using PyTorch `torch.profiler`, even when the real performance/throughput was unchanged. The traces are now more accurate and easier to interpret, better matching observed runtime behavior.
+ROCm 7.2.3 improves profiling stability for vLLM workloads traced with PyTorch `torch.profiler`. The large, sporadic idle gaps that previously appeared between GPU kernels in the trace have been substantially reduced in common configurations, and the traces now more accurately reflect actual runtime behavior. Coverage may vary depending on model and parallelism settings; additional improvements are in progress.
 
 ### MIGraphX update
 
 [MIGraphX](https://rocm.docs.amd.com/projects/AMDMIGraphX/en/docs-7.2.1/index.html) has the following enhancements:
 
-#### Cross-embedding gather fusion
+#### Improved performance of the Gather operator
 
-Performance for embedding‑heavy inference workloads is improved by merging multiple independent gather operations from similar embedding tables into a single batched operation.
-
-#### Improvement of gather performance
-
-Multi‑gather workloads now run more efficiently with fewer kernel launches and reduced memory traffic by adding horizontal fusion for cross-embedding gather operators. These gather operators have been updated to use `transpose`/`reshape`/`broadcast`/`slice`, enabling better optimization across different backends and data layouts.
+Performance for embedding‑heavy inference workloads is improved by merging multiple independent gather operations from similar embedding tables into a single batched operation. Multi‑gather workloads now run more efficiently with fewer kernel launches and reduced memory traffic by adding horizontal fusion for cross-embedding gather operators. These gather operators have been updated to use `transpose`/`reshape`/`broadcast`/`slice`, enabling better optimization across different backends and data layouts.
 
 #### ONNX Runtime reliability improvement
 
@@ -547,7 +543,7 @@ For a historical overview of ROCm component updates, see the {doc}`ROCm consolid
 #### Optimized
 
 * Rewrote the `gather` operator to use `transpose`/`reshape`/`broadcast`/`slice` for improved performance.
-* Horizontally fuse cross-embedding gather operators.
+* Horizontally fuse cross-embedding `gather` operators.
 * Improved tuning for Split-K.
 * Removed extra assignments and inserts in `find_nop_reshapes` to reduce overhead.
 

@@ -24,7 +24,7 @@ for a complete overview of this release.
 #### Optimized
 
 * Rewrote the `gather` operator to use `transpose`/`reshape`/`broadcast`/`slice` for improved performance.
-* Horizontally fuse cross-embedding gather operators.
+* Horizontally fuse cross-embedding `gather` operators.
 * Improved tuning for Split-K.
 * Removed extra assignments and inserts in `find_nop_reshapes` to reduce overhead.
 
