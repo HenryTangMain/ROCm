@@ -42,6 +42,58 @@ python3 tag_script.py -t $GITHUB_ACCESS_TOKEN --no-release --no-pulls --compile_
 
 * Copy over the first part of the changelog and replace the old release notes in RELEASE.md.
 
+## Precision support audit (`/precision-check`, `/precision-check-delta`)
+
+Audits data-type support across ROCm libraries between two releases. Uses a hybrid
+approach: `precision_fetch.py` fetches raw source files and YAML snapshots from
+GitHub to `/tmp/`, then Claude reads and compares them semantically via a slash
+command — no regex parsers.
+
+### Commands
+
+| Command | When to use |
+|---------|-------------|
+| `/precision-check PREV CURR` | Full audit — checks all libraries that changed in the manifest |
+| `/precision-check-delta PREV CURR` | SHA-filtered — only checks libraries whose source file itself changed |
+
+Use `/precision-check-delta` for routine release-to-release audits. Use
+`/precision-check` for a full sweep regardless of source file changes.
+
+### Prerequisites
+
+* [Claude Code](https://claude.ai/claude-code) installed and running in this repo.
+* `$GITHUB_TOKEN` set to a GitHub Personal Access Token with read access to the ROCm org. Add it to your shell profile or pass it inline:
+
+  ```sh
+  export GITHUB_TOKEN=your_token_here
+  ```
+
+### Running an audit
+
+Open Claude Code in this repo and run:
+
+```sh
+/precision-check 7.1.1 7.2.0
+# or
+/precision-check-delta 7.1.1 7.2.0
+```
+
+Claude will:
+
+1. Run `precision_fetch.py` to download source files and YAML snapshots to `/tmp/`.
+2. Read and compare each library's source against `precision-support.yaml`.
+3. Auto-update the YAML for clear missing entries.
+4. Flag ambiguous findings (macro expansion, combination tables, support level mismatches) for human review.
+5. Write a timestamped log to `tools/autotag/precision-update-log/` (gitignored — local only).
+
+Commit any YAML changes. The YAML being audited lives at `docs/data/reference/precision-support/precision-support.yaml`.
+
+### Adding new libraries to precision support
+
+* Add an entry to `MANIFEST_TO_TAG` in `precision_fetch.py` mapping the manifest component name to the YAML tag.
+* Add an entry to `SOURCE_CONFIG` in `precision_fetch.py` with the org, repo, and path to the source file. Add a `note` field if the library should be permanently skipped.
+* Update `MONOREPO_LIBS` in `precision_fetch.py` if the library lives inside a monorepo (e.g. `rocm-libraries`).
+
 ## Adding new libraries/repositories
 
 * Add the name or group of the repository (retrieved in default.xml in the ROCm project root) to: included_names or included_groups to auto_tag.py.
