@@ -6,7 +6,7 @@ different versions of the ROCm software stack and its components.
 
 ## ROCm 7.2.3
 
-See the [ROCm 7.2.3 release notes](https://rocm-stg.amd.com/en/latest/about/release-notes.html#rocm-7-2-3-release-notes)
+See the [ROCm 7.2.3 release notes](https://rocm.docs.amd.com/en/docs-7.2.3/about/release-notes.html#rocm-7-2-3-release-notes)
 for a complete overview of this release.
 
 ### **MIGraphX** (2.15.0)
