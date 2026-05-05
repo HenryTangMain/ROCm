@@ -25,7 +25,7 @@ compatibility and system requirements.
       :header: "ROCm Version", "7.2.3", "7.2.2/7.2.1", "7.1.0"
       :stub-columns: 1
 
-      :ref:`Operating systems & kernels <OS-kernel-versions>` [#os-compatibility]_,Ubuntu 24.04.3,Ubuntu 24.04.3,Ubuntu 24.04.3
+      :ref:`Operating systems & kernels <OS-kernel-versions>` [#os-compatibility]_,Ubuntu 24.04.4,Ubuntu 24.04.4,Ubuntu 24.04.3
       ,Ubuntu 22.04.5,Ubuntu 22.04.5,Ubuntu 22.04.5
       ,"RHEL 10.1, 10.0, |br| 9.7, 9.6, 9.4","RHEL 10.1, 10.0, |br| 9.7, 9.6, 9.4","RHEL 10.0, 9.6, 9.4"
       ,RHEL 8.10,RHEL 8.10,RHEL 8.10
