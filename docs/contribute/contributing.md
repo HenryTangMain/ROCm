@@ -4,25 +4,15 @@
   <meta name="keywords" content="ROCm, contributing, contribute, maintainer, contributor">
 </head>
 
-# Contributing to the ROCm documentation
+# Contributing to ROCm documentation
 
-The ROCm documentation, like all of ROCm, is open source and available on GitHub. You can contribute to the ROCm documentation by forking the appropriate repository, making your changes, and opening a pull request.
+ROCm documentation is open source and available on GitHub. You can contribute to ROCm documentation by cloning the appropriate repository, making your changes, and opening a pull request.
 
-To provide feedback on the ROCm documentation, including submitting an issue or suggesting a feature, see [Providing feedback about the ROCm documentation](./feedback.md).
+```{Note}
+To provide feedback on the ROCm documentation without contributing to it, see [Providing feedback about the ROCm documentation](./feedback.md).
+```
 
-## The ROCm repositories
-
-The repositories for ROCm and all ROCm components are available on GitHub.
-
-| Module | Documentation location |
-| --- | --- |
-| ROCm framework | [https://github.com/ROCm/ROCm/tree/develop/docs](https://github.com/ROCm/ROCm/tree/develop/docs) |
-| ROCm installation for Linux | [https://github.com/ROCm/rocm-install-on-linux/tree/develop/docs](https://github.com/ROCm/rocm-install-on-linux/tree/develop/docs) |
-| ROCm HIP SDK installation for Windows |  [https://github.com/ROCm/rocm-install-on-windows/tree/develop/docs](https://github.com/ROCm/rocm-install-on-windows/tree/develop/docs) |
-
-Individual components have their own repositories with their own documentation in their own `docs` folders.
-
-The sub-folders within the `docs` folders across ROCm are typically structured as follows:
+The documentation for ROCm and for all ROCm components is under their respective `docs` folders. The `docs` folders for all components across ROCm have the same structure:
 
 | Sub-folder name | Documentation type |
 |-------|----------|
@@ -31,45 +21,53 @@ The sub-folders within the `docs` folders across ROCm are typically structured a
 | `how-to` | How to implement specific use cases |
 | `tutorials` | Tutorials |
 | `reference` | API references and other reference resources |
+| `sphinx` | `_toc.yaml.in` file |
 
-## Editing and adding to the documentation
+ROCm stack documentation differs from this structure.
 
-ROCm documentation follows the [Google developer documentation style guide](https://developers.google.com/style/highlights).
+Most documentation topics are written in [reStructuredText (rst)](https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html), with some topics written in Markdown. Only use reStructuredText when adding new topics. Only use Markdown if the topic you are editing is already in Markdown.
 
-Most topics in the ROCm documentation are written in [reStructuredText (rst)](https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html), with some topics written in Markdown. Only use reStructuredText when adding new topics. Only use Markdown if the topic you are editing is already in Markdown.
+To edit or add to the documentation, first clone the appropriate repository, ensuring that you follow the repository recommendations as outlined in their respective README files:
 
-To edit or add to the documentation:
+| Module | Repository |
+| --- | --- |
+| ROCm stack | [https://github.com/ROCm/ROCm](https://github.com/ROCm/ROCm) |
+| ROCm libraries | [https://github.com/ROCm/rocm-libraries](https://github.com/ROCm/rocm-libraries) |
+| ROCm systems projects | [https://github.com/ROCm/rocm-systems](https://github.com/ROCm/rocm-systems) |
 
-1. Fork the repository you want to add to or edit.
-2. Clone your fork locally.
-3. Create a new local branch cut from the `develop` branch of the repository.
-4. Make your changes to the documentation.
+```{note}
+Individual components in the ROCm libraries and the ROCm systems projects repositories are located under the `projects` folder. Some components have their own individual repositories. Each component has a link to its GitHub location from its documentation.
+```
 
-5. Optionally, build the documentation locally before creating a pull request by running the following commands from within the `docs` folder:
+Cut a local branch from the `develop` branch of the repository and make your changes. Your changes must adhere to the [Google developer documentation style guide](https://developers.google.com/style/highlights). If you're adding a topic, provide a link to it from the `index.rst` and `_toc.yaml.in` files.
 
-    ```bash
-     pip3 install -r sphinx/requirements.txt  # You only need to run this command once
-     python3 -m sphinx -T -E -b html -d _build/doctrees -D language=en . _build/html
-     ```
+Build the documentation locally to verify your changes.
 
-    The output files will be located in the `docs/_build` folder. Open `docs/_build/html/index.html` to view the documentation.
+```{note}
+If you're making changes to the Doxygen comments within the source code, delete the `docs/doxygen/xml` and `docs/doxygen/html` folders between each build.
+```
 
-    For more information on ROCm build tools, see [Documentation toolchain](toolchain.md).
-6. Push your changes. A GitHub link will be returned in the output of the `git push` command. Open this link in a browser to create the pull request.
+From within the `docs` directory, run:
 
-    The documentation is built as part of the checks on pull request, along with spell checking and linting. Scroll to the bottom of your pull request to view all the checks.
+```bash
+python3 -m sphinx -T -E -b html -d _build/doctrees -D language=en . _build/html
+```
 
-    Verify that the linting and spell checking have passed, and that the documentation was built successfully. New words or acronyms can be added to the [wordlist file](https://github.com/ROCm/rocm-docs-core/blob/develop/.wordlist.txt). The wordlist is subject to approval by the ROCm documentation team.
+The output will be saved to the `docs/_build` folder. Open `docs/_build/html/index.html` to view the documentation.
 
-    The Read The Docs build of your pull request can be accessed by clicking on the Details link next to the Read The Docs build check. Verify that your changes are in the build and look as expected.
+```{note}
+If your build returns an error due to missing packages, run 
 
-    ![The GitHub checks are collapsed by default and can be accessed by clicking on "Show All Checks".](../data/contribute/GitHubCheck-Highlight.png)
-  
-    ![The Read The Docs Build is accessed from the Details link in the Read The Docs check.](../data/contribute/GitHub-ReadThe-Docs-Highlight.png)
+`pip3 install -r sphinx/requirements.txt` 
 
-    Your pull request will be reviewed by a member of the ROCm documentation team.
+This command only needs to be run once.
+```
 
-See the [GitHub documentation](https://docs.github.com/en) for information on how to fork and clone a repository, and how to create and push a local branch.
+Once you've verified your changes, push your branch and create a pull request. Your pull request will be reviewed by a member of the ROCm documentation team.
+
+For information about how to clone a repository, or how to create and push a local branch, see the [GitHub documentation](https://docs.github.com/en).
+
+For information about ROCm build tools, see [Documentation toolchain](toolchain.md).
 
 ```{important}
 By creating a pull request (PR), you agree to allow your contribution to be licensed under the terms of the
