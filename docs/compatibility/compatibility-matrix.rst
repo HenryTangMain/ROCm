@@ -22,10 +22,10 @@ compatibility and system requirements.
 .. container:: format-big-table
 
   .. csv-table::
-      :header: "ROCm Version", "7.2.3", "7.2.2/7.2.1", "7.1.0"
+      :header: "ROCm Version", "7.2.4/7.2.3", "7.2.2/7.2.1", "7.1.0"
       :stub-columns: 1
 
-      :ref:`Operating systems & kernels <OS-kernel-versions>` [#os-compatibility]_,Ubuntu 24.04.3,Ubuntu 24.04.3,Ubuntu 24.04.3
+      :ref:`Operating systems & kernels <OS-kernel-versions>` [#os-compatibility]_,Ubuntu 24.04.4,Ubuntu 24.04.4,Ubuntu 24.04.3
       ,Ubuntu 22.04.5,Ubuntu 22.04.5,Ubuntu 22.04.5
       ,"RHEL 10.1, 10.0, |br| 9.7, 9.6, 9.4","RHEL 10.1, 10.0, |br| 9.7, 9.6, 9.4","RHEL 10.0, 9.6, 9.4"
       ,RHEL 8.10,RHEL 8.10,RHEL 8.10
@@ -111,7 +111,7 @@ compatibility and system requirements.
       ,,,
       SUPPORT LIBS,,,
       `hipother <https://github.com/ROCm/hipother>`_,7.2.53211,7.2.53211,7.1.25424
-      `rocm-core <https://github.com/ROCm/rocm-core>`_,7.2.3,7.2.2/7.2.1,7.1.0
+      `rocm-core <https://github.com/ROCm/rocm-core>`_,7.2.4/7.2.3,7.2.2/7.2.1,7.1.0
       `ROCT-Thunk-Interface <https://github.com/ROCm/ROCT-Thunk-Interface>`_,N/A [#ROCT-rocr]_,N/A [#ROCT-rocr]_,N/A [#ROCT-rocr]_
       ,,,
       SYSTEM MGMT TOOLS,.. _tools-support-compatibility-matrix:,,
@@ -125,9 +125,9 @@ compatibility and system requirements.
       :doc:`ROCm Bandwidth Test <rocm_bandwidth_test:index>`,2.6.0,2.6.0,2.6.0
       :doc:`ROCm Compute Profiler <rocprofiler-compute:index>`,3.4.0,3.4.0,3.3.0
       :doc:`ROCm Systems Profiler <rocprofiler-systems:index>`,1.3.0,1.3.0,1.2.0
-      :doc:`ROCProfiler <rocprofiler:index>`,2.0.70203,2.0.70202/2.0.70201,2.0.70100
+      :doc:`ROCProfiler <rocprofiler:index>`,2.0.70204/2.0.70203,2.0.70202/2.0.70201,2.0.70100
       :doc:`ROCprofiler-SDK <rocprofiler-sdk:index>`,1.1.0,1.1.0,1.0.0
-      :doc:`ROCTracer <roctracer:index>`,4.1.70203,4.1.70202/4.1.70201,4.1.70100
+      :doc:`ROCTracer <roctracer:index>`,4.1.70204/4.1.70203,4.1.70202/4.1.70201,4.1.70100
       ,,,
       DEVELOPMENT TOOLS,,,
       :doc:`HIPIFY <hipify:index>`,22.0.0,22.0.0,20.0.0
