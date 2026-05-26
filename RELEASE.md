@@ -13,13 +13,13 @@
 
 # ROCm 7.2.4 release notes
 
-ROCm 7.2.4 is a quality release that resolves the issues listed in the Release highlights.
+ROCm 7.2.4 is a quality release focused on performance and stability fixes for AI inference workloads on AMD Instinct GPUs.
 
 ## Release highlights
 
 The following are the notable changes in ROCm 7.2.4.
 
-### Fixed memory copy performance regression in CPX mode
+### Enhanced memory copy performance regression in CPX mode
 
 HIP runtime synchronization behavior has been corrected on AMD Instinct MI300 Series GPUs in CPX mode, restoring P99 latency to previous levels for inference workloads that run multiple HIP streams with concurrent memory copies.
 
