@@ -19,13 +19,13 @@ ROCm 7.2.4 is a quality release focused on performance and stability fixes for A
 
 The following are the notable changes in ROCm 7.2.4.
 
-### Enhanced memory copy performance regression in CPX mode
+### Reduced hipGraphLaunch latency for multi-list graphs
 
-HIP runtime synchronization behavior has been corrected on AMD Instinct MI300 Series GPUs in CPX mode, restoring P99 latency to previous levels for inference workloads that run multiple HIP streams with concurrent memory copies.
+The HIP runtime's graph dispatch mechanism has been optimized, reducing launch latency for workloads using `hipGraphLaunch` with multi-list graph topologies.
 
-### Reduced hipGraphLaunch latency for multi-stream graphs
+### Fixed H2D memory copy latency regression in CPX mode
 
-The HIP runtime's graph dispatch mechanism has been optimized, reducing launch latency for workloads using `hipGraphLaunch` with multi-stream graph topologies.
+HIP runtime synchronization behavior has been corrected on AMD Instinct MI300 Series GPUs in CPX mode, restoring latency to previous levels for inference workloads that run multiple HIP streams with concurrent memory copies.
 
 ### Reduced ROCprofiler-SDK profiling overhead
 
