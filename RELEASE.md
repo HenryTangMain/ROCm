@@ -108,7 +108,7 @@ GPU and baseboard firmware versioning might differ across GPU families.
               01.25.16.03
           </td>
           <td>
-              30.30.x where x (0-2)<br>
+              30.30.x where x (0-3)<br>
               30.20.x where x (0-1)<br>
               30.10.x where x (0-2)
             </td>
@@ -119,7 +119,7 @@ GPU and baseboard firmware versioning might differ across GPU families.
               01.25.06.08<br>
               01.25.04.02
           </td>
-          <td>30.30.x where x (0-2)<br>
+          <td>30.30.x where x (0-3)<br>
               30.20.x where x (0-1)<a href="#footnote1"><sup>[1]</sup></a><br>
               30.10.x where x (0-2)<br>
               6.4.z where z (0-3)<br>
@@ -132,7 +132,7 @@ GPU and baseboard firmware versioning might differ across GPU families.
               01.25.03.12<br>
               01.25.02.04</td>
           <td rowspan="6" style="vertical-align: middle;">
-              30.30.x where x (0-2)<br>
+              30.30.x where x (0-3)<br>
               30.20.x where x (0-1)<br>
               30.10.x where x (0-2)<br>
               6.4.z where z (0–3)<br>
