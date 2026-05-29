@@ -8,6 +8,7 @@ AccVGPRs
 AITER
 ALU
 AllReduce
+AllToAll
 AMD
 AMDGPU
 AMDGPUs
@@ -117,6 +118,7 @@ DNNL
 DOCA
 DPM
 DRI
+DSA
 DSCP
 DW
 DWORD
@@ -196,6 +198,7 @@ GiB
 GIM
 GL
 Glibc
+GLM
 GLXT
 Gloo
 GMI
@@ -248,6 +251,7 @@ Hunyuan
 HunyuanVideo
 IB
 ICD
+InternVL
 ICT
 ICV
 IDE
@@ -288,6 +292,7 @@ KMD
 KV
 KVM
 Karpathy's
+Kimi
 KiB
 Kineto
 Keras
@@ -302,6 +307,7 @@ LM
 logsumexp
 LPDDR
 LRU
+LSE
 LSAN
 LSan
 lstsq
@@ -329,6 +335,7 @@ MNIST
 MPI
 MPT
 MSVC
+MTP
 MTU
 mul
 MVAPICH
@@ -355,6 +362,8 @@ Mooncake
 MoRI
 Mpops
 Multicore
+Multimodal
+multimodal
 multihost
 Multithreaded
 mx
@@ -398,6 +407,7 @@ OOM
 OMPT
 OMPX
 ONNX
+OSL
 OSS
 OSU
 OpenCL
@@ -439,6 +449,7 @@ PnP
 Pollara
 PowerEdge
 PowerShell
+Preshuffled
 Pretrained
 Pretraining
 Primus
@@ -491,6 +502,7 @@ RoCE
 Runfile
 Ryzen
 SALU
+safetensors
 SBIOS
 SCA
 ScaledGEMM
