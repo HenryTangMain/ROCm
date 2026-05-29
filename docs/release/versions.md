@@ -10,6 +10,7 @@
 
 | Version | Release date |
 | ------- | ------------ |
+| [7.2.4](https://rocm.docs.amd.com/en/docs-7.2.4/) | May 29, 2026 |
 | [7.2.3](https://rocm.docs.amd.com/en/docs-7.2.3/) | May 4, 2026 |
 | [7.2.2](https://rocm.docs.amd.com/en/docs-7.2.2/) | April 14, 2026 |
 | [7.2.1](https://rocm.docs.amd.com/en/docs-7.2.1/) | March 25, 2026 |

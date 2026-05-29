@@ -1,6 +1,6 @@
 .. meta::
    :description: Learn about vLLM V1 inference tuning on AMD Instinct GPUs for optimal performance.
-   :keywords: AMD, Instinct, MI300X, HPC, tuning, BIOS settings, NBIO, ROCm,
+   :keywords: AMD, Instinct, MI300X, MI325X, MI350X, MI355X, HPC, tuning, BIOS settings, NBIO, ROCm,
               environment variable, performance, HIP, Triton, PyTorch TunableOp, vLLM, RCCL,
               MIOpen, GPU, resource utilization
 
@@ -25,7 +25,7 @@ Instinct MI300X, MI325X, MI350X, and MI355X GPUs. Learn how to:
 Performance environment variables
 =================================
 
-The following variables are generally useful for Instinct MI300X/MI355X GPUs and vLLM:
+The following variables are generally useful for Instinct MI300X/MI325X/MI350X/MI355X GPUs and vLLM:
 
 * **HIP and math libraries**
 
@@ -34,6 +34,9 @@ The following variables are generally useful for Instinct MI300X/MI355X GPUs and
     :doc:`vLLM ROCm Docker images
     </how-to/rocm-for-ai/inference/benchmark-docker/vllm>`. Bare-metal users
     should set this manually.
+  * ``export SAFETENSORS_FAST_GPU=1`` — enables GPU-accelerated safetensors
+    loading, significantly reducing model load time for large models. Already
+    set in vLLM ROCm Docker images. Bare-metal users should set this manually.
   * ``export TORCH_BLAS_PREFER_HIPBLASLT=1`` — explicitly prefers hipBLASLt
     over hipBLAS for GEMM operations. By default, PyTorch uses heuristics to
     choose the best BLAS library. Setting this can improve linear layer
@@ -42,7 +45,7 @@ The following variables are generally useful for Instinct MI300X/MI355X GPUs and
 * **RCCL (collectives for multi-GPU)**
 
   * ``export NCCL_MIN_NCHANNELS=112`` — increases RCCL channels from default
-    (typically 32-64) to 112 on the Instinct MI300X. **Only beneficial for
+    (typically 32-64) to 112 on the Instinct MI300X/MI325X. **Only beneficial for
     multi-GPU distributed workloads** (tensor parallelism, pipeline
     parallelism). Single-GPU inference does not need this.
 
@@ -51,31 +54,31 @@ The following variables are generally useful for Instinct MI300X/MI355X GPUs and
 AITER (AI Tensor Engine for ROCm) switches
 ==========================================
 
-AITER (AI Tensor Engine for ROCm) provides ROCm-specific fused kernels optimized for Instinct MI350 Series and MI300X GPUs in vLLM V1.
+AITER (AI Tensor Engine for ROCm) provides ROCm-specific fused kernels optimized for Instinct MI350 Series and MI300X/MI325X GPUs in vLLM V1.
 
-How AITER flags work:
-
-* ``VLLM_ROCM_USE_AITER`` is the master switch (defaults to ``False``/``0``).
-* Individual feature flags (``VLLM_ROCM_USE_AITER_LINEAR``, ``VLLM_ROCM_USE_AITER_MOE``, and so on) default to ``True`` but only activate when the master switch is enabled.
-* To enable a specific AITER feature, you must set both ``VLLM_ROCM_USE_AITER=1`` and the specific feature flag to ``1``.
-
-Quick start examples:
+Enable all AITER optimizations with a single master switch:
 
 .. code-block:: bash
 
-   # Enable all AITER optimizations (recommended for most workloads)
    export VLLM_ROCM_USE_AITER=1
    vllm serve MODEL_NAME
 
-   # Enable AITER Fused MoE and enable Triton Prefill-Decode (split) attention
-   export VLLM_ROCM_USE_AITER=1
-   export VLLM_V1_USE_PREFILL_DECODE_ATTENTION=1
-   export VLLM_ROCM_USE_AITER_MHA=0
-   vllm serve MODEL_NAME
+Most individual AITER sub-flags default to ``1`` when the master switch is on,
+while specialized features retain the defaults listed below. You rarely need to
+change them. To select a specific attention backend, use ``--attention-backend``
+(see :ref:`backend selection <vllm-optimization-aiter-backend-selection>`).
 
-   # Disable AITER entirely (i.e, use vLLM Triton Unified Attention Kernel)
-   export VLLM_ROCM_USE_AITER=0
-   vllm serve MODEL_NAME
+**Flags you might adjust:**
+
+* ``VLLM_ROCM_SHUFFLE_KV_CACHE_LAYOUT=1`` — Set for high-concurrency MHA workloads (≥32 concurrent requests) with ``ROCM_AITER_FA``. Defaults to ``0``.
+* ``VLLM_ROCM_USE_AITER_MOE=0`` — Disable only if you hit ``RuntimeError: wrong! device_gemm ...``. Try ``AITER_ONLINE_TUNE=1`` first. See :ref:`AITER MoE requirements <vllm-optimization-aiter-moe-requirements>`.
+* ``VLLM_ROCM_USE_AITER=0`` — Disable AITER entirely to fall back to Triton kernels (for debugging).
+
+Advanced: individual AITER flags
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The following table lists AITER-related sub-flags for fine-grained control. Most
+users do not need to modify these; the default behavior for each flag is listed below.
 
 .. list-table::
    :header-rows: 1
@@ -85,233 +88,135 @@ Quick start examples:
      - Description (default behavior)
 
    * - ``VLLM_ROCM_USE_AITER``
-     - Master switch to enable AITER kernels (``0``/``False`` by default). All other ``VLLM_ROCM_USE_AITER_*`` flags require this to be set to ``1``.
+     - Master switch to enable AITER kernels (``0`` by default). All other ``VLLM_ROCM_USE_AITER_*`` flags require this to be set to ``1``.
 
    * - ``VLLM_ROCM_USE_AITER_LINEAR``
-     - Use AITER quantization operators + GEMM for linear layers (defaults to ``True`` when AITER is on). Accelerates matrix multiplications in all transformer layers. **Recommended to keep enabled**.
+     - Use AITER quantization operators + GEMM for linear layers (defaults to ``1`` when AITER is on). Accelerates matrix multiplications in all transformer layers. **Recommended to keep enabled**.
 
    * - ``VLLM_ROCM_USE_AITER_MOE``
-     - Use AITER fused-MoE kernels (defaults to ``True`` when AITER is on). Accelerates Mixture-of-Experts routing and computation. See the note on :ref:`AITER MoE requirements <vllm-optimization-aiter-moe-requirements>`.
+     - Use AITER fused-MoE kernels (defaults to ``1`` when AITER is on). Accelerates Mixture-of-Experts routing and computation. See the note on :ref:`AITER MoE requirements <vllm-optimization-aiter-moe-requirements>`.
 
    * - ``VLLM_ROCM_USE_AITER_RMSNORM``
-     - Use AITER RMSNorm kernels (defaults to ``True`` when AITER is on). Accelerates normalization layers. **Recommended: keep enabled.**
+     - Use AITER RMSNorm kernels (defaults to ``1`` when AITER is on). Accelerates normalization layers. **Recommended: keep enabled.**
 
    * - ``VLLM_ROCM_USE_AITER_MLA``
-     - Use AITER Multi-head Latent Attention for supported models, for example, DeepSeek-V3/R1 (defaults to ``True`` when AITER is on). See the section on :ref:`AITER MLA requirements <vllm-optimization-aiter-mla-requirements>`.
+     - Use AITER Multi-head Latent Attention for supported models, for example, DeepSeek-V3/R1 (defaults to ``1`` when AITER is on). See the section on :ref:`AITER MLA requirements <vllm-optimization-aiter-mla-requirements>`.
 
    * - ``VLLM_ROCM_USE_AITER_MHA``
-     - Use AITER Multi-Head Attention kernels (defaults to ``True`` when AITER is on; set to ``0`` to use Triton attention backends and Prefill-Decode attention backend instead). See :ref:`attention backend selection <vllm-optimization-aiter-backend-selection>`.
+     - Use AITER Multi-Head Attention kernels (defaults to ``1`` when AITER is on; set to ``0`` to use Triton attention backends or ``ROCM_ATTN`` backend instead). See :ref:`attention backend selection <vllm-optimization-aiter-backend-selection>`.
 
    * - ``VLLM_ROCM_USE_AITER_UNIFIED_ATTENTION``
-     - Enable AITER's optimized unified attention kernel (defaults to ``False``). Only takes effect when: AITER is enabled; unified attention mode is active (``VLLM_V1_USE_PREFILL_DECODE_ATTENTION=0``); and AITER MHA is disabled (``VLLM_ROCM_USE_AITER_MHA=0``). When disabled, falls back to vLLM's Triton unified attention.
+     - Enable AITER's optimized unified attention kernel (defaults to ``0``). Only takes effect when AITER is enabled and AITER MHA is disabled (``VLLM_ROCM_USE_AITER_MHA=0``). When set to ``0``, falls back to vLLM's Triton unified attention. Can also be enabled via ``--attention-backend ROCM_AITER_UNIFIED_ATTN``.
 
    * - ``VLLM_ROCM_USE_AITER_FP8BMM``
-     - Use AITER ``FP8`` batched matmul (defaults to ``True`` when AITER is on). Fuses ``FP8`` per-token quantization with batched GEMM (used in MLA models like DeepSeek-V3). Requires an Instinct MI300X/MI355X GPU.
+     - Use AITER ``FP8`` batched matmul (defaults to ``1`` when AITER is on). Fuses ``FP8`` per-token quantization with batched GEMM (used in MLA models like DeepSeek-V3).
+
+   * - ``VLLM_ROCM_USE_AITER_FP4BMM``
+     - Use AITER ``FP4`` batched matmul (defaults to ``1`` when AITER is on). Fuses ``FP4`` per-token quantization with batched GEMM (used in MLA models like DeepSeek-V3). Requires an Instinct MI350X/MI355X GPU.
+
+   * - ``VLLM_ROCM_USE_AITER_FUSION_SHARED_EXPERTS``
+     - Fuse shared expert computation into the AITER fused-MoE kernel (defaults to ``0``). Applies to MoE models with shared experts (for example, DeepSeek-V3/R1 with 1 shared expert). Requires SiLU/GELU activation (``is_act_and_mul``). Incompatible with `MoRI <https://github.com/ROCm/mori#mori>`__ scheduling — disable with ``VLLM_ROCM_USE_AITER_FUSION_SHARED_EXPERTS=0`` if using MoRI.
+
+   * - ``VLLM_ROCM_USE_AITER_FP4_ASM_GEMM``
+     - Enable AITER assembly (HIP) FP4 GEMM kernels for MXFP4-quantized models (defaults to ``0``). When set to ``1``, uses hand-tuned ASM kernels instead of Triton for ``FP4×FP4`` weight GEMMs — faster at small batch sizes (``M`` ≤ 64). Requires Instinct MI350X/MI355X (``supports_mx()``). Combine with ``--quantization quark`` for MXFP4 models.
 
    * - ``VLLM_ROCM_USE_SKINNY_GEMM``
-     - Prefer skinny-GEMM kernel variants for small batch sizes (defaults to ``True``). Improves performance when ``M`` dimension is small. **Recommended to keep enabled**.
+     - Prefer skinny-GEMM kernel variants for small batch sizes (defaults to ``1``). Improves performance when ``M`` dimension is small. **Recommended to keep enabled**.
 
    * - ``VLLM_ROCM_FP8_PADDING``
-     - Pad ``FP8`` linear weight tensors to improve memory locality (defaults to ``True``). Minor memory overhead for better performance.
+     - Pad ``FP8`` linear weight tensors to improve memory locality (defaults to ``1``). Minor memory overhead for better performance.
 
    * - ``VLLM_ROCM_MOE_PADDING``
-     - Pad MoE weight tensors for better memory access patterns (defaults to ``True``). Same memory/performance tradeoff as ``FP8`` padding.
+     - Pad MoE weight tensors for better memory access patterns (defaults to ``1``). Same memory/performance tradeoff as ``FP8`` padding.
+
+   * - ``VLLM_ROCM_SHUFFLE_KV_CACHE_LAYOUT``
+     - This only affects the ``ROCM_AITER_FA`` backend. When set to ``0``, it uses the HIP Paged Attention implementation ``torch.ops.aiter.paged_attention_v1`` from AITER. **Good for low concurrency (for example, concurrency ≤32).** When set to ``1``, it uses the ASM Paged Attention Kernel ``pa_fwd_asm`` from AITER. **Good for high concurrency (for example, concurrency ≥32).** (Defaults to ``0`` when AITER is on.)
 
    * - ``VLLM_ROCM_CUSTOM_PAGED_ATTN``
-     - Use custom paged-attention decode kernel when Prefill-Decode attention backend is selected (defaults to ``True``). See :ref:`Attention backend selection with AITER <vllm-optimization-aiter-backend-selection>`.
-
-.. note::
-
-   When ``VLLM_ROCM_USE_AITER=1``, most AITER component flags (``LINEAR``,
-   ``MOE``, ``RMSNORM``, ``MLA``, ``MHA``, ``FP8BMM``) automatically default to
-   ``True``. You typically only need to set the master switch
-   ``VLLM_ROCM_USE_AITER=1`` to enable all optimizations. ROCm provides a
-   prebuilt optimized Docker image for validating the performance of LLM
-   inference with vLLM on MI300X Series GPUs. The Docker image includes ROCm,
-   vLLM, and PyTorch. For more information, see
-   :doc:`/how-to/rocm-for-ai/inference/benchmark-docker/vllm`.
+     - Use custom paged-attention decode kernel when ``ROCM_ATTN`` backend is selected (defaults to ``1``). See :ref:`Attention backend selection with AITER <vllm-optimization-aiter-backend-selection>`.
 
 .. _vllm-optimization-aiter-moe-requirements:
-
-AITER MoE requirements (Mixtral, DeepSeek-V2/V3, Qwen-MoE models)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-``VLLM_ROCM_USE_AITER_MOE`` enables AITER's optimized Mixture-of-Experts kernels, such as expert routing (topk selection) and expert computation for better performance.
-
-Applicable models:
-
-* Mixtral series: for example, Mixtral-8x7B / Mixtral-8x22B
-* Llama-4 family: for example, Llama-4-Scout-17B-16E / Llama-4-Maverick-17B-128E
-* DeepSeek family: DeepSeek-V2 / DeepSeek-V3 / DeepSeek-R1
-* Qwen family: Qwen1.5-MoE / Qwen2-MoE / Qwen2.5-MoE series
-* Other MoE architectures
-
-When to enable:
-
-* **Enable (default):** For all MoE models on the Instinct MI300X/MI355X for best throughput
-* **Disable:** Only for debugging or if you encounter numerical issues
-
-Example usage:
-
-.. code-block:: bash
-
-   # Standard MoE model (Mixtral)
-   VLLM_ROCM_USE_AITER=1 vllm serve mistralai/Mixtral-8x7B-Instruct-v0.1
-
-   # Hybrid MoE+MLA model (DeepSeek-V3) - requires both MOE and MLA flags
-   VLLM_ROCM_USE_AITER=1 vllm serve deepseek-ai/DeepSeek-V3 \
-       --block-size 1 \
-       --tensor-parallel-size 8
-
 .. _vllm-optimization-aiter-mla-requirements:
-
-AITER MLA requirements (DeepSeek-V3/R1 models)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-``VLLM_ROCM_USE_AITER_MLA`` enables AITER MLA (Multi-head Latent Attention) optimization for supported models. Defaults to **True** when AITER is on.
-
-Critical requirement:
-
-* **Must** explicitly set ``--block-size 1``
-
-.. important::
-
-   If you omit ``--block-size 1``, vLLM will raise an error rather than defaulting to 1.
-
-Applicable models:
-
-* DeepSeek-V3 / DeepSeek-R1
-* DeepSeek-V2
-* Other models using multi-head latent attention (MLA) architecture
-
-Example usage:
-
-.. code-block:: bash
-
-   # DeepSeek-R1 with AITER MLA (requires 8 GPUs)
-   VLLM_ROCM_USE_AITER=1 vllm serve deepseek-ai/DeepSeek-R1 \
-       --block-size 1 \
-       --tensor-parallel-size 8
-
+.. _vllm-optimization-aiter-mla-sparse-requirements:
 .. _vllm-optimization-aiter-backend-selection:
 
 Attention backend selection with AITER
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Understanding which attention backend to use helps optimize your deployment.
+Most models work out of the box with ``VLLM_ROCM_USE_AITER=1`` — vLLM auto-selects
+the optimal backend. Use ``--attention-backend`` to override the auto-selected backend.
 
-Quick reference: Which attention backend will I get?
+.. code-block:: bash
 
-Default behavior (no configuration)
+   export VLLM_ROCM_USE_AITER=1
+   vllm serve <your-model> --tensor-parallel-size <tp>
 
-Without setting any environment variables, vLLM uses:
+.. note::
+   Always set ``VLLM_ROCM_USE_AITER=1`` even when using ``--attention-backend`` explicitly.
+   ``--attention-backend`` only overrides the attention kernel; ``VLLM_ROCM_USE_AITER=1``
+   is still required to enable AITER for GEMM, RMSNorm, and MoE kernels.
+   The Radeon/fallback backends (``ROCM_ATTN``, ``TRITON_MLA``) are the exception —
+   they do not use AITER and do not require the env var.
 
-* **vLLM Triton Unified Attention** — A single Triton kernel handling both prefill and decode phases
-* Works on all ROCm platforms
-* Good baseline performance
-
-**Recommended**: Enable AITER (set ``VLLM_ROCM_USE_AITER=1``)
-
-When you enable AITER, the backend is automatically selected based on your model:
-
-.. code-block:: text
-
-   Is your model using MLA architecture? (DeepSeek-V3/R1/V2)
-   ├─ YES → AITER MLA Backend
-   │         • Requires --block-size 1
-   │         • Best performance for MLA models
-   │         • Automatically selected
-   │
-   └─ NO  → AITER MHA Backend
-             • For standard transformer models (Llama, Mistral, etc.)
-             • Optimized for Instinct MI300X/MI355X
-             • Automatically selected
-
-**Advanced**: Manual backend selection
-
-Most users won't need this, but you can override the defaults:
+The table below shows which backend is selected per model type and how to tune it.
 
 .. list-table::
-   :widths: 40 60
    :header-rows: 1
+   :widths: 15 18 35 32
 
-   * - To use this backend
-     - Set these flags
+   * - Model type
+     - Backend
+     - How to enable
+     - Tuning tips
 
-   * - AITER MLA (MLA models only)
-     - ``VLLM_ROCM_USE_AITER=1`` (auto-selects for DeepSeek-V3/R1)
+   * - **MHA models** (Llama, Mistral, Qwen, Mixtral, MiniMax-M2.5)
+     - **ROCM_AITER_FA** (recommended, auto-selected)
+     - ``VLLM_ROCM_USE_AITER=1`` (auto-selected). To override: ``VLLM_ROCM_USE_AITER=1 --attention-backend ROCM_AITER_FA``. Add ``VLLM_ROCM_SHUFFLE_KV_CACHE_LAYOUT=1`` for shuffled KV cache.
+     - **2.7–4.4x TPS** over legacy ``ROCM_ATTN``. Set ``VLLM_ROCM_SHUFFLE_KV_CACHE_LAYOUT=1`` for **15–20% decode improvement** at high concurrency. Low TTFT: ``--max-num-batched-tokens`` ≤ 8k–16k. High throughput: ≥ 32k with ``cudagraph_mode=FULL``.
 
-   * - AITER MHA (standard models)
-     - ``VLLM_ROCM_USE_AITER=1`` (auto-selects for non-MLA models)
+   * - **MLA models** (DeepSeek-V3/R1/V2, Kimi-K2.5, Mistral-Large-3-675B)
+     - **ROCM_AITER_MLA** (recommended, auto-selected)
+     - ``VLLM_ROCM_USE_AITER=1`` (auto-selected). To override: ``VLLM_ROCM_USE_AITER=1 --attention-backend ROCM_AITER_MLA``. ``--block-size 1`` is no longer mandatory (vLLM ≥0.14); still recommended for prefix-caching workloads.
+     - **1.2–1.5x higher TPS** over ``TRITON_MLA``. Supports uniform-batch CUDA graphs and MTP. On MI300X/MI325X (gfx942), ``ROCM_AITER_TRITON_MLA`` may show 2–3% higher TPS. On MI355X (gfx950), ``ROCM_AITER_MLA`` is preferred (uses AITER assembly MHA for prefill).
 
-   * - vLLM Triton Unified (default)
-     - ``VLLM_ROCM_USE_AITER=0`` (or unset)
+   * - **DSA models** (DeepSeek-V3.2, GLM-5)
+     - **ROCM_AITER_MLA_SPARSE** (auto-selected)
+     - ``VLLM_ROCM_USE_AITER=1`` — auto-detected from ``index_topk`` in model config. Requires ``--block-size 1``.
+     - Instinct MI300X/MI325X/MI350X/MI355X only.
 
-   * - Triton Prefill-Decode (split) without AITER
-     - | ``VLLM_V1_USE_PREFILL_DECODE_ATTENTION=1``
+   * - **gpt-oss models** (gpt-oss-120b/20b)
+     - **ROCM_AITER_UNIFIED_ATTN**
+     - ``VLLM_ROCM_USE_AITER=1 --attention-backend ROCM_AITER_UNIFIED_ATTN``
+     -
 
-   * - Triton Prefill-Decode (split) along with AITER Fused-MoE
-     - | ``VLLM_ROCM_USE_AITER=1``
-       | ``VLLM_ROCM_USE_AITER_MHA=0``
-       | ``VLLM_V1_USE_PREFILL_DECODE_ATTENTION=1``
+   * - **Radeon / fallback**
+     - **ROCM_ATTN** (MHA) or **TRITON_MLA** (MLA)
+     - ``--attention-backend ROCM_ATTN`` or ``TRITON_MLA``
+     - ``ROCM_ATTN`` is preferred over ``TRITON_ATTN`` — it uses a custom HIP paged-attention kernel for decode when the model's KV head size is supported, and falls back to Triton only when not. If ``ROCM_ATTN`` is slow for your model (unsupported head size triggers Triton decode), try ``TRITON_ATTN``. Both work on Radeon GPUs.
 
-   * - AITER Unified Attention
-     - | ``VLLM_ROCM_USE_AITER=1``
-       | ``VLLM_ROCM_USE_AITER_MHA=0``
-       | ``VLLM_ROCM_USE_AITER_UNIFIED_ATTENTION=1``
+.. note::
+   **MoE models** (Mixtral, Llama-4-Scout/Maverick, DeepSeek-V2/V3/R1, Kimi-K2.5, MiniMax-M2.5, GLM-5, Qwen-MoE): AITER MoE kernels activate automatically with ``VLLM_ROCM_USE_AITER=1`` — no extra attention backend flags needed. If you hit ``RuntimeError: wrong! device_gemm ...``, set ``AITER_ONLINE_TUNE=1`` and retry. Only disable MoE kernels (``VLLM_ROCM_USE_AITER_MOE=0``) if that also fails.
+
+Once AITER is configured, see `Parallelism strategies (run vLLM on multiple GPUs)`_ for TP/DP/EP choices — especially for MLA and MoE models where the wrong strategy wastes memory or throughput.
 
 **Quick start examples**:
 
 .. code-block:: bash
 
-   # Recommended: Standard model with AITER (Llama, Mistral, Qwen, etc.)
-   VLLM_ROCM_USE_AITER=1 vllm serve meta-llama/Llama-3.3-70B-Instruct
-
-   # MLA model with AITER (DeepSeek-V3/R1)
-   VLLM_ROCM_USE_AITER=1 vllm serve deepseek-ai/DeepSeek-R1 \
+   # DSA model (DeepSeek-V3.2) — backend auto-selected from model config
+   VLLM_ROCM_USE_AITER=1 vllm serve deepseek-ai/DeepSeek-V3.2 \
        --block-size 1 \
        --tensor-parallel-size 8
 
-   # Advanced: Use Prefill-Decode split (for short input cases) with AITER Fused-MoE
-   VLLM_ROCM_USE_AITER=1 \
-   VLLM_ROCM_USE_AITER_MHA=0 \
-   VLLM_V1_USE_PREFILL_DECODE_ATTENTION=1 \
-   vllm serve meta-llama/Llama-4-Scout-17B-16E
+   # Explicitly select a backend for MLA models
+   VLLM_ROCM_USE_AITER=1 vllm serve deepseek-ai/DeepSeek-R1-0528 \
+       --tensor-parallel-size 8 \
+       --attention-backend ROCM_AITER_MLA
 
-**Which backend should I choose?**
-
-.. list-table::
-   :widths: 30 70
-   :header-rows: 1
-
-   * - Your use case
-     - Recommended backend
-
-   * - **Standard transformer models** (Llama, Mistral, Qwen, Mixtral)
-     - **AITER MHA** (``VLLM_ROCM_USE_AITER=1``) — **Recommended for most workloads** on Instinct MI300X/MI355X. Provides optimized attention kernels for both prefill and decode phases.
-
-   * - **MLA models** (DeepSeek-V3/R1/V2)
-     - **AITER MLA** (auto-selected with ``VLLM_ROCM_USE_AITER=1``) — Required for optimal performance, must use ``--block-size 1``
-
-   * - **gpt-oss models** (gpt-oss-120b/20b)
-     - **AITER Unified Attention** (``VLLM_ROCM_USE_AITER=1``, ``VLLM_ROCM_USE_AITER_MHA=0``, ``VLLM_ROCM_USE_AITER_UNIFIED_ATTENTION=1``) — Required for optimal performance
-
-   * - **Debugging or compatibility**
-     - **vLLM Triton Unified** (default with ``VLLM_ROCM_USE_AITER=0``) — Generic fallback, works everywhere
-
-**Important notes:**
-
-* **AITER MHA and AITER MLA are mutually exclusive** — vLLM automatically detects MLA models and selects the appropriate backend
-* **For 95% of users:** Simply set ``VLLM_ROCM_USE_AITER=1`` and let vLLM choose the right backend
-* When in doubt, start with AITER enabled (the recommended configuration) and profile your specific workload
-
-Backend choice quick recipes
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-* **Standard transformers (any prompt length):** Start with ``VLLM_ROCM_USE_AITER=1`` → AITER MHA. For CUDA graph modes, see architecture-specific guidance below (Dense vs MoE models have different optimal modes).
-* **Latency-sensitive chat (low TTFT):** keep ``--max-num-batched-tokens`` ≤ **8k–16k** with AITER.
-* **Streaming decode (low ITL):** raise ``--max-num-batched-tokens`` to **32k–64k**.
-* **Offline max throughput:** ``--max-num-batched-tokens`` ≥ **32k** with ``cudagraph_mode=FULL``.
+   # MHA model with shuffled KV cache layout for high concurrency
+   VLLM_ROCM_USE_AITER=1 VLLM_ROCM_SHUFFLE_KV_CACHE_LAYOUT=1 \
+   vllm serve meta-llama/Llama-3.3-70B-Instruct \
+       --attention-backend ROCM_AITER_FA
 
 **How to verify which backend is active**
 
@@ -320,68 +225,13 @@ Check vLLM's startup logs to confirm which attention backend is being used:
 .. code-block:: bash
 
    # Start vLLM and check logs
-   VLLM_ROCM_USE_AITER=1 vllm serve meta-llama/Llama-3.3-70B-Instruct 2>&1 | grep -i attention
+   VLLM_ROCM_USE_AITER=1 vllm serve meta-llama/Llama-3.3-70B-Instruct 2>&1 | grep -i "using.*backend"
 
-**Expected log messages:**
+Look for ``Using <backend_name> backend.`` in the startup output — for example,
+``Using ROCM_AITER_FA backend.``
 
-* AITER MHA: ``Using Aiter Flash Attention backend on V1 engine.``
-* AITER MLA: ``Using AITER MLA backend on V1 engine.``
-* vLLM Triton MLA: ``Using Triton MLA backend on V1 engine.``
-* vLLM Triton Unified: ``Using Triton Attention backend on V1 engine.``
-* AITER Triton Unified: ``Using Aiter Unified Attention backend on V1 engine.``
-* AITER Triton Prefill-Decode: ``Using Rocm Attention backend on V1 engine.``
-
-Attention backend technical details
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-This section provides technical details about vLLM's attention backends on ROCm.
-
-vLLM V1 on ROCm provides these attention implementations:
-
-1. **vLLM Triton Unified Attention** (default when AITER is **off**)
-
-   * Single unified Triton kernel handling both chunked prefill and decode phases
-   * Generic implementation that works across all ROCm platforms
-   * Good baseline performance
-   * Automatically selected when ``VLLM_ROCM_USE_AITER=0`` (or unset)
-   * Supports GPT-OSS
-
-2. **AITER Triton Unified Attention** (advanced, requires manual configuration)
-
-   * The AMD optimized unified Triton kernel
-   * Enable with ``VLLM_ROCM_USE_AITER=1``, ``VLLM_ROCM_USE_AITER_MHA=0``, and ``VLLM_ROCM_USE_AITER_UNIFIED_ATTENTION=1``.
-   * Only useful for specific workloads. Most users should use AITER MHA instead.
-   * Recommended this backend when running GPT-OSS.
-
-3. **AITER Triton Prefill–Decode Attention** (hybrid, Instinct MI300X-optimized)
-
-   * Enable with ``VLLM_V1_USE_PREFILL_DECODE_ATTENTION=1``
-   * Uses separate kernels for prefill and decode phases:
-
-     * **Prefill**: ``context_attention_fwd`` Triton kernel
-     * **Primary decode**: ``torch.ops._rocm_C.paged_attention`` (custom ROCm kernel optimized for head sizes 64/128, block sizes 16/32, GQA 1–16, context ≤131k; sliding window not supported)
-     * **Fallback decode**: ``kernel_paged_attention_2d`` Triton kernel when shapes don't meet primary decode requirements
-
-   * Usually better compared to unified Triton kernels
-   * Performance vs AITER MHA varies: AITER MHA is typically faster overall, but Prefill-Decode split may win in short input scenarios
-   * The custom paged attention decode kernel is controlled by ``VLLM_ROCM_CUSTOM_PAGED_ATTN`` (default **True**)
-
-4. **AITER Multi-Head Attention (MHA)** (default when AITER is **on**)
-
-   * Controlled by ``VLLM_ROCM_USE_AITER_MHA`` (**1** = enabled)
-   * Best all-around performance for standard transformer models
-   * Automatically selected when ``VLLM_ROCM_USE_AITER=1`` and model is not MLA
-
-5. **vLLM Triton Multi-head Latent Attention (MLA)** (for DeepSeek-V3/R1/V2)
-   
-   * Automatically selected when ``VLLM_ROCM_USE_AITER=0`` (or unset)
-
-6. **AITER Multi-head Latent Attention (MLA)** (for DeepSeek-V3/R1/V2)
-
-   * Controlled by ``VLLM_ROCM_USE_AITER_MLA`` (``1`` = enabled)
-   * Required for optimal performance on MLA architecture models
-   * Automatically selected when ``VLLM_ROCM_USE_AITER=1`` and model uses MLA
-   * Requires ``--block-size 1``
+For in-depth architecture and benchmarks of all 7 ROCm attention backends, see the
+`ROCm Attention Backend blog post <https://vllm.ai/blog/rocm-attention-backend>`_.
 
 Quick Reduce (large all-reduces on ROCm)
 ========================================
@@ -396,7 +246,7 @@ It supports FP16/BF16 as well as symmetric INT8/INT6/INT4 quantized all-reduce (
 Control via:
 
 * ``VLLM_ROCM_QUICK_REDUCE_QUANTIZATION`` ∈ ``["NONE","FP","INT8","INT6","INT4"]`` (default ``NONE``).
-* ``VLLM_ROCM_QUICK_REDUCE_CAST_BF16_TO_FP16``: cast BF16 input to FP16 (``1/True`` by default for performance).
+* ``VLLM_ROCM_QUICK_REDUCE_CAST_BF16_TO_FP16``: cast BF16 input to FP16 (``1`` by default for performance).
 * ``VLLM_ROCM_QUICK_REDUCE_MAX_SIZE_BYTES_MB``: cap the preset buffer (default ``NONE`` ≈ ``2048`` MB).
 
 Quick Reduce tends to help **throughput** at higher TP counts (for example, 4–8) with many concurrent requests.
@@ -413,12 +263,34 @@ vLLM supports the following parallelism strategies:
 
 For more details, see `Parallelism and scaling <https://docs.vllm.ai/en/stable/serving/parallelism_scaling.html>`_.
 
-**Choosing the right strategy:**
+**Quick-reference decision table:**
 
-* **Tensor Parallelism (TP)**: Use when model doesn't fit on one GPU. Prefer staying within a single XGMI island (≤8 GPUs on the Instinct MI300X).
-* **Pipeline Parallelism (PP)**: Use for very large models across nodes. Set TP to GPUs per node, scale with PP across nodes.
-* **Data Parallelism (DP)**: Use when model fits on single GPU or TP group, and you need higher throughput. Combine with TP/PP for large models.
-* **Expert Parallelism (EP)**: Use for MoE models with ``--enable-expert-parallel``. More efficient than TP for MoE layers.
+.. list-table::
+   :header-rows: 1
+   :widths: 30 35 35
+
+   * - Model type
+     - Low concurrency (≤128 requests)
+     - High concurrency (≥512 requests)
+
+   * - **Dense** (for example, Llama, Qwen-dense, Mistral-dense)
+     - TP only
+     - TP + independent DP replicas (your own load balancer)
+
+   * - **MoE, standard density ≥3%** (for example, Qwen3-235B-A22B, DeepSeek-V3/R1)
+     - TP + EP
+     - DP + EP
+
+   * - **MoE, ultra-sparse <1%** (for example, Llama-4-Maverick at 0.78%)
+     - TP only — **no EP** (AllToAll overhead exceeds benefit)
+     - DP only — **no EP**
+
+   * - **MLA models** (for example, DeepSeek-V2/V3/R1, Kimi-K2.5, Mistral-Large-3-675B)
+     - TP + EP
+     - **DP + EP** — TP alone duplicates the full KV cache on every GPU; use DP Attention to partition it
+
+EP = ``--enable-expert-parallel``. DP = ``--data-parallel-size N``.
+See `Data Parallel Attention (advanced)`_ for the MLA memory explanation and `Expert parallelism`_ for EP details.
 
 Tensor parallelism
 ^^^^^^^^^^^^^^^^^^
@@ -447,6 +319,9 @@ Tensor parallelism splits each layer of the model weights across multiple GPUs w
 .. tip::
    For structured data parallelism deployments with load balancing, see :ref:`data-parallelism-section`.
 
+.. note::
+   **MLA models (DeepSeek, Kimi-K2.5, Mistral-Large-3-675B):** TP alone replicates the full KV cache on every GPU, which wastes memory at high concurrency. See `Data Parallel Attention (advanced)`_ for the DP+EP configuration that partitions the KV cache instead.
+
 Pipeline parallelism
 ^^^^^^^^^^^^^^^^^^^^
 
@@ -469,7 +344,7 @@ Pipeline parallelism splits the model's layers across multiple GPUs or nodes, wi
        --pipeline-parallel-size 2
 
 .. note::
-   **ROCm best practice**: On the Instinct MI300X, prefer staying within a single XGMI island (≤8 GPUs) using TP only. Use PP when scaling beyond eight GPUs or across nodes.
+   **ROCm best practice**: On Instinct MI300X/MI325X/MI350X/MI355X, prefer staying within a single XGMI island (≤8 GPUs) using TP only. Use PP when scaling beyond eight GPUs or across nodes.
 
 .. _data-parallelism-section:
 
@@ -538,29 +413,21 @@ For more technical details, see `vLLM Data Parallel Deployment <https://docs.vll
 Data Parallel Attention (advanced)
 """"""""""""""""""""""""""""""""""
 
-For models with Multi-head Latent Attention (MLA) architecture like DeepSeek V2, V3, and R1, vLLM supports **Data Parallel Attention**,
-which provides request-level parallelism instead of model replication. This avoids KV cache duplication across tensor parallel ranks,
-significantly reducing memory usage and enabling larger batch sizes.
+For MLA models (DeepSeek V2/V3/R1, Kimi-K2.5), **DP+EP is the recommended configuration at high concurrency** (≥512 concurrent requests). Unlike traditional DP which replicates model weights, Data Parallel Attention uses inter-GPU AllToAll communication to partition KV cache across GPUs, avoiding the KV cache duplication that occurs with tensor parallelism.
 
-**Key benefits for MLA models:**
-
-* Eliminates KV cache duplication when using tensor parallelism
-* Enables higher throughput for high-QPS serving scenarios
-* Better memory efficiency for large context windows
-
-**Usage with Expert Parallelism:**
-
-Data parallel attention works seamlessly with Expert Parallelism for MoE models:
+* At **≤128 concurrent requests**, TP=8 provides 40–86% higher throughput
+* At **≥512 concurrent requests**, DP=8+EP provides 16–47% higher throughput
+* Crossover typically occurs around **256–512 concurrent requests**
 
 .. code-block:: bash
 
-   # DeepSeek-R1 with DP attention and expert parallelism
+   # DeepSeek-R1 with DP attention and expert parallelism (high concurrency)
    VLLM_ALL2ALL_BACKEND="allgather_reducescatter" vllm serve deepseek-ai/DeepSeek-R1 \
        --data-parallel-size 8 \
        --enable-expert-parallel \
        --disable-nccl-for-dp-synchronization
 
-For more technical details, see `vLLM RFC #16037 <https://github.com/vllm-project/vllm/issues/16037>`_.
+For more technical details, see `vLLM RFC #16037 <https://github.com/vllm-project/vllm/issues/16037>`_ and the `vLLM MoE Playbook <https://rocm.blogs.amd.com/software-tools-optimization/vllm-moe-guide/README.html>`_.
 
 Expert parallelism
 ^^^^^^^^^^^^^^^^^^
@@ -568,23 +435,47 @@ Expert parallelism
 Expert parallelism (EP) distributes expert layers of Mixture-of-Experts (MoE) models across multiple GPUs,
 where tokens are routed to the GPUs holding the experts they need.
 
-**Performance considerations:**
-
-Expert parallelism is designed primarily for cross-node MoE deployments where high-bandwidth interconnects (like InfiniBand) between nodes make EP communication efficient. For single-node Instinct MI300X/MI355X deployments with XGMI connectivity, tensor parallelism typically provides better performance due to optimized all-to-all collectives on XGMI.
-
 **When to use EP:**
 
-* Multi-node MoE deployments with fast inter-node networking
-* Models with very large numbers of experts that benefit from expert distribution
-* Workloads where EP's reduced data movement outweighs communication overhead
+.. list-table::
+   :header-rows: 1
+   :widths: 30 35 35
 
-**Single-node recommendation:** For Instinct MI300X/MI355X within a single node (≤8 GPUs), prefer tensor parallelism over expert parallelism for MoE models to leverage XGMI's high bandwidth and low latency.
+   * - Scenario
+     - Recommended config
+     - Rationale
+
+   * - **Low concurrency** (≤128 requests)
+     - TP=8 (EP optional)
+     - 40–86% higher throughput than DP at low concurrency.
+
+   * - **High concurrency** (≥512 requests)
+     - DP=8 + EP
+     - 16–47% higher throughput at scale (for example, 7,114 TPS for DeepSeek-R1 at 1024 concurrent requests).
+
+   * - **MLA/MQA models** (DeepSeek-V2/V3/R1, Kimi-K2.5)
+     - DP + EP
+     - Avoids KV cache duplication across TP ranks. Mandatory for optimal memory at high concurrency.
+
+   * - **Ultra-sparse MoE** (<1% activation density, for example, Llama-4-Maverick)
+     - DP or TP **without** EP
+     - EP adds AllToAll overhead that exceeds the benefit — EP is 7–12% *slower* for these models.
+
+   * - **Standard MoE** (≥3% activation density, for example, DeepSeek-R1, Qwen3-235B)
+     - EP flag
+     - Improves expert routing efficiency.
 
 **Basic usage:**
 
 .. code-block:: bash
 
-   # Enable expert parallelism for MoE models (DeepSeek example with 8 GPUs)
+   # DP + EP for MLA+MoE models (DeepSeek-R1, high concurrency)
+   VLLM_ALL2ALL_BACKEND="allgather_reducescatter" vllm serve deepseek-ai/DeepSeek-R1 \
+       --data-parallel-size 8 \
+       --enable-expert-parallel \
+       --disable-nccl-for-dp-synchronization
+
+   # TP + EP (low concurrency, non-MLA models)
    vllm serve deepseek-ai/DeepSeek-R1 \
        --tensor-parallel-size 8 \
        --enable-expert-parallel
@@ -596,17 +487,37 @@ When EP is enabled alongside tensor parallelism:
 * Fused MoE layers use expert parallelism
 * Non-fused MoE layers use tensor parallelism
 
-**Combining with Data Parallelism:**
+Multimodal model optimization (vision-language)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-EP works seamlessly with Data Parallel Attention for optimal memory efficiency in MLA+MoE models (for example, DeepSeek V3):
+For multimodal models (Qwen3-VL, InternVL, step3), use batch-level data parallelism
+for the vision encoder instead of the default tensor parallelism:
 
 .. code-block:: bash
 
-   # DP attention + EP for DeepSeek-R1
-   VLLM_ALL2ALL_BACKEND="allgather_reducescatter" vllm serve deepseek-ai/DeepSeek-R1 \
-       --data-parallel-size 8 \
+   vllm serve Qwen/Qwen3-VL-235B-A22B-Instruct \
+       --tensor-parallel-size 8 \
+       --mm-encoder-tp-mode data \
        --enable-expert-parallel \
-       --disable-nccl-for-dp-synchronization
+       --max-model-len 32768
+
+``--mm-encoder-tp-mode data`` replaces per-layer all-reduce synchronization (58–126 ops
+in TP mode) with a single all-gather after encoding, yielding **10–45% throughput
+improvement** with negligible memory overhead (0.2–2.3% model size increase).
+
+**When it helps most:**
+
+* High-resolution images (1024×1024 px): **+16% average** throughput
+* 1–3 images per request: **+13–16%** throughput
+* Deep vision encoders (for example, InternVL 45 blocks, step3 63 blocks)
+
+**When to skip it:**
+
+* Very small vision encoders (<1% of total model parameters)
+* 10+ small images per request (diminishing returns)
+* Memory-constrained deployments (encoder weights are replicated per GPU)
+
+For more details, see the `vLLM Multimodal DP blog post <https://rocm.blogs.amd.com/software-tools-optimization/vllm-dp-vision/README.html>`_.
 
 Throughput benchmarking
 =======================
@@ -645,7 +556,7 @@ Maximizing instances per node
 To maximize **per-node throughput**, run as many vLLM instances as model memory allows,
 balancing KV-cache capacity.
 
-* **HBM capacities**: MI300X = 192 GB HBM3; MI355X = 288 GB HBM3E.
+* **HBM capacities**: MI300X = 192 GB HBM3; MI325X = 256 GB HBM3E; MI350X/MI355X = 288 GB HBM3E.
 
 * Up to **eight** single-GPU vLLM instances can run in parallel on an 8×GPU node (one per GPU):
 
@@ -660,7 +571,7 @@ balancing KV-cache capacity.
 Total throughput from **N** single-GPU instances usually exceeds one instance stretched across **N** GPUs (``-tp N``).
 
 **Model coverage**: Llama 2 (7B/13B/70B), Llama 3 (8B/70B), Qwen2 (7B/72B), Mixtral-8x7B/8x22B, and others Llama2‑70B
-and Llama3‑70B can fit a single MI300X/MI355X; Llama3.1‑405B fits on a single 8×MI300X/MI355X node.
+and Llama3‑70B can fit a single MI300X/MI325X/MI350X/MI355X; Llama3.1‑405B fits on a single 8×MI300X/MI325X/MI350X/MI355X node.
 
 Configure the gpu-memory-utilization parameter
 ==================================================
@@ -770,11 +681,15 @@ CUDA graphs reduce kernel launch overhead by capturing and replaying GPU operati
 
    * - Attention backend
      - CUDA graph support
-   * - vLLM/AITER Triton Unified Attention, vLLM Prefill-Decode Attention
+   * - ``TRITON_ATTN``
      - Full support (prefill + decode)
-   * - AITER MHA, AITER MLA
+   * - ``ROCM_ATTN``, ``ROCM_AITER_UNIFIED_ATTN``
+     - Full support (prefill + decode)
+   * - ``ROCM_AITER_FA``, ``ROCM_AITER_MLA``, ``ROCM_AITER_TRITON_MLA``
      - Uniform batches only
-   * - vLLM Triton MLA
+   * - ``ROCM_AITER_MLA_SPARSE``
+     - Uniform single-token decode only
+   * - ``TRITON_MLA``
      - Must exclude attention from graph — ``PIECEWISE`` required
 
 **Usage examples:**
@@ -801,7 +716,7 @@ CUDA graphs reduce kernel launch overhead by capturing and replaying GPU operati
 Quantization support
 ====================
 
-vLLM supports FP4/FP8 (4-bit/8-bit floating point) weight and activation quantization using hardware acceleration on the Instinct MI300X and MI355X. 
+vLLM supports FP4/FP8 (4-bit/8-bit floating point) weight and activation quantization using hardware acceleration on the Instinct MI300X, MI325X, MI350X, and MI355X. 
 Quantization of models with FP4/FP8 allows for a **2x-4x** reduction in model memory requirements and up to a **1.6x** 
 improvement in throughput with minimal impact on accuracy. 
 
@@ -814,7 +729,7 @@ vLLM ROCm supports a variety of quantization demands:
 Supported quantization methods
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-vLLM on ROCm supports the following quantization methods for the AMD Instinct MI300 series and Instinct MI355X GPUs:
+vLLM on ROCm supports the following quantization methods for the AMD Instinct MI300 series and Instinct MI350 series GPUs:
 
 .. list-table::
    :header-rows: 1
@@ -936,40 +851,23 @@ For models without pre-quantization, vLLM can quantize ``FP16``/``BF16`` models 
 GPTQ
 ^^^^
 
-GPTQ is a 4-bit/8-bit weight quantization method that compresses models with minimal accuracy loss. GPTQ
-is fully supported on ROCm via HIP-compiled kernels in vLLM.
-
-**ROCm support status**:
-
-- **Fully supported** - GPTQ kernels compile and run on ROCm via HIP
-- **Pre-quantized models work** with standard GPTQ kernels
-
-**Recommendation**: For the AMD Instinct MI300X, **AWQ with Triton kernels** or **FP8 quantization** might provide better
-performance due to ROCm-specific optimizations, but GPTQ is a viable alternative.
-
-**Using pre-quantized GPTQ models**:
+GPTQ (4-bit/8-bit weight quantization) is fully supported on ROCm via HIP-compiled kernels.
+Pre-quantized GPTQ models from Hugging Face work out of the box. For better throughput on AMD Instinct GPUs,
+consider **AWQ with Triton kernels** or **FP8 quantization** instead.
 
 .. code-block:: bash
 
-   # Using pre-quantized GPTQ model on ROCm
    vllm serve RedHatAI/Meta-Llama-3.1-70B-Instruct-quantized.w4a16 \
       --quantization gptq \
       --dtype auto \
       --tensor-parallel-size 1
-
-**Important notes**:
-
-- **Kernel support:** GPTQ uses standard HIP-compiled kernels on ROCm
-- **Performance:** AWQ with Triton kernels might offer better throughput on AMD GPUs due to ROCm optimizations
-- **Compatibility:** GPTQ models from Hugging Face work on ROCm with standard performance
-- **Use case:** GPTQ is suitable when pre-quantized GPTQ models are readily available
 
 AWQ (Activation-aware Weight Quantization)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 AWQ (Activation-aware Weight Quantization) is a 4-bit weight quantization technique that provides excellent
 model compression with minimal accuracy loss (<1%). ROCm supports AWQ quantization on the AMD Instinct MI300 series and
-MI355X GPUs with vLLM.
+MI350 series GPUs with vLLM.
 
 **Using pre-quantized AWQ models:**
 
@@ -1139,8 +1037,16 @@ Multi-node checklist and troubleshooting
 3. For GPUDirect RDMA, set ``RCCL_NET_GDR_LEVEL=2`` and verify links (``ibstat``). Requires supported NICs (for example, ConnectX‑6+).
 4. Collect RCCL logs: ``RCCL_DEBUG=INFO`` and optionally ``RCCL_DEBUG_SUBSYS=INIT,GRAPH`` for init/graph stalls.
 
+Deprecated terms
+================
+
+* **Prefill-Decode attention** has been renamed to **ROCM_ATTN** (ROCm attention). Use ``--attention-backend ROCM_ATTN`` to select this backend.
+
 Further reading
 ===============
 
 * :doc:`workload`
 * :doc:`/how-to/rocm-for-ai/inference/benchmark-docker/vllm`
+* `ROCm Attention Backend deep-dive <https://vllm.ai/blog/rocm-attention-backend>`_ — architecture and benchmarks for all 7 backends
+* `vLLM MoE Playbook - A Practical Guide to TP, DP, PP and Expert Parallelism <https://rocm.blogs.amd.com/software-tools-optimization/vllm-moe-guide/README.html>`_ — DP+EP tuning for MoE models
+* `Multimodal DP optimization <https://rocm.blogs.amd.com/software-tools-optimization/vllm-dp-vision/README.html>`_ — batch-level DP for vision encoders
