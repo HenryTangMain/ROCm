@@ -5,6 +5,8 @@ ACEs
 ACS
 AITER
 ALU
+AllReduce
+AllToAll
 AMD
 AMDGPU
 AMDGPUs
@@ -109,6 +111,7 @@ DOCA
 DOMContentLoaded
 DPM
 DRI
+DSA
 DSCP
 DW
 DWORD
@@ -177,6 +180,8 @@ GGUF
 GID
 GIM
 GL
+Glibc
+GLM
 GLXT
 GMI
 GNN
@@ -229,6 +234,7 @@ HybridEngine
 Hyperparameters
 IB
 ICD
+InternVL
 ICT
 ICV
 IDE
@@ -266,6 +272,9 @@ KMD
 KV
 KVM
 Karpathy's
+Kimi
+KiB
+Kineto
 Keras
 Khronos
 KiB
@@ -279,6 +288,7 @@ LLVM
 LM
 LPDDR
 LRU
+LSE
 LSAN
 LSTMs
 LSan
@@ -306,6 +316,7 @@ MNIST
 MPI
 MPT
 MSVC
+MTP
 MTU
 MVAPICH
 MVFFR
@@ -331,6 +342,9 @@ Mooncake
 MosaicML
 Mpops
 Multicore
+Multimodal
+multimodal
+multihost
 Multithreaded
 MyEnvironment
 MyST
@@ -374,7 +388,7 @@ OMPI
 OMPT
 OMPX
 ONNX
-OOM
+OSL
 OSS
 OSU
 OpenCL
@@ -415,6 +429,7 @@ PnP
 Pollara
 PowerEdge
 PowerShell
+Preshuffled
 Pretrained
 Pretraining
 Primus
@@ -469,6 +484,7 @@ RoCE
 Runfile
 Ryzen
 SALU
+safetensors
 SBIOS
 SCA
 SDK
