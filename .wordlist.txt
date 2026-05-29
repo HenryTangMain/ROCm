@@ -391,6 +391,7 @@ ONNX
 OSL
 OSS
 OSU
+OOM
 OpenCL
 OpenCV
 OpenFabrics
