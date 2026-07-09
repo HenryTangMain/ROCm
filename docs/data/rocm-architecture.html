@@ -1,0 +1,587 @@
+<title>ROCm/ROCm — Internal Architecture</title>
+<style>
+  :root {
+    --paper: #f7f3ec;
+    --ink: #221d16;
+    --card: #ffffff;
+    --card-border: #e4dccb;
+    --line: #d8cfbd;
+    --muted: #756a58;
+    --accent: #c8451f;
+    --accent-soft: #f4ddd0;
+    --accent2: #1f6f63;
+    --accent2-soft: #dcece7;
+    --tag-bg: #eee6d6;
+    --font-mono: ui-monospace, "Cascadia Code", "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+    --font-sans: -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #16130f;
+      --ink: #f1ebdf;
+      --card: #1e1a14;
+      --card-border: #392f22;
+      --line: #3a3226;
+      --muted: #ab9d84;
+      --accent: #ff7d4a;
+      --accent-soft: rgba(255, 125, 74, 0.16);
+      --accent2: #57c3b3;
+      --accent2-soft: rgba(87, 195, 179, 0.14);
+      --tag-bg: #2a251c;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #16130f;
+    --ink: #f1ebdf;
+    --card: #1e1a14;
+    --card-border: #392f22;
+    --line: #3a3226;
+    --muted: #ab9d84;
+    --accent: #ff7d4a;
+    --accent-soft: rgba(255, 125, 74, 0.16);
+    --accent2: #57c3b3;
+    --accent2-soft: rgba(87, 195, 179, 0.14);
+    --tag-bg: #2a251c;
+  }
+  :root[data-theme="light"] {
+    --paper: #f7f3ec;
+    --ink: #221d16;
+    --card: #ffffff;
+    --card-border: #e4dccb;
+    --line: #d8cfbd;
+    --muted: #756a58;
+    --accent: #c8451f;
+    --accent-soft: #f4ddd0;
+    --accent2: #1f6f63;
+    --accent2-soft: #dcece7;
+    --tag-bg: #eee6d6;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    line-height: 1.5;
+  }
+
+  .page {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 56px 32px 72px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  h1 {
+    font-family: var(--font-sans);
+    font-weight: 650;
+    font-size: clamp(1.6rem, 2.6vw, 2.15rem);
+    margin: 0.2em 0 0;
+    text-wrap: balance;
+    letter-spacing: -0.01em;
+  }
+
+  .lede {
+    max-width: 62ch;
+    color: var(--muted);
+    font-size: 1rem;
+  }
+
+  .lede code, header code {
+    font-family: var(--font-mono);
+    font-size: 0.92em;
+    background: var(--tag-bg);
+    padding: 0.1em 0.35em;
+    border-radius: 4px;
+  }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px 28px;
+    padding: 12px 0 4px;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 0.84rem;
+    color: var(--muted);
+  }
+
+  .legend-swatch {
+    width: 26px;
+    height: 0;
+    border-top: 2.5px solid var(--accent);
+  }
+  .legend-swatch.accent2 { border-color: var(--accent2); }
+  .legend-swatch.cross { border-top-style: dashed; }
+
+  .diagram-scroll {
+    overflow-x: auto;
+    margin: 0 -32px;
+    padding: 8px 32px 24px;
+  }
+
+  .diagram {
+    position: relative;
+    min-width: 1160px;
+    display: flex;
+    flex-direction: column;
+    gap: 56px;
+  }
+
+  svg#connectors {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: visible;
+  }
+
+  .row {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 32px;
+  }
+
+  /* --- root row --- */
+  .chip-pair { display: flex; gap: 12px; }
+  .chip {
+    flex: 1;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .chip-title {
+    font-family: var(--font-mono);
+    font-size: 0.86rem;
+    font-weight: 600;
+  }
+  .chip-caption {
+    margin-top: 4px;
+    font-size: 0.78rem;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  /* --- zone cards --- */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    padding: 20px 20px 18px;
+    display: flex;
+    flex-direction: column;
+  }
+  .card-path {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 1.02rem;
+  }
+  .card-subtitle {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 2px;
+    margin-bottom: 14px;
+  }
+  .card-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+    border-top: 1px solid var(--line);
+    padding-top: 12px;
+  }
+  .card-row { display: flex; flex-direction: column; gap: 2px; }
+  .row-name {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+  .row-desc {
+    font-size: 0.78rem;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+  .card-row.highlight .row-name { color: var(--accent2); }
+  #node-autotag .card-row.highlight .row-name,
+  #node-docs .card-row.highlight .row-name { color: var(--accent); }
+
+  .badge {
+    align-self: flex-start;
+    margin-top: 14px;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.02em;
+    color: var(--muted);
+    border: 1px dashed var(--line);
+    border-radius: 999px;
+    padding: 4px 10px;
+  }
+
+  /* --- output row --- */
+  .card.output {
+    align-items: flex-start;
+  }
+  #node-external { grid-column: span 2; }
+  .output-title {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+  .output-sub {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  .repo-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .repo-pill {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    background: var(--tag-bg);
+    border-radius: 999px;
+    padding: 4px 10px;
+  }
+
+  /* --- CI strip --- */
+  .ci-strip {
+    position: relative;
+    z-index: 1;
+    border: 1px dashed var(--line);
+    border-radius: 12px;
+    padding: 14px 20px;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+  .ci-tag {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: var(--ink);
+    background: var(--tag-bg);
+    border-radius: 6px;
+    padding: 2px 8px;
+    flex-shrink: 0;
+  }
+  .ci-strip code {
+    font-family: var(--font-mono);
+    background: var(--tag-bg);
+    padding: 0.1em 0.35em;
+    border-radius: 4px;
+  }
+
+  footer.note {
+    max-width: 74ch;
+    font-size: 0.86rem;
+    color: var(--muted);
+    border-top: 1px solid var(--line);
+    padding-top: 20px;
+  }
+  footer.note code {
+    font-family: var(--font-mono);
+    background: var(--tag-bg);
+    padding: 0.1em 0.35em;
+    border-radius: 4px;
+  }
+
+  path.edge {
+    fill: none;
+    stroke-width: 1.6;
+  }
+  path.edge-accent { stroke: var(--accent); }
+  path.edge-accent2 { stroke: var(--accent2); }
+  path.edge-cross { stroke: var(--accent); stroke-dasharray: 4 4; stroke-width: 1.4; }
+  .arrowhead-accent { fill: var(--accent); }
+  .arrowhead-accent2 { fill: var(--accent2); }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .card, .chip { transition: border-color 0.15s ease; }
+  }
+</style>
+
+<div class="page">
+  <div>
+    <div class="eyebrow">ROCm/ROCm &mdash; internal architecture</div>
+    <h1>How the docs site and release tooling fit together</h1>
+    <p class="lede">
+      This repository doesn&rsquo;t hold ROCm&rsquo;s source &mdash; it holds the documentation
+      site, the changelog/release generator, and legacy build scripts that operate
+      <em>on top of</em> the component repos. Three independent zones share a
+      handful of root-level files.
+    </p>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><span class="legend-swatch"></span> generates / writes content</div>
+    <div class="legend-item"><span class="legend-swatch accent2"></span> configures / builds from</div>
+    <div class="legend-item"><span class="legend-swatch cross"></span> cross-reference (detail-level)</div>
+  </div>
+
+  <div class="diagram-scroll">
+    <div class="diagram" id="diagram">
+      <svg id="connectors">
+        <defs>
+          <marker id="arrow-accent" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" class="arrowhead-accent"></path>
+          </marker>
+          <marker id="arrow-accent2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" class="arrowhead-accent2"></path>
+          </marker>
+        </defs>
+      </svg>
+
+      <!-- root row -->
+      <div class="row">
+        <div class="chip-pair">
+          <div class="chip" id="node-cmake">
+            <div class="chip-title">CMakeLists.txt</div>
+            <div class="chip-caption">BUILD_DOCS option &rarr; add_subdirectory(docs)</div>
+          </div>
+          <div class="chip" id="node-rtd">
+            <div class="chip-title">.readthedocs.yaml</div>
+            <div class="chip-caption">Pins the Python/Sphinx build RTD runs on every PR</div>
+          </div>
+        </div>
+        <div class="chip" id="node-release">
+          <div class="chip-title">RELEASE.md &middot; CHANGELOG.md</div>
+          <div class="chip-caption">Canonical release content &mdash; regenerated by tools/autotag, consumed by the docs build</div>
+        </div>
+        <div class="chip" id="node-manifest">
+          <div class="chip-title">default.xml</div>
+          <div class="chip-caption">Repo manifest &mdash; every ROCm component project tools/rocm-build clones</div>
+        </div>
+      </div>
+
+      <!-- zone cards -->
+      <div class="row">
+        <div class="card" id="node-docs">
+          <div class="card-path">docs/</div>
+          <div class="card-subtitle">Sphinx + MyST site &mdash; rocm.docs.amd.com</div>
+          <div class="card-rows">
+            <div class="card-row">
+              <div class="row-name">conf.py</div>
+              <div class="row-desc">Copies root RELEASE.md/CHANGELOG.md in, rewrites GitHub admonitions</div>
+            </div>
+            <div class="card-row">
+              <div class="row-name">sphinx/_toc.yml.in</div>
+              <div class="row-desc">External table of contents (not a normal Sphinx toctree)</div>
+            </div>
+            <div class="card-row">
+              <div class="row-name">extension/*.py</div>
+              <div class="row-desc">remote-content, version-ref, csv-to-list-table</div>
+            </div>
+            <div class="card-row highlight" id="node-docs-precision">
+              <div class="row-name">data/reference/precision-support.yaml</div>
+              <div class="row-desc">Per-library dtype support matrix</div>
+            </div>
+            <div class="card-row">
+              <div class="row-name">contribute/*.md</div>
+              <div class="row-desc">Contributor guides: building, toolchain, feedback</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" id="node-autotag">
+          <div class="card-path">tools/autotag/</div>
+          <div class="card-subtitle">Changelog, release notes &amp; precision audits</div>
+          <div class="card-rows">
+            <div class="card-row">
+              <div class="row-name">tag_script.py</div>
+              <div class="row-desc">Builds CHANGELOG.md / RELEASE.md from GitHub PR history</div>
+            </div>
+            <div class="card-row">
+              <div class="row-name">templates/&lt;category&gt;/&lt;version&gt;.md</div>
+              <div class="row-desc">Hand-authored content the script can&rsquo;t derive &mdash; edit these, not the generated files</div>
+            </div>
+            <div class="card-row highlight" id="node-autotag-precision">
+              <div class="row-name">precision_fetch.py</div>
+              <div class="row-desc">/precision-check(-delta) &mdash; fetches &amp; diffs dtype support per release</div>
+            </div>
+            <div class="card-row">
+              <div class="row-name">README.md</div>
+              <div class="row-desc">Full playbook: PAT/SSO setup, regeneration commands</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" id="node-rocmbuild">
+          <div class="card-path">tools/rocm-build/</div>
+          <div class="card-subtitle">Legacy per-component build scripts</div>
+          <div class="card-rows">
+            <div class="card-row">
+              <div class="row-name">envsetup.sh</div>
+              <div class="row-desc">Environment bootstrap for a from-source build</div>
+            </div>
+            <div class="card-row">
+              <div class="row-name">build_&lt;component&gt;.sh</div>
+              <div class="row-desc">~90 scripts, one per ROCm component</div>
+            </div>
+            <div class="card-row">
+              <div class="row-name">rocm-&lt;version&gt;.xml</div>
+              <div class="row-desc">Pinned component revisions per release, keyed off default.xml</div>
+            </div>
+            <div class="card-row">
+              <div class="row-name">docker/ubuntu22, ubuntu24</div>
+              <div class="row-desc">Reference build containers</div>
+            </div>
+          </div>
+          <div class="badge">superseded by TheRock for new work</div>
+        </div>
+      </div>
+
+      <!-- output row -->
+      <div class="row">
+        <div class="card output" id="node-publish">
+          <div class="output-title">rocm.docs.amd.com</div>
+          <div class="output-sub">Built &amp; previewed by Read the Docs on every PR</div>
+        </div>
+        <div class="card output" id="node-external">
+          <div class="output-title">External ROCm component repos</div>
+          <div class="output-sub">Source lives here, not in this repo</div>
+          <div class="repo-list">
+            <span class="repo-pill">rocm-systems</span>
+            <span class="repo-pill">rocm-libraries</span>
+            <span class="repo-pill">llvm-project</span>
+            <span class="repo-pill">TheRock</span>
+            <span class="repo-pill">ROCgdb</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ci-strip">
+        <span class="ci-tag">CI</span>
+        <span>
+          <code>.github/workflows/linting.yml</code> delegates to the reusable
+          <code>ROCm/rocm-docs-core</code> workflow &mdash; markdownlint-cli2
+          (<code>.markdownlint-cli2.yaml</code>) and spellcheck
+          (<code>.spellcheck.local.yaml</code>) run across <code>docs/</code> and root Markdown on every push/PR.
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <footer class="note">
+    Component source (rocm-systems, rocm-libraries, llvm-project, TheRock, and others)
+    lives in separate repositories. This repo only documents and packages releases
+    for them &mdash; see <code>CLAUDE.md</code> for the full contributor-facing guide.
+  </footer>
+</div>
+
+<script>
+(function () {
+  var container = document.getElementById('diagram');
+  var svg = document.getElementById('connectors');
+
+  var edges = [
+    { from: 'node-cmake', fromSide: 'bottom', to: 'node-docs', toSide: 'top', kind: 'accent2' },
+    { from: 'node-rtd', fromSide: 'bottom', to: 'node-docs', toSide: 'top', kind: 'accent2' },
+    { from: 'node-manifest', fromSide: 'bottom', to: 'node-rocmbuild', toSide: 'top', kind: 'accent2' },
+    { from: 'node-autotag', fromSide: 'top', to: 'node-release', toSide: 'bottom', kind: 'accent' },
+    { from: 'node-docs', fromSide: 'bottom', to: 'node-publish', toSide: 'top', kind: 'accent' },
+    { from: 'node-autotag', fromSide: 'bottom', to: 'node-external', toSide: 'top', kind: 'accent' },
+    { from: 'node-rocmbuild', fromSide: 'bottom', to: 'node-external', toSide: 'top', kind: 'accent2' },
+    { from: 'node-autotag-precision', fromSide: 'left', to: 'node-docs-precision', toSide: 'right', kind: 'cross' }
+  ];
+
+  function relRect(el) {
+    var r = el.getBoundingClientRect();
+    var c = container.getBoundingClientRect();
+    return {
+      left: r.left - c.left, right: r.right - c.left,
+      top: r.top - c.top, bottom: r.bottom - c.top,
+      cx: (r.left + r.right) / 2 - c.left,
+      cy: (r.top + r.bottom) / 2 - c.top
+    };
+  }
+
+  function anchor(el, side) {
+    var r = relRect(el);
+    if (side === 'top') return { x: r.cx, y: r.top };
+    if (side === 'bottom') return { x: r.cx, y: r.bottom };
+    if (side === 'left') return { x: r.left, y: r.cy };
+    return { x: r.right, y: r.cy };
+  }
+
+  function pathFor(p1, p2, vertical) {
+    if (vertical) {
+      if (Math.abs(p1.x - p2.x) < 1) return 'M' + p1.x + ',' + p1.y + ' L' + p2.x + ',' + p2.y;
+      var mid = (p1.y + p2.y) / 2;
+      return 'M' + p1.x + ',' + p1.y + ' L' + p1.x + ',' + mid + ' L' + p2.x + ',' + mid + ' L' + p2.x + ',' + p2.y;
+    }
+    if (Math.abs(p1.y - p2.y) < 1) return 'M' + p1.x + ',' + p1.y + ' L' + p2.x + ',' + p2.y;
+    var midX = (p1.x + p2.x) / 2;
+    return 'M' + p1.x + ',' + p1.y + ' L' + midX + ',' + p1.y + ' L' + midX + ',' + p2.y + ' L' + p2.x + ',' + p2.y;
+  }
+
+  function render() {
+    var rect = container.getBoundingClientRect();
+    svg.setAttribute('width', rect.width);
+    svg.setAttribute('height', rect.height);
+    svg.setAttribute('viewBox', '0 0 ' + rect.width + ' ' + rect.height);
+
+    var existing = svg.querySelectorAll('path.edge');
+    existing.forEach(function (p) { p.remove(); });
+
+    edges.forEach(function (edge) {
+      var fromEl = document.getElementById(edge.from);
+      var toEl = document.getElementById(edge.to);
+      if (!fromEl || !toEl) return;
+      var p1 = anchor(fromEl, edge.fromSide);
+      var p2 = anchor(toEl, edge.toSide);
+      var vertical = edge.fromSide === 'top' || edge.fromSide === 'bottom';
+      var d = pathFor(p1, p2, vertical);
+      var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('d', d);
+      var cls = 'edge edge-' + edge.kind;
+      path.setAttribute('class', cls);
+      path.setAttribute('marker-end', edge.kind === 'accent2' ? 'url(#arrow-accent2)' : 'url(#arrow-accent)');
+      svg.appendChild(path);
+    });
+  }
+
+  var raf;
+  function scheduleRender() {
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(render);
+  }
+
+  window.addEventListener('resize', scheduleRender);
+  window.addEventListener('load', scheduleRender);
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(scheduleRender);
+  }
+  if (window.ResizeObserver) {
+    new ResizeObserver(scheduleRender).observe(container);
+  }
+  scheduleRender();
+  setTimeout(scheduleRender, 250);
+})();
+</script>
